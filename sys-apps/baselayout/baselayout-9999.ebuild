@@ -129,11 +129,11 @@ src_install() {
 		rmdir "${D}${mnt}" || die
 	done
 
-	doenvd "env.d/99coreos_ldpath"
+	doenvd "env.d/99flatcar_ldpath"
 
 	# Add /sbin:/bin into the PATH when they aren't links into /usr.
 	if ! use symlink-usr; then
-		echo ROOTPATH=/sbin:/bin > "${D}"/etc/env.d/99coreos_bin || die
+		echo ROOTPATH=/sbin:/bin > "${D}"/etc/env.d/99flatcar_bin || die
 	fi
 
 	# handle multilib paths.  do it here because we want this behavior
@@ -172,7 +172,7 @@ src_install() {
 		# Provided by vim in the SDK
 		rm -r "${D}"/etc/vim || die
 		# Undesirable in the SDK
-		rm "${D}"/etc/profile.d/coreos-profile.sh || die
+		rm "${D}"/etc/profile.d/flatcar-profile.sh || die
 	else
 		# Don't install /etc/issue since it is handled by coreos-init right now
 		rm "${D}"/etc/issue || die
@@ -180,10 +180,10 @@ src_install() {
 			"${D}"/usr/lib/tmpfiles.d/baselayout-etc.conf || die
 
 		# Initialize /etc/passwd, group, and friends on boot.
-		bash "scripts/coreos-tmpfiles" "${D}" || die
-		dosbin "scripts/coreos-tmpfiles"
-		systemd_dounit "scripts/coreos-tmpfiles.service"
-		systemd_enable_service sysinit.target coreos-tmpfiles.service
+		bash "scripts/flatcar-tmpfiles" "${D}" || die
+		dosbin "scripts/flatcar-tmpfiles"
+		systemd_dounit "scripts/flatcar-tmpfiles.service"
+		systemd_enable_service sysinit.target flatcar-tmpfiles.service
 	fi
 
 	# sssd not yet building on arm64
