@@ -19,13 +19,13 @@ coreos:
         content: |
           [Unit]
           Description=Cloudinit from exoscale (cloudstack-style) metadata
-          Requires=coreos-setup-environment.service
-          After=coreos-setup-environment.service
+          Requires=flatcar-setup-environment.service
+          After=flatcar-setup-environment.service
 
           [Service]
           Type=oneshot
           EnvironmentFile=/etc/environment
-          ExecStart=/usr/share/oem/bin/exoscale-coreos-cloudinit
+          ExecStart=/usr/share/oem/bin/exoscale-flatcar-cloudinit
     oem:
       id: exoscale
       name: exoscale

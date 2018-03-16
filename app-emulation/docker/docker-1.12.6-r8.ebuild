@@ -269,8 +269,8 @@ src_install() {
 	newinitd contrib/init/openrc/docker.initd docker
 	newconfd contrib/init/openrc/docker.confd docker
 
-	exeinto /usr/lib/coreos
-	# Create /usr/lib/coreos/dockerd script for backwards compatibility
+	exeinto /usr/lib/flatcar
+	# Create /usr/lib/flatcar/dockerd script for backwards compatibility
 	doexe "${FILESDIR}/dockerd"
 
 	systemd_dounit "${FILESDIR}/docker.service"
