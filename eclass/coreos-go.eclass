@@ -14,6 +14,15 @@
 # COREOS_GO_PACKAGE="github.com/coreos/mantle"
 # @CODE
 
+# @ECLASS-VARIABLE: COREOS_GO_BINARY_NAME
+# @DESCRIPTION:
+# Name of the output binary.
+#
+# Example:
+# @CODE
+# COREOS_GO_BINARY_NAME="flatcar-cloudinit"
+# @CODE
+
 # @ECLASS-VARIABLE: COREOS_GO_VERSION
 # @DESCRIPTION:
 # This variable specifies the version of Go to use. If ommitted the
@@ -36,9 +45,13 @@ inherit coreos-go-depend multiprocessing
 go_build() {
 	debug-print-function ${FUNCNAME} "$@"
 
-	[[ $# -eq 0 || $# -gt 2 ]] && die "${ECLASS}: ${FUNCNAME}: incorrect # of arguments"
+	[[ $# -eq 0 || $# -gt 3 ]] && die "${ECLASS}: ${FUNCNAME}: incorrect # of arguments"
 	local package_name="$1"
-	local binary_name="${package_name##*/}"
+	local binary_name="$2"
+
+	if [[ -z "${binary_name}" ]]; then
+		binary_name="${package_name##*/}"
+	fi
 
 	ebegin "${EGO} build ${package_name}"
 	debug-print EGO=${EGO} $(${EGO} env)
@@ -76,7 +89,7 @@ coreos-go_src_prepare() {
 coreos-go_src_compile() {
 	debug-print-function ${FUNCNAME} "$@"
 
-	go_build "${COREOS_GO_PACKAGE}"
+	go_build "${COREOS_GO_PACKAGE}" "${COREOS_GO_BINARY_NAME}"
 }
 
 coreos-go_src_install() {
