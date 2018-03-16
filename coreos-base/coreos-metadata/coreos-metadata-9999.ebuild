@@ -47,8 +47,10 @@ src_prepare() {
 src_install() {
 	cargo_src_install
 
-	systemd_dounit "${FILESDIR}/coreos-metadata.service"
-	systemd_dounit "${FILESDIR}/coreos-metadata-sshkeys@.service"
+	mv "${D}/usr/bin/coreos-metadata" "${D}/usr/bin/flatcar-metadata"
+
+	systemd_dounit "${FILESDIR}/flatcar-metadata.service"
+	systemd_dounit "${FILESDIR}/flatcar-metadata-sshkeys@.service"
 }
 
 # sed -n 's/^"checksum \([^ ]*\) \([^ ]*\) .*/\1-\2/p' Cargo.lock
