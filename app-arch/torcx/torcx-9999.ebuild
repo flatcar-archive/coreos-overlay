@@ -53,6 +53,6 @@ src_install() {
 	for link in {docker-,}{containerd{,-shim},runc} ctr docker-{init,proxy} dockerd tini
 	do ln -fns docker "${ED}/usr/bin/${link}"
 	done
-	exeinto /usr/lib/coreos
+	exeinto /usr/lib/flatcar
 	newexe "${FILESDIR}/dockerd-wrapper.sh" dockerd
 }
