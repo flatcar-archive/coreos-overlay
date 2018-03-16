@@ -33,7 +33,7 @@
   "systemd": {
     "units": [
       {
-        "name": "coreos-metadata-sshkeys@.service",
+        "name": "flatcar-metadata-sshkeys@.service",
         "enabled": true
       },
       {
