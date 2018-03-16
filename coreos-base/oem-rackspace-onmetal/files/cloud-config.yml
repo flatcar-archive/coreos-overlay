@@ -7,7 +7,7 @@ coreos:
         content: |
           [Service]
           ExecStart=
-          ExecStart=/usr/bin/coreos-cloudinit --oem=rackspace-onmetal
+          ExecStart=/usr/bin/flatcar-cloudinit --oem=rackspace-onmetal
       - name: ping-out.service
         runtime: yes
         enable: yes
