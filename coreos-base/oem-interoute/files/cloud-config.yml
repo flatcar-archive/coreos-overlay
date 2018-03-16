@@ -20,8 +20,8 @@ coreos:
         content: |
           [Unit]
           Description=Sets SSH key from metadata
-          Requires=coreos-setup-environment.service
-          After=coreos-setup-environment.service
+          Requires=flatcar-setup-environment.service
+          After=flatcar-setup-environment.service
 
           [Service]
           Type=oneshot
@@ -34,20 +34,20 @@ coreos:
         content: |
           [Unit]
           Description=Cloudinit from CloudStack-style metadata
-          Requires=coreos-setup-environment.service
-          After=coreos-setup-environment.service
+          Requires=flatcar-setup-environment.service
+          After=flatcar-setup-environment.service
 
           [Service]
           Type=oneshot
           EnvironmentFile=/etc/environment
-          ExecStart=/usr/share/oem/bin/cloudstack-coreos-cloudinit
+          ExecStart=/usr/share/oem/bin/cloudstack-flatcar-cloudinit
       - name: cloudstack-set-guest-password.service
         runtime: yes
         content: |
           [Unit]
           Description=CloudStack Guest Password Reset
-          Requires=coreos-setup-environment.service
-          After=coreos-setup-environment.service
+          Requires=flatcar-setup-environment.service
+          After=flatcar-setup-environment.service
 
           [Service]
           Type=oneshot
