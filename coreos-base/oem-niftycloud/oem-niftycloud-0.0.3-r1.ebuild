@@ -28,8 +28,8 @@ src_prepare() {
 src_install() {
 	into "/usr/share/oem"
 	dobin "${FILESDIR}/niftycloud-ssh-key"
-	dobin "${FILESDIR}/niftycloud-coreos-cloudinit"
-	dobin "${FILESDIR}/coreos-setup-environment"
+	dobin "${FILESDIR}/niftycloud-flatcar-cloudinit"
+	dobin "${FILESDIR}/flatcar-setup-environment"
 
 	insinto "/usr/share/oem"
 	doins "${T}/cloud-config.yml"
