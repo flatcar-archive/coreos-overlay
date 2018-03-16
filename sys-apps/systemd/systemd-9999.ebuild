@@ -3,7 +3,7 @@
 
 EAPI=6
 
-CROS_WORKON_PROJECT="coreos/systemd"
+CROS_WORKON_PROJECT="flatcar-linux/systemd"
 CROS_WORKON_REPO="git://github.com"
 
 if [[ ${PV} == 9999 ]]; then
