@@ -71,9 +71,9 @@ src_install() {
 	autotools-utils_src_install
 
 	if use symlink-usr; then
-		dosym sbin/coreos-postinst /usr/postinst
+		dosym sbin/flatcar-postinst /usr/postinst
 	else
-		dosym usr/sbin/coreos-postinst /postinst
+		dosym usr/sbin/flatcar-postinst /postinst
 	fi
 
 	systemd_dounit systemd/update-engine.service
