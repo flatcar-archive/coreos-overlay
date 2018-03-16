@@ -4,7 +4,7 @@
 
 EAPI=5
 
-CROS_WORKON_PROJECT="coreos/docker"
+CROS_WORKON_PROJECT="flatcar-linux/docker"
 CROS_WORKON_LOCALNAME="docker"
 CROS_WORKON_REPO="git://github.com"
 COREOS_GO_VERSION="go1.7"
