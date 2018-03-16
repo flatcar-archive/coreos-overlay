@@ -6,6 +6,7 @@ CROS_WORKON_PROJECT="flatcar-linux/coreos-cloudinit"
 CROS_WORKON_LOCALNAME="coreos-cloudinit"
 CROS_WORKON_REPO="git://github.com"
 COREOS_GO_PACKAGE="github.com/coreos/coreos-cloudinit"
+COREOS_GO_BINARY_NAME="flatcar-cloudinit"
 inherit cros-workon systemd toolchain-funcs udev coreos-go
 
 if [[ "${PV}" == 9999 ]]; then
@@ -45,7 +46,7 @@ src_compile() {
 }
 
 src_install() {
-	dobin ${GOBIN}/coreos-cloudinit
+	dobin ${GOBIN}/flatcar-cloudinit
 	udev_dorules units/*.rules
 	systemd_dounit units/*.mount
 	systemd_dounit units/*.path
