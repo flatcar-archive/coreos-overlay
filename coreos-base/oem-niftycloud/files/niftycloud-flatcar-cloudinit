@@ -7,7 +7,7 @@ else
     exit 1
 fi
 
-USER_DATA_DIR=/var/lib/coreos-niftycloud
+USER_DATA_DIR=/var/lib/flatcar-niftycloud
 USER_DATA_PATH=${USER_DATA_DIR}/user-data
 USER_DATA_FLAG=$(${VMTOOLSD} --cmd 'info-get guestinfo.set_user_data')
 
@@ -15,7 +15,7 @@ if [ "$USER_DATA_FLAG" == "1" ]; then
     TMPFILE=$(mktemp /tmp/XXXXXX-cloud-init)
     ${VMTOOLSD} --cmd 'info-get guestinfo.user_data' | openssl enc -d -base64 > "${TMPFILE}"
     if [ -s "${TMPFILE}" ]; then
-        coreos-cloudinit --from-file="${TMPFILE}" || exit $?
+        flatcar-cloudinit --from-file="${TMPFILE}" || exit $?
         if [ "$(head -n 1 ${TMPFILE} | tr -d '\r' | tr -d '\n')" = "#cloud-config" ]; then
             mkdir -p ${USER_DATA_DIR}
             cp -p ${TMPFILE} ${USER_DATA_PATH}
@@ -26,5 +26,5 @@ if [ "$USER_DATA_FLAG" == "1" ]; then
     fi
     ${VMTOOLSD} --cmd 'info-set guestinfo.set_user_data 0'
 elif [ -f ${USER_DATA_PATH} ]; then
-    coreos-cloudinit --from-file="${USER_DATA_PATH}" || exit $?
+    flatcar-cloudinit --from-file="${USER_DATA_PATH}" || exit $?
 fi
