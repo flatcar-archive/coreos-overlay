@@ -198,6 +198,8 @@ winutil-0.1.1
 ws2_32-sys-0.2.1
 xml-rs-0.3.6
 "
+# not listed:
+# update-ssh-keys-0.1.1
 
 SRC_URI="$(cargo_crate_uris ${CRATES})"
 
