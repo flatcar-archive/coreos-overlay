@@ -272,7 +272,7 @@ multilib_src_configure() {
 		-Ddbussessionservicedir="${EPREFIX}/usr/share/dbus-1/services"
 		-Ddbussystemservicedir="${EPREFIX}/usr/share/dbus-1/system-services"
 
-		-Dntp-servers="0.coreos.pool.ntp.org 1.coreos.pool.ntp.org 2.coreos.pool.ntp.org 3.coreos.pool.ntp.org"
+		-Dntp-servers="0.flatcar.pool.ntp.org 1.flatcar.pool.ntp.org 2.flatcar.pool.ntp.org 3.flatcar.pool.ntp.org"
 
 		-Dpamconfdir=/usr/share/pam.d
 
