@@ -28,8 +28,8 @@ src_install() {
 	into "/usr/share/oem"
 	dobin "${FILESDIR}/cloudstack-dhcp"
 	dobin "${FILESDIR}/cloudstack-ssh-key"
-	dobin "${FILESDIR}/cloudstack-coreos-cloudinit"
-	dobin "${FILESDIR}/coreos-setup-environment"
+	dobin "${FILESDIR}/cloudstack-flatcar-cloudinit"
+	dobin "${FILESDIR}/flatcar-setup-environment"
 
 	insinto "/usr/share/oem"
 	doins "${T}/cloud-config.yml"
