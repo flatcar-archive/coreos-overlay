@@ -3,7 +3,7 @@
 
 EAPI=6
 
-CROS_WORKON_PROJECT="coreos/systemd"
+CROS_WORKON_PROJECT="flatcar-linux/systemd"
 CROS_WORKON_REPO="git://github.com"
 
 if [[ ${PV} == 9999 ]]; then
@@ -269,7 +269,7 @@ multilib_src_configure() {
 		-Ddbussessionservicedir="${EPREFIX}/usr/share/dbus-1/services"
 		-Ddbussystemservicedir="${EPREFIX}/usr/share/dbus-1/system-services"
 
-		-Dntp-servers="0.coreos.pool.ntp.org 1.coreos.pool.ntp.org 2.coreos.pool.ntp.org 3.coreos.pool.ntp.org"
+		-Dntp-servers="0.flatcar.pool.ntp.org 1.flatcar.pool.ntp.org 2.flatcar.pool.ntp.org 3.flatcar.pool.ntp.org"
 
 		-Dpamconfdir=/usr/share/pam.d
 
@@ -359,7 +359,7 @@ multilib_src_install_all() {
 	fowners root:systemd-journal /var/log/journal
 	fperms 2755 /var/log/journal
 
-	systemd_dotmpfilesd "${FILESDIR}"/systemd-coreos.conf
+	systemd_dotmpfilesd "${FILESDIR}"/systemd-flatcar.conf
 	systemd_dotmpfilesd "${FILESDIR}"/systemd-resolv.conf
 
 	# Don't default to graphical.target
