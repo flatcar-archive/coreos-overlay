@@ -28,8 +28,8 @@ src_install() {
 	into "/usr/share/oem"
 	dobin "${FILESDIR}/exoscale-dhcp"
 	dobin "${FILESDIR}/exoscale-ssh-key"
-	dobin "${FILESDIR}/exoscale-coreos-cloudinit"
-	dobin "${FILESDIR}/coreos-setup-environment"
+	dobin "${FILESDIR}/exoscale-flatcar-cloudinit"
+	dobin "${FILESDIR}/flatcar-setup-environment"
 
 	insinto "/usr/share/oem"
 	doins "${T}/cloud-config.yml"
