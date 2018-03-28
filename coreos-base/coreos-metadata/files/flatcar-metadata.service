@@ -1,0 +1,10 @@
+[Unit]
+Description=Flatcar Metadata Agent
+
+[Service]
+Type=oneshot
+Environment=COREOS_METADATA_OPT_PROVIDER=--cmdline
+ExecStart=/usr/bin/flatcar-metadata ${COREOS_METADATA_OPT_PROVIDER} --attributes=/run/metadata/flatcar
+
+[Install]
+RequiredBy=metadata.target
