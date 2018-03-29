@@ -11,7 +11,7 @@ inherit cros-workon systemd coreos-go
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="ab1dd50d047c1b51f1433660ae225410ad86d2aa" # v0.6.1
+	CROS_WORKON_COMMIT="b0ce3d6d7c9d661c44909cceb5fd586c4004e92b" # v0.6.1
 	KEYWORDS="amd64 arm64"
 fi
 
