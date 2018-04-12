@@ -15,7 +15,7 @@ if [ "$USER_DATA_FLAG" == "1" ]; then
     TMPFILE=$(mktemp /tmp/XXXXXX-cloud-init)
     ${VMTOOLSD} --cmd 'info-get guestinfo.user_data' | openssl enc -d -base64 > "${TMPFILE}"
     if [ -s "${TMPFILE}" ]; then
-        flatcar-cloudinit --from-file="${TMPFILE}" || exit $?
+        coreos-cloudinit --from-file="${TMPFILE}" || exit $?
         if [ "$(head -n 1 ${TMPFILE} | tr -d '\r' | tr -d '\n')" = "#cloud-config" ]; then
             mkdir -p ${USER_DATA_DIR}
             cp -p ${TMPFILE} ${USER_DATA_PATH}
@@ -26,5 +26,5 @@ if [ "$USER_DATA_FLAG" == "1" ]; then
     fi
     ${VMTOOLSD} --cmd 'info-set guestinfo.set_user_data 0'
 elif [ -f ${USER_DATA_PATH} ]; then
-    flatcar-cloudinit --from-file="${USER_DATA_PATH}" || exit $?
+    coreos-cloudinit --from-file="${USER_DATA_PATH}" || exit $?
 fi
