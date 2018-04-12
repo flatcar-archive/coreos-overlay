@@ -1,14 +1,14 @@
 #cloud-config
 coreos:
     units:
-      - name: flatcar-cloudinit-vagrant-mkdir.service
+      - name: coreos-cloudinit-vagrant-mkdir.service
         command: start
         runtime: yes
         content: |
           [Service]
           Type=oneshot
           ExecStart=/bin/mkdir -p /var/lib/flatcar-vagrant
-      - name: flatcar-cloudinit-vagrant-user.path
+      - name: coreos-cloudinit-vagrant-user.path
         command: start
         runtime: yes
         content: |
