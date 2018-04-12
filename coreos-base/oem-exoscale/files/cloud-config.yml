@@ -25,7 +25,7 @@ coreos:
           [Service]
           Type=oneshot
           EnvironmentFile=/etc/environment
-          ExecStart=/usr/share/oem/bin/exoscale-flatcar-cloudinit
+          ExecStart=/usr/share/oem/bin/exoscale-coreos-cloudinit
     oem:
       id: exoscale
       name: exoscale
