@@ -11,7 +11,7 @@ coreos:
 
         [Service]
         Type=oneshot
-        ExecStart=/usr/bin/flatcar-cloudinit --oem=cloudsigma
+        ExecStart=/usr/bin/coreos-cloudinit --oem=cloudsigma
 
   oem:
     id: cloudsigma
