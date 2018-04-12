@@ -1,8 +1,8 @@
 [Unit]
 Description=Report Success to Packet
 ConditionFirstBoot=true
-Requires=flatcar-metadata.service
-After=flatcar-metadata.service
+Requires=coreos-metadata.service
+After=coreos-metadata.service
 
 [Service]
 EnvironmentFile=/run/metadata/flatcar
