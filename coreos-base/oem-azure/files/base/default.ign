@@ -7,7 +7,7 @@
       {
         "name": "oem-cloudinit.service",
         "enabled": true,
-        "contents": "[Unit]\nDescription=Cloudinit from Azure metadata\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/flatcar-cloudinit --oem=azure\n\n[Install]\nWantedBy=multi-user.target\n"
+        "contents": "[Unit]\nDescription=Cloudinit from Azure metadata\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/coreos-cloudinit --oem=azure\n\n[Install]\nWantedBy=multi-user.target\n"
       }
     ]
   }
