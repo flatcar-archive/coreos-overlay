@@ -12,7 +12,7 @@ UPDATE_SSH_KEYS_VERSION="0.1.1"
 if [[ ${PV} == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="a4eb0f804c7e56b6d2fb087482adc62dca5a2b96" # v1.0.5
+	CROS_WORKON_COMMIT="392057cb629bfefe36f9c7b099b3f24ff44009ab" # v1.0.5
 	KEYWORDS="amd64 arm64"
 fi
 
