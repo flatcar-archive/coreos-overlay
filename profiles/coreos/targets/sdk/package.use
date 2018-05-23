@@ -34,3 +34,5 @@ cross-aarch64-cros-linux-gnu/gdb python_single_target_python3_6 -python_single_t
 
 # Enable gssapi for SDK
 net-dns/bind-tools           gssapi
+
+sys-apps/policycoreutils semodule
