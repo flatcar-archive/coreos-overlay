@@ -10,7 +10,7 @@ CROS_WORKON_REPO="git://github.com"
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 else
-	CROS_WORKON_COMMIT="85a35815c7ffb14d6e398da950502dbabc8f4291"
+	CROS_WORKON_COMMIT="a767e329d36e777145c1d143ee61077393592754"
 	KEYWORDS="amd64 arm arm64 x86"
 fi
 
