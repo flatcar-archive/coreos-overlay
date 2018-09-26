@@ -80,6 +80,7 @@ RDEPEND="${RDEPEND}
 		app-crypt/go-tspi
 		app-emulation/xenserver-pv-version
 		app-emulation/xenstore
+		net-fs/cifs-utils
 		sys-auth/realmd
 		sys-auth/sssd
 	)"
@@ -166,4 +167,9 @@ RDEPEND="${RDEPEND}
 	sys-libs/timezone-data
 	sys-process/lsof
 	sys-process/procps
-	"
+"
+
+# OEM specific bits that need to go in USR
+RDEPEND+="
+	sys-auth/google-oslogin
+"

@@ -10,7 +10,7 @@ COREOS_GO_PACKAGE="github.com/coreos/torcx"
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="71fde8cf2772ce291a9d2b592b29dd1a574e64f2" # v0.1.2
+	CROS_WORKON_COMMIT="c33a93e8c5e63114fce9569e45a04bfbcac7eb75" # v0.2.0
 	KEYWORDS="amd64 arm64"
 fi
 
@@ -34,12 +34,12 @@ src_compile() {
 src_install() {
 	local generatordir=/usr/lib/systemd/system-generators
 	local vendordir=/usr/share/torcx
+	local libcoreosdir=/usr/lib/coreos
 
-#	dobin "${S}/bin/${ARCH}/torcx"
-
+	# Install generator and userland.
 	exeinto "${generatordir}"
 	newexe "${S}/bin/${ARCH}/torcx" torcx-generator
-#	dosym ../../../bin/torcx "${generatordir}/torcx-generator"
+	dosym ../systemd/system-generators/torcx-generator "${libcoreosdir}/torcx"
 	systemd_dounit "${FILESDIR}/torcx.target"
 
 	insinto "${vendordir}/profiles"
