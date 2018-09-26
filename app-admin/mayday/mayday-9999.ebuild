@@ -5,7 +5,7 @@
 #
 
 EAPI=5
-CROS_WORKON_PROJECT="coreos/mayday"
+CROS_WORKON_PROJECT="flatcar-linux/mayday"
 CROS_WORKON_LOCALNAME="mayday"
 CROS_WORKON_REPO="git://github.com"
 COREOS_GO_PACKAGE="github.com/coreos/mayday"
