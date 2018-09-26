@@ -2,7 +2,6 @@
 # Copyright (c) 2013 The CoreOS Authors. All rights reserved.
 # Distributed under the terms of the GNU General Public License v2
 
-=dev-cpp/gflags-2.0 ~amd64
 =dev-util/shflags-1.0.3 ~amd64
 =dev-util/perf-4.9.13 ~amd64
 =sys-libs/libnih-1.0.3 ~amd64
@@ -20,9 +19,6 @@ dev-python/boto
 
 # no version marked stable upstream
 dev-util/checkbashisms
-
-# https://bugs.gentoo.org/show_bug.cgi?id=548158
-=sys-apps/gentoo-functions-0.10
 
 # Older versions of sssd fail to build
 =sys-auth/sssd-1.13.1 ~amd64 ~arm64
@@ -43,23 +39,17 @@ dev-util/checkbashisms
 # xfsprogs 4.5.0 has install conflicts, and versions in between fail to link
 =sys-fs/xfsprogs-4.9.0 **
 
-# systemd v233 requires libseccomp 2.3.1
-=sys-libs/libseccomp-2.3.1 **
+# systemd v238 requires libseccomp 2.3.3
+=sys-libs/libseccomp-2.3.3 **
 
 # All versions are ~amd64 and not enabled on arm64
 =sys-apps/nvme-cli-1.1 **
-
-# https://curl.haxx.se/docs/adv_20170419.html
-=net-misc/curl-7.54.0 **
 
 # CVE-2017-8779
 =net-nds/rpcbind-0.2.4-r1
 
 # Pick up fixes for bugs introduced in 4.0
 =sys-fs/dosfstools-4.1 **
-
-# CVE-2017-1000117
-=dev-vcs/git-2.14.1
 
 # iproute2 4.13 includes a patch to avoid leaking netns mounts in rkt 
 # https://git.kernel.org/pub/scm/linux/kernel/git/shemminger/iproute2.git/commit/?id=d6a4076b6ba6547d7e52c377a7c58c56eb5ea16e
@@ -70,5 +60,7 @@ dev-util/checkbashisms
 =cross-aarch64-cros-linux-gnu/gcc-7.3.0 ~arm64
 =cross-x86_64-cros-linux-gnu/gcc-7.3.0 ~amd64
 
-# Accept the fixed Intel microcode for Spectre mitigation.
-=sys-firmware/intel-microcode-20180312 ~amd64
+# Force upgrades to work around catalyst problems while upgrading ncurses.
+=app-crypt/gnupg-2.2.7 ~amd64 ~arm64
+=sys-apps/gptfdisk-1.0.3 ~amd64 ~arm64
+=sys-apps/util-linux-2.32 ~amd64 ~arm64

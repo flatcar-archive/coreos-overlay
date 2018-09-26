@@ -7,11 +7,11 @@ CROS_SDK_HOST="cros-sdk-host"
 # Enable our assorted GRUB targets
 GRUB_PLATFORMS="efi-64 pc xen"
 
-# Both x86_64 and i386 targets are required for grub testing
-QEMU_SOFTMMU_TARGETS="x86_64 i386 aarch64"
+# Enable CPU architectures needed by Rust builds
+LLVM_TARGETS="X86"
 
-# For cross build support.
-QEMU_USER_TARGETS="aarch64"
+# Both x86_64 and i386 targets are required for grub testing
+QEMU_SOFTMMU_TARGETS="x86_64 i386"
 
 # Disable ccache in the SDK so it stops randomly breaking catalyst.
 FEATURES="-ccache"

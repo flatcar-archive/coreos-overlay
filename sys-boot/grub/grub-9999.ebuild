@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -10,13 +10,13 @@ GRUB_AUTOGEN=1  # We start from Git, so always autogen.
 if [[ ${PV} == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64 ~x86"
 else
-	CROS_WORKON_COMMIT="84a4fd2f4c35a45b66a6ca4ef455d999f8b05b55"
+	CROS_WORKON_COMMIT="93fb3dac4ae7a97c080d51d951d0e5a3109aaac7"
 	KEYWORDS="amd64 arm64 x86"
 fi
 inherit cros-workon
 
 if [[ -n ${GRUB_AUTOGEN} ]]; then
-	PYTHON_COMPAT=( python{2_7,3_3,3_4,3_5} )
+	PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
 	WANT_LIBTOOL=none
 	inherit autotools python-any-r1
 fi
