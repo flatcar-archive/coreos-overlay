@@ -125,7 +125,7 @@ setup_keys() {
 		x509_extensions = myexts
 
 		[ req_distinguished_name ]
-		O = CoreOS, Inc
+		O = Kinvolk GmbH
 		CN = Module signing key for ${KV_FULL}
 
 		[ myexts ]
