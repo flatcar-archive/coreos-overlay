@@ -34,7 +34,7 @@ src_compile() {
 src_install() {
 	local generatordir=/usr/lib/systemd/system-generators
 	local vendordir=/usr/share/torcx
-	local libcoreosdir=/usr/lib/coreos
+	local libcoreosdir=/usr/lib/flatcar
 
 	# Install generator and userland.
 	exeinto "${generatordir}"
