@@ -8,7 +8,7 @@ ETYPE="sources"
 # Final releases should be versioned L.M.N, even for N == 0
 
 # Only needed for RCs
-K_BASE_VER="4.18"
+K_BASE_VER="4.19"
 
 inherit kernel-2
 EXTRAVERSION="-flatcar"
@@ -38,6 +38,4 @@ RDEPEND+="
 UNIPATCH_LIST="
 	${PATCH_DIR}/z0001-kbuild-derive-relative-path-for-KBUILD_SRC-from-CURD.patch \
 	${PATCH_DIR}/z0002-tools-objtool-Makefile-Don-t-fail-on-fallthrough-wit.patch \
-	${PATCH_DIR}/z0003-4.17.x-won-t-boot-due-to-x86-boot-compressed-64-Hand.patch \
-	${PATCH_DIR}/z0004-Revert-net-increase-fragment-memory-usage-limits.patch \
 "
