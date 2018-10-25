@@ -8,7 +8,8 @@
 : ${COREOS_SOURCE_REVISION:=}
 
 COREOS_SOURCE_VERSION="${PV}${COREOS_SOURCE_REVISION}"
-COREOS_SOURCE_NAME="linux-${PV/_rc/-rc}-flatcar${COREOS_SOURCE_REVISION}"
+COREOS_SOURCE_NAME="linux-${PV/_rc/-rc}-coreos${COREOS_SOURCE_REVISION}"
+FLATCAR_SOURCE_NAME="linux-${PV/_rc/-rc}-flatcar${COREOS_SOURCE_REVISION}"
 
 [[ ${EAPI} != "5" ]] && die "Only EAPI=5 is supported"
 
