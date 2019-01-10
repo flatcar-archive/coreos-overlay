@@ -1,10 +1,7 @@
-#
 # Copyright (c) 2015 CoreOS, Inc.. All rights reserved.
 # Distributed under the terms of the GNU General Public License v2
-# $Header:$
-#
 
-EAPI=5
+EAPI=7
 CROS_WORKON_PROJECT="flatcar-linux/mayday"
 CROS_WORKON_LOCALNAME="mayday"
 CROS_WORKON_REPO="git://github.com"
