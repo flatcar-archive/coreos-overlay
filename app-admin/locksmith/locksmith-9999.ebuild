@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-CROS_WORKON_PROJECT="coreos/locksmith"
+CROS_WORKON_PROJECT="flatcar-linux/locksmith"
 CROS_WORKON_LOCALNAME="locksmith"
 CROS_WORKON_REPO="git://github.com"
 COREOS_GO_PACKAGE="github.com/coreos/locksmith"
@@ -11,7 +11,7 @@ inherit cros-workon systemd coreos-go
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="442c26aa1e571deaa3e1f086f5df07b07a93d1d8" # v0.6.2
+	CROS_WORKON_COMMIT="c1eeae7709f3204038b91ed5c8bea7ba1292fc02" # v0.6.2
 	KEYWORDS="amd64 arm64"
 fi
 

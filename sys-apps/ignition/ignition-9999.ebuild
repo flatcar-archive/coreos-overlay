@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-CROS_WORKON_PROJECT="coreos/ignition"
+CROS_WORKON_PROJECT="flatcar-linux/ignition"
 CROS_WORKON_LOCALNAME="ignition"
 CROS_WORKON_REPO="git://github.com"
 COREOS_GO_PACKAGE="github.com/coreos/ignition"
@@ -11,7 +11,7 @@ inherit coreos-go cros-workon systemd udev
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="9fa8fc37319ab674b33d799969afc5deef2b6a3b" # tag v0.29.1
+	CROS_WORKON_COMMIT="308d7a05213ae66a9317c90c042eec366bba10fb" # tag v0.30.0
 	KEYWORDS="amd64 arm64"
 fi
 
