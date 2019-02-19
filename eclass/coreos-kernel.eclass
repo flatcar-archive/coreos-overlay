@@ -20,8 +20,10 @@ COREOS_SOURCE_VERSION="${PV}${COREOS_SOURCE_REVISION}"
 # that set $COREOS_SOURCE_NAME by default. In the Gentoo world, the ebuild
 # for each new version has a totally new file name. So it's hard to replace
 # a new $COREOS_SOURCE_NAME variable for every new ebuild.
+# $COREOS_SOURCE_NAME should be a name without a revision suffix (e.g. "-r1"),
+# because $KV_FULL would not include such a suffix.
 COREOS_KERNEL_SOURCE_NAME="linux-${PV/_rc/-rc}-coreos${COREOS_SOURCE_REVISION}"
-COREOS_SOURCE_NAME="linux-${PV/_rc/-rc}-flatcar${COREOS_SOURCE_REVISION}"
+COREOS_SOURCE_NAME="linux-${PV/_rc/-rc}-flatcar"
 
 [[ ${EAPI} != "5" ]] && die "Only EAPI=5 is supported"
 
