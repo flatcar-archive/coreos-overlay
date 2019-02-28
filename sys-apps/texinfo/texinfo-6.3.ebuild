@@ -21,7 +21,7 @@ IUSE="nls static"
 RDEPEND="
 	!=app-text/tetex-2*
 	>=sys-libs/ncurses-5.2-r2:0=
-	dev-lang/perl:=
+	>=dev-lang/perl-5.26
 	dev-perl/libintl-perl
 	dev-perl/Unicode-EastAsianWidth
 	dev-perl/Text-Unidecode

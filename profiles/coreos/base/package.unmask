@@ -4,3 +4,4 @@
 
 # masked upstream due to ancientness
 <sys-devel/binutils-2.26
+<=sys-libs/glibc-2.26-r7
