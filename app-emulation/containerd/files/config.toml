@@ -7,7 +7,7 @@ subreaper = true
 # set containerd's OOM score
 oom_score = -999
 # CRI plugin listens on a TCP port by default
-disabled_plugins = ["cri"]
+disabled_plugins = []
 
 # grpc configuration
 [grpc]
@@ -27,3 +27,6 @@ runtime = "runc"
 no_shim = false
 # display shim logs in the containerd daemon's log output
 shim_debug = true
+
+[plugins.cri]
+systemd_cgroup = true
