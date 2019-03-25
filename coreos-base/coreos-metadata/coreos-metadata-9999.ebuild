@@ -3,7 +3,7 @@
 
 EAPI=7
 
-CROS_WORKON_PROJECT="coreos/coreos-metadata"
+CROS_WORKON_PROJECT="flatcar-linux/coreos-metadata"
 CROS_WORKON_LOCALNAME="coreos-metadata"
 CROS_WORKON_REPO="git://github.com"
 
