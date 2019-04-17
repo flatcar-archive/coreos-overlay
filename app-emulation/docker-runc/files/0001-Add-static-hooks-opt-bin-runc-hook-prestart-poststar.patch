@@ -1,0 +1,45 @@
+From ee41e4492974158d92158e32b24f7826850dd9e2 Mon Sep 17 00:00:00 2001
+From: Alban Crequy <alban@kinvolk.io>
+Date: Tue, 12 Mar 2019 17:52:37 +0100
+Subject: [PATCH] Add static hooks
+ /opt/bin/runc-hook-{prestart,poststart,poststop}.sh
+
+---
+ libcontainer/specconv/spec_linux.go | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/libcontainer/specconv/spec_linux.go b/libcontainer/specconv/spec_linux.go
+index f68cac01..63aa1351 100644
+--- a/libcontainer/specconv/spec_linux.go
++++ b/libcontainer/specconv/spec_linux.go
+@@ -806,6 +806,27 @@ func SetupSeccomp(config *specs.LinuxSeccomp) (*configs.Seccomp, error) {
+ 
+ func createHooks(rspec *specs.Spec, config *configs.Config) {
+ 	config.Hooks = &configs.Hooks{}
++
++	extraPrestartCmd := configs.Command{
++		Path: "/bin/sh",
++		Args: []string{"/bin/sh", "-c", "test ! -x /opt/bin/runc-hook-prestart.sh || /opt/bin/runc-hook-prestart.sh"},
++		Dir:  "/",
++	}
++	extraPoststartCmd := configs.Command{
++		Path: "/bin/sh",
++		Args: []string{"/bin/sh", "-c", "test ! -x /opt/bin/runc-hook-poststart.sh || /opt/bin/runc-hook-poststart.sh"},
++		Dir:  "/",
++	}
++	extraPoststopCmd := configs.Command{
++		Path: "/bin/sh",
++		Args: []string{"/bin/sh", "-c", "test ! -x /opt/bin/runc-hook-poststop.sh || /opt/bin/runc-hook-poststop.sh"},
++		Dir:  "/",
++	}
++
++	config.Hooks.Prestart = append(config.Hooks.Prestart, configs.NewCommandHook(extraPrestartCmd))
++	config.Hooks.Poststart = append(config.Hooks.Poststart, configs.NewCommandHook(extraPoststartCmd))
++	config.Hooks.Poststop = append(config.Hooks.Poststop, configs.NewCommandHook(extraPoststopCmd))
++
+ 	if rspec.Hooks != nil {
+ 
+ 		for _, h := range rspec.Hooks.Prestart {
+-- 
+2.20.1
+
