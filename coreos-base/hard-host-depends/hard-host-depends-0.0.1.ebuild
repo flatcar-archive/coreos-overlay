@@ -43,9 +43,8 @@ RDEPEND="${RDEPEND}
 	dev-lang/go:1.6
 	dev-lang/go:1.7
 	dev-lang/go:1.8
-	dev-lang/go:1.9
 	dev-lang/go:1.10
-	dev-lang/go:1.11
+	dev-lang/go:1.12
 	dev-lang/go-bootstrap
 	dev-libs/dbus-glib
 	>=dev-libs/glib-2.26.1
@@ -61,15 +60,11 @@ RDEPEND="${RDEPEND}
 	>=dev-util/gtk-doc-am-1.13
 	>=dev-util/intltool-0.30
 	dev-util/scons
-	dev-vcs/cvs
 	>=dev-vcs/git-1.7.2
-	dev-vcs/mercurial
-	dev-vcs/subversion[-dso]
 	net-misc/google-cloud-sdk
 	sys-apps/usbutils
 	sys-apps/systemd
 	!sys-apps/nih-dbus-tool
-	=sys-devel/automake-1.10*
 	sys-libs/libnih
 	sys-libs/nss-usrfiles
 	sys-power/iasl
