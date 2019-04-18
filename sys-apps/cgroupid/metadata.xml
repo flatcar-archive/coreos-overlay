@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+		cgroupid gives you the cgroup id of a cgroup path.
+	</longdescription>
+	<maintainer type="person">
+		<email>alban@kinvolk.io</email>
+		<name>Alban Crequy</name>
+	</maintainer>
+	<use>
+	</use>
+	<upstream>
+		<remote-id type="github">kinvolk/cgroupid</remote-id>
+	</upstream>
+</pkgmetadata>
