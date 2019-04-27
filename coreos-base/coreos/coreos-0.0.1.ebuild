@@ -104,6 +104,7 @@ RDEPEND="${RDEPEND}
 	app-editors/vim
 	app-emulation/rkt
 	app-emulation/actool
+	app-emulation/cri-o
 	app-misc/ca-certificates
 	app-misc/jq
 	app-shells/bash
@@ -131,6 +132,8 @@ RDEPEND="${RDEPEND}
 	net-misc/socat
 	net-misc/wget
 	net-misc/whois
+	sys-apps/bpftool
+	sys-apps/cgroupid
 	sys-apps/coreutils
 	sys-apps/dbus
 	sys-apps/ethtool
