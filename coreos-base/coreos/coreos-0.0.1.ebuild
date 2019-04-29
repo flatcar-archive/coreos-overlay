@@ -100,6 +100,7 @@ RDEPEND="${RDEPEND}
 	app-arch/unzip
 	app-arch/zip
 	app-crypt/gnupg
+	app-crypt/gpgme
 	app-crypt/tpmpolicy
 	app-editors/vim
 	app-emulation/rkt
@@ -114,6 +115,7 @@ RDEPEND="${RDEPEND}
 	coreos-base/update-ssh-keys
 	coreos-base/update_engine
 	dev-db/etcdctl
+	dev-libs/libgpg-error
 	dev-util/strace
 	dev-vcs/git
 	net-analyzer/nmap
