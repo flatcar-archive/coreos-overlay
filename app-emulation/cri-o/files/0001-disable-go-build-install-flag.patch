@@ -1,0 +1,56 @@
+From 87c5d0564f697c828983f4fea1a51c23cc482c2f Mon Sep 17 00:00:00 2001
+Message-Id: <87c5d0564f697c828983f4fea1a51c23cc482c2f.1556516109.git.dongsu@kinvolk.io>
+From: Dongsu Park <dongsu@kinvolk.io>
+Date: Mon, 29 Apr 2019 07:34:52 +0200
+Subject: [PATCH] disable go-build install flag
+
+---
+ Makefile | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 27753aae..f8acb0fd 100644
+--- a/Makefile
++++ b/Makefile
+@@ -91,16 +91,16 @@ bin/conmon: conmon/config.h
+ 	$(MAKE) -C pause
+ 
+ test/bin2img/bin2img: .gopathok $(wildcard test/bin2img/*.go)
+-	$(GO) build -i $(LDFLAGS) -tags "$(BUILDTAGS) containers_image_ostree_stub" -o $@ $(PROJECT)/test/bin2img
++	$(GO) build $(LDFLAGS) -tags "$(BUILDTAGS) containers_image_ostree_stub" -o $@ $(PROJECT)/test/bin2img
+ 
+ test/copyimg/copyimg: .gopathok $(wildcard test/copyimg/*.go)
+-	$(GO) build -i $(LDFLAGS) -tags "$(BUILDTAGS) containers_image_ostree_stub" -o $@ $(PROJECT)/test/copyimg
++	$(GO) build $(LDFLAGS) -tags "$(BUILDTAGS) containers_image_ostree_stub" -o $@ $(PROJECT)/test/copyimg
+ 
+ test/checkseccomp/checkseccomp: .gopathok $(wildcard test/checkseccomp/*.go)
+-	$(GO) build -i $(LDFLAGS) -tags "$(BUILDTAGS) containers_image_ostree_stub" -o $@ $(PROJECT)/test/checkseccomp
++	$(GO) build $(LDFLAGS) -tags "$(BUILDTAGS) containers_image_ostree_stub" -o $@ $(PROJECT)/test/checkseccomp
+ 
+ bin/crio: .gopathok
+-	$(GO) build -i $(LDFLAGS) -tags "$(BUILDTAGS) containers_image_ostree_stub" -o $@ $(PROJECT)/cmd/crio
++	$(GO) build $(LDFLAGS) -tags "$(BUILDTAGS) containers_image_ostree_stub" -o $@ $(PROJECT)/cmd/crio
+ 
+ crio.conf: bin/crio
+ 	./bin/crio --config="" config --default > crio.conf
+@@ -109,7 +109,7 @@ crio.conf: bin/crio
+ 	@$(GOPATH)/bin/release-tool -n $(release)
+ 
+ conmon/config.h: cmd/crio-config/config.go oci/oci.go
+-	$(GO) build -i $(LDFLAGS) -o bin/crio-config $(PROJECT)/cmd/crio-config
++	$(GO) build $(LDFLAGS) -o bin/crio-config $(PROJECT)/cmd/crio-config
+ 	( cd conmon && $(CURDIR)/bin/crio-config )
+ 
+ clean:
+@@ -140,7 +140,7 @@ bin/crio.cross.%: .gopathok .explicit_phony
+ 	TARGET="$*"; \
+ 	GOOS="$${TARGET%%.*}" \
+ 	GOARCH="$${TARGET##*.}" \
+-	$(GO) build -i $(LDFLAGS) -tags "containers_image_openpgp btrfs_noversion" -o "$@" $(PROJECT)/cmd/crio
++	$(GO) build $(LDFLAGS) -tags "containers_image_openpgp btrfs_noversion" -o "$@" $(PROJECT)/cmd/crio
+ 
+ crioimage:
+ 	$(CONTAINER_RUNTIME) build -t ${CRIO_IMAGE} .
+-- 
+2.21.0
+
