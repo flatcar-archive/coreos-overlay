@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
-inherit savedconfig
+inherit linux-info savedconfig
 
 if [[ ${PV} == 99999999* ]]; then
 	inherit git-r3
