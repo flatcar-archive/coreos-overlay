@@ -134,6 +134,7 @@ RDEPEND="${RDEPEND}
 	net-misc/socat
 	net-misc/wget
 	net-misc/whois
+	net-vpn/wireguard
 	sys-apps/bpftool
 	sys-apps/cgroupid
 	sys-apps/coreutils
