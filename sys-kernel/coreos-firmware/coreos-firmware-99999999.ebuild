@@ -2,6 +2,10 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
+
+# Tell linux-info where to find the kernel source/build
+KERNEL_DIR="${SYSROOT}/usr/src/linux"
+KBUILD_OUTPUT="${SYSROOT}/var/cache/portage/sys-kernel/coreos-kernel"
 inherit linux-info savedconfig
 
 if [[ ${PV} == 99999999* ]]; then
@@ -21,7 +25,9 @@ LICENSE="linux-firmware ( BSD ISC MIT no-source-code ) GPL-2 GPL-2+"
 SLOT="0"
 IUSE="savedconfig"
 
-DEPEND=""
+CDEPEND=">=sys-kernel/coreos-modules-4.6.3-r1:="
+DEPEND="${CDEPEND}
+		sys-kernel/coreos-sources"
 RDEPEND="!savedconfig? (
 		!sys-firmware/alsa-firmware[alsa_cards_ca0132]
 		!sys-firmware/alsa-firmware[alsa_cards_korg1212]
@@ -111,6 +117,7 @@ src_prepare() {
 	find * -not -type d \
 		| sort "${T}/firmware" "${T}/firmware" - \
 		| uniq -u | xargs -r rm
+	find * -type f -name "* *" -exec rm -f {} \;
 
 	default
 
