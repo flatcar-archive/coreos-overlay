@@ -39,6 +39,7 @@ src_prepare() {
 	epatch "${FILESDIR}/0001-Makefile-do-not-install-dependencies-of-target.patch"
 	epatch "${FILESDIR}/0002-${PV}-Fix-setting-selinux-label-for-mqueue-under-userns.patch"
 	epatch "${FILESDIR}/0001-nsenter-clone-proc-self-exe-to-avoid-exposing-host-b_1.12.patch"
+	epatch "${FILESDIR}/0001-Add-static-hooks-opt-bin-runc-hook-prestart-poststar.patch"
 
 	# Work around https://github.com/golang/go/issues/14669
 	# Remove after updating to go1.7
