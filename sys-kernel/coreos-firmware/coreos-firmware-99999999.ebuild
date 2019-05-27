@@ -117,6 +117,7 @@ src_prepare() {
 	find * -not -type d \
 		| sort "${T}/firmware" "${T}/firmware" - \
 		| uniq -u | xargs -r rm
+	find * -type f -name "* *" -exec rm -f {} \;
 
 	default
 
