@@ -3,10 +3,10 @@
 
 EAPI=6
 
-EGIT_COMMIT="42585737f5eb59273e791e47ab1643e10862d67f"
+EGIT_COMMIT="66a9cf7c79b529c0f76546a352c1a4eb04b7721c"
 EGO_PN="github.com/cri-o/${PN}"
 
-inherit golang-vcs-snapshot systemd
+inherit golang-vcs-snapshot
 
 DESCRIPTION="OCI-based implementation of Kubernetes Container Runtime Interface"
 HOMEPAGE="https://cri-o.io/"
@@ -15,7 +15,7 @@ SRC_URI="https://github.com/cri-o/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="amd64"
-IUSE="btrfs +device-mapper ostree seccomp selinux"
+IUSE="btrfs +device-mapper ostree selinux systemd"
 
 COMMON_DEPEND="
 	app-crypt/gpgme:=
@@ -29,8 +29,8 @@ COMMON_DEPEND="
 	btrfs? ( sys-fs/btrfs-progs )
 	device-mapper? ( sys-fs/lvm2:= )
 	ostree? ( dev-util/ostree )
-	seccomp? ( sys-libs/libseccomp:= )
-	selinux? ( sys-libs/libselinux:= )"
+	selinux? ( sys-libs/libselinux:= )
+	systemd? ( sys-apps/systemd:= )"
 DEPEND="${COMMON_DEPEND}"
 RDEPEND="${COMMON_DEPEND}"
 S="${WORKDIR}/${P}/src/${EGO_PN}"
@@ -52,6 +52,12 @@ src_prepare() {
 
 	sed -e 's:/usr/local/bin:/usr/bin:' \
 		-i contrib/systemd/* || die
+
+	if ! use systemd; then
+		sed -e 's| pkg-config --exists libsystemd-journal | false |' \
+			-e 's| pkg-config --exists libsystemd | false |' \
+			-i conmon/Makefile || die
+	fi
 }
 
 src_compile() {
@@ -67,10 +73,6 @@ src_compile() {
 	use ostree || { echo -e "#!/bin/sh\necho containers_image_ostree_stub" > \
 		hack/ostree_tag.sh || die; }
 
-	[[ -f hack/seccomp_tag.sh ]] || die
-	use seccomp || { echo -e "#!/bin/sh\ntrue" > \
-		hack/seccomp_tag.sh || die; }
-
 	[[ -f hack/selinux_tag.sh ]] || die
 	use selinux || { echo -e "#!/bin/sh\ntrue" > \
 		hack/selinux_tag.sh || die; }
@@ -81,14 +83,10 @@ src_compile() {
 }
 
 src_install() {
-	emake DESTDIR="${D}" PREFIX="${D}${EPREFIX}/usr" install.bin
+	emake DESTDIR="${D}" PREFIX="${D}${EPREFIX}/usr" install.bin install.config install.systemd
 
 	keepdir /etc/crio
-	insinto /etc/crio
-	use seccomp && doins seccomp.json
-
-	"${ED}"/usr/bin/crio --config="" config --default > "${T}"/crio.conf.example || die
-	doins   "${T}/crio.conf.example"
+	mv "${ED}/etc/crio/crio.conf"{,.example} || die
 
 	newinitd "${FILESDIR}/crio.initd" crio
 
@@ -103,6 +101,4 @@ src_install() {
 	keepdir /etc/cni/net.d
 	insinto /etc/cni/net.d
 	doins contrib/cni/99-loopback.conf
-
-	systemd_dounit contrib/systemd/*
 }
