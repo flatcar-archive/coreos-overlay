@@ -64,7 +64,7 @@ RDEPEND="
 	>=dev-vcs/git-1.7
 	>=app-arch/xz-utils-4.9
 	dev-libs/libltdl
-	~app-emulation/containerd-1.1.2
+	~app-emulation/containerd-1.1.2-r2
 	~app-emulation/docker-runc-1.0.0_rc5_p22[apparmor?,seccomp?]
 	~app-emulation/docker-proxy-0.8.0_p20180709
 	container-init? ( >=sys-process/tini-0.13.1 )
@@ -276,8 +276,8 @@ src_install() {
 	newinitd contrib/init/openrc/docker.initd docker
 	newconfd contrib/init/openrc/docker.confd docker
 
-	exeinto /usr/lib/coreos
-	# Create /usr/lib/coreos/dockerd for backwards compatibility
+	exeinto /usr/lib/flatcar
+	# Create /usr/lib/flatcar/dockerd for backwards compatibility
 	doexe "${FILESDIR}/dockerd"
 
 	systemd_dounit "${FILESDIR}/docker.service"

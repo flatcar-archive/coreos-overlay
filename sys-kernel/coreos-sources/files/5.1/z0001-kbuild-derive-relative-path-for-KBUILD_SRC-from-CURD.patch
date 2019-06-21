@@ -16,15 +16,15 @@ index b3ba28ff73d5..fcdc5f445cb1 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -143,7 +143,8 @@ $(filter-out _all sub-make $(CURDIR)/Makefile, $(MAKECMDGOALS)) _all: sub-make
- 
  # Invoke a second make in the output directory, passing relevant variables
  sub-make:
--	$(Q)$(MAKE) -C $(KBUILD_OUTPUT) KBUILD_SRC=$(CURDIR) \
-+	$(Q)$(MAKE) -C $(KBUILD_OUTPUT) \
-+	KBUILD_SRC=$(shell realpath --relative-to=$(KBUILD_OUTPUT) $(CURDIR)) \
+ 	$(Q)$(MAKE) \
+-	$(if $(KBUILD_OUTPUT),-C $(KBUILD_OUTPUT) KBUILD_SRC=$(CURDIR)) \
++	$(if $(KBUILD_OUTPUT),-C $(KBUILD_OUTPUT) \
++	KBUILD_SRC=$(shell realpath --relative-to=$(KBUILD_OUTPUT) $(CURDIR))) \
  	-f $(CURDIR)/Makefile $(filter-out _all sub-make,$(MAKECMDGOALS))
  
- # Leave processing to above invocation of make
+ endif # need-sub-make
 -- 
 2.21.0
 

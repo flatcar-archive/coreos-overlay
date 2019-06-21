@@ -33,6 +33,7 @@ RDEPEND="${RDEPEND}
 	app-arch/rpm2targz
 	app-arch/sharutils
 	app-arch/unzip
+	app-crypt/gpgme
 	app-emulation/qemu
 	coreos-base/cros-devutils[cros_host]
 	=dev-lang/python-2*
@@ -49,6 +50,7 @@ RDEPEND="${RDEPEND}
 	dev-libs/dbus-glib
 	>=dev-libs/glib-2.26.1
 	dev-libs/libgcrypt
+	dev-libs/libgpg-error
 	dev-libs/libxslt
 	dev-libs/libyaml
 	dev-libs/protobuf
