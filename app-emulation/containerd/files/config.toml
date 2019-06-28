@@ -29,4 +29,6 @@ no_shim = false
 shim_debug = true
 
 [plugins.cri]
+stream_server_address = "127.0.0.1"
+stream_server_port = "10010"
 systemd_cgroup = true
