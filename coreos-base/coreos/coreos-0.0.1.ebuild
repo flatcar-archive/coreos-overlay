@@ -106,6 +106,7 @@ RDEPEND="${RDEPEND}
 	app-emulation/rkt
 	app-emulation/actool
 	app-emulation/cri-o
+	app-emulation/cri-tools
 	app-misc/ca-certificates
 	app-misc/jq
 	app-shells/bash
