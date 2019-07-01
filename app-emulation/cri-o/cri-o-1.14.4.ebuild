@@ -85,6 +85,9 @@ src_compile() {
 src_install() {
 	emake DESTDIR="${D}" PREFIX="${D}${EPREFIX}/usr" install.bin install.config install.systemd
 
+	sed -e 's:/usr/local/libexec:/usr/libexec:' \
+		-i "${ED}/etc/crio/crio.conf" || die
+
 	keepdir /etc/crio
 	mv "${ED}/etc/crio/crio.conf"{,.example} || die
 
