@@ -75,7 +75,6 @@ RESTRICT="installsources strip"
 S="${WORKDIR}/${P}/src/${COREOS_GO_PACKAGE}"
 
 ENGINE_PATCHES=(
-	"${FILESDIR}/${P}-fix-mount-labels.patch"
 )
 
 # see "contrib/check-config.sh" from upstream's sources
