@@ -40,4 +40,5 @@ UNIPATCH_LIST="
 	${PATCH_DIR}/z0002-tools-objtool-Makefile-Don-t-fail-on-fallthrough-wit.patch \
 	${PATCH_DIR}/z0003-net-netfilter-add-nf_conntrack_ipv4-compat-module-fo.patch \
 	${PATCH_DIR}/z0004-wireguard.patch \
+	${PATCH_DIR}/z0005-ovl-drop-test-for-upperdir-used-as-lowerdir.patch \
 "
