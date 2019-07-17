@@ -1,0 +1,51 @@
+From 78ed546f1383b40ae4999f3b440934a9c7933cb2 Mon Sep 17 00:00:00 2001
+From: Alban Crequy <alban@kinvolk.io>
+Date: Wed, 17 Apr 2019 15:19:30 +0200
+Subject: [PATCH] Add static hooks
+ /opt/bin/runc-hook-{prestart,poststart,poststop}.sh
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This patch is rebased on this version:
+https://github.com/opencontainers/runc/archive/50a19c6ff828c58e5dab13830bd3dacde268afe5.tar.gz
+￼
+---
+ libcontainer/specconv/spec_linux.go | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/libcontainer/specconv/spec_linux.go b/libcontainer/specconv/spec_linux.go
+index 7e12ffd..8d03916 100644
+--- a/libcontainer/specconv/spec_linux.go
++++ b/libcontainer/specconv/spec_linux.go
+@@ -726,6 +726,27 @@ func setupSeccomp(config *specs.Seccomp) (*configs.Seccomp, error) {
+ 
+ func createHooks(rspec *specs.Spec, config *configs.Config) {
+ 	config.Hooks = &configs.Hooks{}
++
++	extraPrestartCmd := configs.Command{
++		Path: "/bin/sh",
++		Args: []string{"/bin/sh", "-c", "test ! -x /opt/bin/runc-hook-prestart.sh || /opt/bin/runc-hook-prestart.sh"},
++		Dir:  "/",
++	}
++	extraPoststartCmd := configs.Command{
++		Path: "/bin/sh",
++		Args: []string{"/bin/sh", "-c", "test ! -x /opt/bin/runc-hook-poststart.sh || /opt/bin/runc-hook-poststart.sh"},
++		Dir:  "/",
++	}
++	extraPoststopCmd := configs.Command{
++		Path: "/bin/sh",
++		Args: []string{"/bin/sh", "-c", "test ! -x /opt/bin/runc-hook-poststop.sh || /opt/bin/runc-hook-poststop.sh"},
++		Dir:  "/",
++	}
++
++	config.Hooks.Prestart = append(config.Hooks.Prestart, configs.NewCommandHook(extraPrestartCmd))
++	config.Hooks.Poststart = append(config.Hooks.Poststart, configs.NewCommandHook(extraPoststartCmd))
++	config.Hooks.Poststop = append(config.Hooks.Poststop, configs.NewCommandHook(extraPoststopCmd))
++
+ 	for _, h := range rspec.Hooks.Prestart {
+ 		cmd := createCommandHook(h)
+ 		config.Hooks.Prestart = append(config.Hooks.Prestart, configs.NewCommandHook(cmd))
+-- 
+2.20.1
+
