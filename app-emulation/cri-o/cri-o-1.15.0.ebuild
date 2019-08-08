@@ -15,7 +15,7 @@ SRC_URI="https://github.com/cri-o/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="amd64"
-IUSE="btrfs +device-mapper ostree selinux systemd"
+IUSE="btrfs +device-mapper selinux systemd"
 
 COMMON_DEPEND="
 	app-crypt/gpgme:=
@@ -28,7 +28,6 @@ COMMON_DEPEND="
 	sys-apps/iproute2
 	btrfs? ( sys-fs/btrfs-progs )
 	device-mapper? ( sys-fs/lvm2:= )
-	ostree? ( dev-util/ostree )
 	selinux? ( sys-libs/libselinux:= )
 	systemd? ( sys-apps/systemd:= )"
 DEPEND="${COMMON_DEPEND}"
@@ -68,10 +67,6 @@ src_compile() {
 	[[ -f hack/libdm_installed.sh ]] || die
 	use device-mapper || { echo -e "#!/bin/sh\necho exclude_graphdriver_devicemapper" > \
 		hack/libdm_installed.sh || die; }
-
-	[[ -f hack/ostree_tag.sh ]] || die
-	use ostree || { echo -e "#!/bin/sh\necho containers_image_ostree_stub" > \
-		hack/ostree_tag.sh || die; }
 
 	[[ -f hack/selinux_tag.sh ]] || die
 	use selinux || { echo -e "#!/bin/sh\ntrue" > \
