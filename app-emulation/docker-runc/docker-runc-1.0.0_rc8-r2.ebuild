@@ -63,7 +63,7 @@ src_compile() {
 	)
 
 	GOPATH="${WORKDIR}/${P}" emake BUILDTAGS="${options[*]}" \
-		VERSION=1.0.0-rc8+dev.docker-18.09 \
+		VERSION=1.0.0-rc8+dev.docker-19.03 \
 		COMMIT="${COMMIT_ID}"
 }
 
