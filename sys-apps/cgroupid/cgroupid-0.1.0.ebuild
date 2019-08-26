@@ -5,8 +5,6 @@
 EAPI=5
 
 GITHUB_URI="github.com/kinvolk/cgroupid"
-COREOS_GO_PACKAGE="${GITHUB_URI}"
-COREOS_GO_VERSION="go1.6"
 COMMIT_ID="04ba49daf6eed3ccfd6d147466b9f012de0227e7"
 VERSION="v0.1.0"
 
