@@ -11,7 +11,7 @@ COREOS_GO_MOD="vendor"
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="bf218e94fa286694d854e6eebf5ab523b18d4abe" # v0.13.0
+	CROS_WORKON_COMMIT="9b9f8d1805b760603fd8ade7873c1dcf345ca57a" # v0.13.0
 	KEYWORDS="amd64 arm64"
 fi
 
