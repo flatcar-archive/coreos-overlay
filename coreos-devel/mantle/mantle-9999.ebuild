@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-CROS_WORKON_PROJECT="coreos/mantle"
+CROS_WORKON_PROJECT="flatcar-linux/mantle"
 CROS_WORKON_LOCALNAME="mantle"
 CROS_WORKON_REPO="git://github.com"
 COREOS_GO_PACKAGE="github.com/coreos/mantle"
@@ -11,7 +11,7 @@ if [[ "${PV}" == 9999 ]]; then
 	COREOS_GO_MOD="vendor"
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="3b545d4fa7e9256ca309d2d7c05debd0680330c3" # v0.12.0
+	CROS_WORKON_COMMIT="3c8139d5ffbf9fe810a4ce0aca7de46b5c458031" # v0.12.0
 	KEYWORDS="amd64 arm64"
 fi
 
