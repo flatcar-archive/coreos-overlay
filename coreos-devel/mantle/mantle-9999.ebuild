@@ -6,12 +6,12 @@ CROS_WORKON_PROJECT="flatcar-linux/mantle"
 CROS_WORKON_LOCALNAME="mantle"
 CROS_WORKON_REPO="git://github.com"
 COREOS_GO_PACKAGE="github.com/coreos/mantle"
+COREOS_GO_MOD="vendor"
 
 if [[ "${PV}" == 9999 ]]; then
-	COREOS_GO_MOD="vendor"
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="e7983fc86fae0b77e24611c6f96da3765dc81d1d" # v0.12.0
+	CROS_WORKON_COMMIT="54ee38b425c6f493232cc75be003bbee50148504" # v0.13.0+54ee38b
 	KEYWORDS="amd64 arm64"
 fi
 
