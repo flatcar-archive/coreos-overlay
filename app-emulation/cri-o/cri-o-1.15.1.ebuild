@@ -3,7 +3,7 @@
 
 EAPI=6
 
-EGIT_COMMIT="66a9cf7c79b529c0f76546a352c1a4eb04b7721c"
+EGIT_COMMIT="f0827bb332854ffcff2f4d9f64d68b8139970b3d"
 EGO_PN="github.com/cri-o/${PN}"
 
 inherit golang-vcs-snapshot
