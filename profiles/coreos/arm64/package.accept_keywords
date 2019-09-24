@@ -61,3 +61,4 @@
 =virtual/libudev-232 ~arm64
 =virtual/libusb-1-r2 ~arm64
 =virtual/perl-File-Path-2.130.0 ~arm64
+=sys-fs/btrfs-progs-4.19.1 ~arm64
