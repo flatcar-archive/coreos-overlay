@@ -61,3 +61,7 @@ dev-util/checkbashisms
 =dev-lang/spidermonkey-1.8.5-r7
 
 =net-firewall/iptables-1.6.2-r2 ~arm64
+
+=sys-firmware/edk2-ovmf-2017_p20180211 ~arm64
+
+=sys-auth/google-oslogin-20180611 **
