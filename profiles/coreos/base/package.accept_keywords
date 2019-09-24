@@ -59,3 +59,5 @@ dev-util/checkbashisms
 # Choose the newer spidermonkey revision to support GCC 8.3.0.
 # https://bugs.gentoo.org/686744
 =dev-lang/spidermonkey-1.8.5-r7
+
+=net-firewall/iptables-1.6.2-r2 ~arm64
