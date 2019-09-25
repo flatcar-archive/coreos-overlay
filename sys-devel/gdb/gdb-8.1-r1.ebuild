@@ -121,6 +121,7 @@ src_configure() {
 		--with-bugurl='https://bugs.gentoo.org/'
 		--with-mpfr
 		--disable-werror
+		--without-libmpfr-prefix
 		# Disable modules that are in a combined binutils/gdb tree. #490566
 		--disable-{binutils,etc,gas,gold,gprof,ld}
 	)
