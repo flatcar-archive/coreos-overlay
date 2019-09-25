@@ -65,3 +65,5 @@ dev-util/checkbashisms
 =sys-firmware/edk2-ovmf-2017_p20180211 ~arm64
 
 =sys-auth/google-oslogin-20180611 **
+
+=sys-process/tini-0.18.0 ~arm64
