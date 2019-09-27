@@ -55,6 +55,7 @@ dev-util/checkbashisms
 =dev-lang/spidermonkey-1.8.5-r7
 
 # required by perl 5.28
+=dev-lang/perl-5.28.9999 **
 =virtual/perl-Data-Dumper-2.170.0 ~amd64
 =virtual/perl-ExtUtils-MakeMaker-7.340.0 ~amd64
 =virtual/perl-Getopt-Long-2.500.0 ~amd64
