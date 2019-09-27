@@ -57,4 +57,5 @@ dev-util/checkbashisms
 # required by perl 5.28
 =virtual/perl-Data-Dumper-2.170.0 ~amd64
 =virtual/perl-ExtUtils-MakeMaker-7.340.0 ~amd64
+=virtual/perl-Getopt-Long-2.500.0 ~amd64
 =virtual/perl-Test-Harness-3.420.0 ~amd64
