@@ -8,7 +8,7 @@ ETYPE="sources"
 # Final releases should be versioned L.M.N, even for N == 0
 
 # Only needed for RCs
-K_BASE_VER="5.2"
+K_BASE_VER="5.3"
 
 inherit kernel-2
 EXTRAVERSION="-flatcar"
@@ -40,5 +40,4 @@ UNIPATCH_LIST="
 	${PATCH_DIR}/z0002-tools-objtool-Makefile-Don-t-fail-on-fallthrough-wit.patch \
 	${PATCH_DIR}/z0003-net-netfilter-add-nf_conntrack_ipv4-compat-module-fo.patch \
 	${PATCH_DIR}/z0004-wireguard.patch \
-	${PATCH_DIR}/z0005-ovl-drop-test-for-upperdir-used-as-lowerdir.patch \
 "
