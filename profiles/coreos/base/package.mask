@@ -18,3 +18,9 @@
 # Since version 2, it tries to write liblto symlinks with absolute paths that
 # don't work when building for the board root directories.
 >=sys-devel/gcc-config-2
+
+# Disable perl 5.26 or older, as well as 5.30 or newer to avoid slot conflicts.
+<dev-lang/perl-5.28
+>=dev-lang/perl-5.30.0
+>=virtual/perl-Data-Dumper-2.174.0
+>=virtual/perl-File-Spec-3.780.0
