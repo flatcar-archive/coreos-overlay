@@ -168,7 +168,7 @@ src_configure() {
 		[build]
 		build = "${rust_target}"
 		host = ["${rust_target}"]
-		target = [${rust_targets}]
+		target = [${rust_targets}, "aarch64-unknown-linux-gnu"]
 		cargo = "${rust_stage0_root}/bin/cargo"
 		rustc = "${rust_stage0_root}/bin/rustc"
 		docs = $(toml_usex doc)
@@ -215,6 +215,16 @@ src_configure() {
 			EOF
 		fi
 	done
+	printf '#!/bin/sh\naarch64-cros-linux-gnu-gcc --sysroot=/build/arm64-usr "$@"' > /tmp/cc.sh
+	printf '#!/bin/sh\naarch64-cros-linux-gnu-g++ --sysroot=/build/arm64-usr "$@"' > /tmp/cxx.sh
+	chmod +x /tmp/cc.sh /tmp/cxx.sh
+	cat <<- EOF >> "${S}"/config.toml
+		[target.aarch64-unknown-linux-gnu]
+		cc = "/tmp/cc.sh"
+		cxx = "/tmp/cxx.sh"
+		linker = "/tmp/cc.sh"
+		ar = "aarch64-cros-linux-gnu-ar"
+	EOF
 
 	if use wasm; then
 		cat <<- EOF >> "${S}"/config.toml
