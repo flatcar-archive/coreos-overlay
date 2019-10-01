@@ -17,11 +17,6 @@ inherit toolchain-funcs
 
 EXPORT_FUNCTIONS src_unpack
 
-[[ ${CATEGORY}/${PN} != dev-libs/rustlib ]] && DEPEND="|| (
-	dev-libs/rustlib:=
-	dev-util/cargo
-)"
-
 # @FUNCTION: coreos-cargo_src_unpack
 # @DESCRIPTION:
 # This amends the src_unpack from cargo.eclass to add support for Rust
