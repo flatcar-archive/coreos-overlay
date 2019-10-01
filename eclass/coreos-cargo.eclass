@@ -70,7 +70,7 @@ coreos-cargo_src_unpack() {
 	rustc=${1:?Missing rustc command}
 	shift
 	xflags=()
-	[ "x$*" = "x${*#--target}" ] || xflags=( --sysroot="${ROOT:-/}usr" )
+	# rustlib is part of host rustc now, so no: [ "x$*" = "x${*#--target}" ] || xflags=( --sysroot="${ROOT:-/}usr" )
 	exec "${rustc}" "${xflags[@]}" "$@"
 	EOF
 
