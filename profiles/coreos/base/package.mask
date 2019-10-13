@@ -19,8 +19,11 @@
 # don't work when building for the board root directories.
 >=sys-devel/gcc-config-2
 
-# Disable perl 5.26 or older, as well as 5.30 or newer to avoid slot conflicts.
-<dev-lang/perl-5.28
->=dev-lang/perl-5.30.0
->=virtual/perl-Data-Dumper-2.174.0
->=virtual/perl-File-Spec-3.780.0
+# required by perl 5.26.1
+>=dev-lang/perl-5.26.9999
+>=virtual/perl-Data-Dumper-2.170.0
+>=virtual/perl-ExtUtils-MakeMaker-7.340.0
+>=virtual/perl-File-Path-2.150.0
+>=virtual/perl-File-Spec-3.740.0
+>=virtual/perl-Getopt-Long-2.500.0
+>=virtual/perl-Test-Harness-3.420.0
