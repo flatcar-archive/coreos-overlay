@@ -15,6 +15,5 @@ dev-go/godep ~amd64
 dev-lang/perl ~amd64
 virtual/perl-Data-Dumper ~amd64
 virtual/perl-ExtUtils-FileMaker ~amd64
-virtual/perl-File-Spec ~amd64
 virtual/perl-Getopt-Long ~amd64
 virtual/perl-Test-Harness ~amd64
