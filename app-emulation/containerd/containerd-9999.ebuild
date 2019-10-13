@@ -5,7 +5,7 @@ EAPI=6
 
 GITHUB_URI="github.com/containerd/containerd"
 COREOS_GO_PACKAGE="${GITHUB_URI}"
-COREOS_GO_VERSION="go1.10"
+COREOS_GO_VERSION="go1.12"
 
 if [[ ${PV} == *9999 ]]; then
 	EGIT_REPO_URI="https://${GITHUB_URI}.git"
@@ -13,7 +13,7 @@ if [[ ${PV} == *9999 ]]; then
 else
 	MY_PV="${PV/_rc/-rc.}"
 	EGIT_COMMIT="v${MY_PV}"
-	CONTAINERD_COMMIT="468a545b9edcd5932818eb9de8e72413e616e86e"
+	CONTAINERD_COMMIT="a4bc1d432a2c33aa2eed37f338dceabb93641310"
 	SRC_URI="https://${GITHUB_URI}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="amd64 arm64"
 	inherit vcs-snapshot
@@ -29,7 +29,7 @@ SLOT="0"
 IUSE="+btrfs hardened"
 
 DEPEND="btrfs? ( sys-fs/btrfs-progs )"
-RDEPEND="~app-emulation/docker-runc-1.0.0_rc5_p22
+RDEPEND="~app-emulation/docker-runc-1.0.0_rc8-r2
 	sys-libs/libseccomp"
 
 S=${WORKDIR}/${P}/src/${COREOS_GO_PACKAGE}
