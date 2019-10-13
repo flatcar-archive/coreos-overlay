@@ -12,6 +12,11 @@ virtual/rust ~amd64
 dev-go/glide ~amd64
 dev-go/godep ~amd64
 
+=dev-lang/perl-5.26.1-r1 ~amd64
+=dev-lang/perl-5.26.1-r2 ~amd64
+=dev-lang/perl-5.26.9999 **
+=dev-lang/perl-5.28.0 ~amd64
+
 virtual/perl-Data-Dumper ~amd64
 virtual/perl-ExtUtils-FileMaker ~amd64
 virtual/perl-Test-Harness ~amd64

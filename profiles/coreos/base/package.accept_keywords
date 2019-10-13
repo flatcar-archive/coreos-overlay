@@ -54,6 +54,12 @@ dev-util/checkbashisms
 # https://bugs.gentoo.org/686744
 =dev-lang/spidermonkey-1.8.5-r7
 
+# required by perl-File-Spec-3.670.0
+=dev-lang/perl-5.26.1-r1 ~amd64
+=dev-lang/perl-5.26.1-r2 ~amd64
+=dev-lang/perl-5.26.9999 **
+=dev-lang/perl-5.28.0 ~amd64
+
 # required by perl 5.28
 =virtual/perl-Data-Dumper-2.170.0 ~amd64
 =virtual/perl-ExtUtils-MakeMaker-7.340.0 ~amd64
