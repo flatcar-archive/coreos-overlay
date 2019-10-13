@@ -83,6 +83,9 @@ src_install() {
 	sed -e 's:/usr/local/libexec:/usr/libexec:' \
 		-i "${ED}/etc/crio/crio.conf" || die
 
+	sed -e 's:/usr/local/libexec:/usr/libexec:' \
+		-i "${ED}/usr/lib/systemd/system/crio-wipe.service" || die
+
 	keepdir /etc/crio
 	mv "${ED}/etc/crio/crio.conf"{,.example} || die
 
