@@ -10,7 +10,7 @@ COREOS_GO_PACKAGE="github.com/coreos/torcx"
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="c33a93e8c5e63114fce9569e45a04bfbcac7eb75" # v0.2.0
+	CROS_WORKON_COMMIT="b0cc65abc3830e04c0c124479c0de185958daa5f" # v0.2.0
 	KEYWORDS="amd64 arm64"
 fi
 
