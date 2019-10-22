@@ -10,7 +10,7 @@ GRUB_AUTOGEN=1  # We start from Git, so always autogen.
 if [[ ${PV} == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64 ~x86"
 else
-	CROS_WORKON_COMMIT="c6b9a0af3d7483d5b5c5f79caf7ced64298bd4ac"
+	CROS_WORKON_COMMIT="e471f9344eb332208cfaca9b3b8298b95a79af6c"
 	KEYWORDS="amd64 arm64 x86"
 fi
 inherit cros-workon
