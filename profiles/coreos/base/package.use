@@ -103,3 +103,5 @@ sys-firmware/edk2-ovmf -binary
 
 # Disable zstd to avoid adding it to prod images until something needs it
 sys-fs/btrfs-progs -zstd
+
+>=dev-lang/python-2.7.15 sqlite
