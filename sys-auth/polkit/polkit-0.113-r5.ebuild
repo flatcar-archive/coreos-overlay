@@ -66,7 +66,7 @@ src_prepare() {
 	sed -i -e 's|unix-group:wheel|unix-user:0|' src/polkitbackend/*-default.rules || die #401513
 	epatch ${FILESDIR}/polkit-0.113-gir-cross-compile.patch
 	epatch ${FILESDIR}/polkit-0.113-allow-negative-uids-gids.patch
-	epatch ${FILESDIR}/polkit-0.113-allow-uid-of-1-for-a-PolkitUnixProcess.patch
+	epatch ${FILESDIR}/polkit-0.113-fix-CVE-2018-19788-allow-uid-of-1-for-a-PolkitUnixProcess.patch
 	epatch ${FILESDIR}/polkit-0.113-fix-CVE-2018-1116-Trusting-client-supplied-UID.patch
 }
 
