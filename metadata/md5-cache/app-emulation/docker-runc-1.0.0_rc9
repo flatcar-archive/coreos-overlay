@@ -3,7 +3,7 @@ DEPEND=dev-lang/go:1.13=
 DESCRIPTION=runc container cli tools (docker fork)
 EAPI=6
 HOMEPAGE=http://runc.io
-IUSE=ambient apparmor hardened +seccomp selinux +go_version_go1_10
+IUSE=ambient apparmor hardened +seccomp selinux +go_version_go1_13
 KEYWORDS=amd64 arm64
 LICENSE=Apache-2.0
 RDEPEND=apparmor? ( sys-libs/libapparmor ) seccomp? ( sys-libs/libseccomp ) !app-emulation/runc
