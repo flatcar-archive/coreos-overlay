@@ -9,6 +9,7 @@ Requires=containerd.service docker.socket
 Type=notify
 EnvironmentFile=-/run/flannel/flannel_docker_opts.env
 Environment=DOCKER_SELINUX=--selinux-enabled=true
+Environment=DOCKER_OPTS=--exec-opt=native.cgroupdriver=systemd
 
 # the default is not to use systemd for cgroups because the delegate issues still
 # exists and systemd currently does not support the cgroup feature set required

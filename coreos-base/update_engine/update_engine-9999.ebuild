@@ -9,7 +9,7 @@ AUTOTOOLS_AUTORECONF=1
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 else
-	CROS_WORKON_COMMIT="bfb8ca9184049d40d2f75d1bb67f686d99a527c0" # v0.4.10
+	CROS_WORKON_COMMIT="ccdca5049cf7b65370369486ae8b822b6ce2a416" # flatcar-master
 	KEYWORDS="amd64 arm64"
 fi
 
