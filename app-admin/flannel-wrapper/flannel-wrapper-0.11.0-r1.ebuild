@@ -17,7 +17,6 @@ IUSE=""
 
 RDEPEND="
 	!app-admin/flannel
-	>=app-emulation/rkt-1.9.1[rkt_stage1_fly]
 "
 
 S="$WORKDIR"
