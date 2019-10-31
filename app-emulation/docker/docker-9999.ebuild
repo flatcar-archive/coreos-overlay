@@ -19,7 +19,7 @@ else
 	else
 		MY_PV="$PV-ce"
 	fi
-	DOCKER_GITCOMMIT="6a30dfc" # v19.03.2
+	DOCKER_GITCOMMIT="9013bf5" # v19.03.4
 	SRC_URI="https://${COREOS_GO_PACKAGE}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="amd64 arm64"
 	[ "$DOCKER_GITCOMMIT" ] || die "DOCKER_GITCOMMIT must be added manually for each bump!"
@@ -64,7 +64,7 @@ RDEPEND="
 	>=dev-vcs/git-1.7
 	>=app-arch/xz-utils-4.9
 	dev-libs/libltdl
-	~app-emulation/containerd-1.2.8
+	~app-emulation/containerd-1.3.0
 	~app-emulation/docker-runc-1.0.0_rc9[apparmor?,seccomp?]
 	~app-emulation/docker-proxy-0.8.0_p20180709
 	container-init? ( >=sys-process/tini-0.13.1 )
@@ -270,7 +270,7 @@ src_install() {
 	use container-init && dosym tini /usr/bin/docker-init
 
 	pushd components/engine || die
-	newbin "$(readlink -f bundles/latest/dynbinary-daemon/dockerd)" dockerd
+	newbin "$(readlink -f bundles/dynbinary-daemon/dockerd)" dockerd
 
 	newinitd contrib/init/openrc/docker.initd docker
 	newconfd contrib/init/openrc/docker.confd docker
