@@ -28,7 +28,6 @@ RDEPEND="!<coreos-base/coreos-init-0.0.1-r152"
 # sed -n 's/^"checksum \([^ ]*\) \([^ ]*\) .*/\1-\2/p' Cargo.lock
 CRATES="
 ansi_term-0.11.0
-arrayref-0.3.5
 atty-0.2.11
 base64-0.10.1
 bitflags-1.0.4
