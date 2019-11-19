@@ -74,6 +74,7 @@ exec ${DOCKER} ${DOCKER_GLOBAL_ARGS} \
 	--mount type=bind,bind-propagation=rprivate,source=/sys,target=/sys \
 	--mount type=bind,bind-propagation=rprivate,source=/lib/modules,target=/lib/modules,readonly \
 	--mount type=bind,bind-propagation=rprivate,source=/etc/machine-id,target=/etc/machine-id,readonly \
+	--mount type=bind,bind-propagation=rprivate,source=/dev/kmsg,target=/dev/kmsg \
 	${KUBELET_IMAGE} \
 		${KUBELET_IMAGE_ARGS} \
 		"$@"
