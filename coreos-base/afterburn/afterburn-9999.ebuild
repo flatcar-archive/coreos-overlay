@@ -1,7 +1,7 @@
 # Copyright (c) 2017 CoreOS, Inc.. All rights reserved.
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=6
 
 CROS_WORKON_PROJECT="coreos/afterburn"
 CROS_WORKON_LOCALNAME="afterburn"
@@ -10,11 +10,11 @@ CROS_WORKON_REPO="git://github.com"
 if [[ ${PV} == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="d5de619f19e3f4ad20a9d2e5803ba0353618f00c" # v4.0.0
+	CROS_WORKON_COMMIT="56549117e7ac1941e41ff0274da6950617377fff" # flatcar-master
 	KEYWORDS="amd64 arm64"
 fi
 
-inherit cargo cros-workon systemd
+inherit coreos-cargo cros-workon systemd
 
 DESCRIPTION="A tool for collecting instance metadata from various providers"
 HOMEPAGE="https://github.com/coreos/afterburn"
@@ -235,7 +235,7 @@ SRC_URI="$(cargo_crate_uris ${CRATES})"
 
 src_unpack() {
 	cros-workon_src_unpack "$@"
-	cargo_src_unpack "$@"
+	coreos-cargo_src_unpack "$@"
 }
 
 src_prepare() {
