@@ -220,14 +220,34 @@ src_configure() {
 		fi
 	done
 	if [ -f /usr/bin/aarch64-cros-linux-gnu-gcc ]; then
-		printf '#!/bin/sh\naarch64-cros-linux-gnu-gcc --sysroot=/usr/aarch64-cros-linux-gnu "$@"' > /tmp/cc.sh
-		printf '#!/bin/sh\naarch64-cros-linux-gnu-g++ --sysroot=/usr/aarch64-cros-linux-gnu "$@"' > /tmp/cxx.sh
-		chmod +x /tmp/cc.sh /tmp/cxx.sh
+		cat <<- 'EOF' > "${S}/cc.sh"
+			#!/bin/bash
+			args=("$@")
+			filtered=()
+			for i in "${args[@]}"; do
+			  if [ "$i" != "-mindirect-branch-register" ] && [ "$i" != "-mindirect-branch=thunk" ]; then
+			    filtered+=("$i")
+			  fi
+			done
+			aarch64-cros-linux-gnu-gcc --sysroot=/usr/aarch64-cros-linux-gnu "${filtered[@]}"
+		EOF
+		cat <<- 'EOF' > "${S}/cxx.sh"
+			#!/bin/bash
+			args=("$@")
+			filtered=()
+			for i in "${args[@]}"; do
+			  if [ "$i" != "-mindirect-branch-register" ] && [ "$i" != "-mindirect-branch=thunk" ]; then
+			    filtered+=("$i")
+			  fi
+			done
+			aarch64-cros-linux-gnu-g++ --sysroot=/usr/aarch64-cros-linux-gnu "${filtered[@]}"
+		EOF
+		chmod +x "${S}/cc.sh" "${S}/cxx.sh"
 		cat <<- EOF >> "${S}"/config.toml
 			[target.aarch64-unknown-linux-gnu]
-			cc = "/tmp/cc.sh"
-			cxx = "/tmp/cxx.sh"
-			linker = "/tmp/cc.sh"
+			cc = "${S}/cc.sh"
+			cxx = "${S}/cxx.sh"
+			linker = "${S}/cc.sh"
 			ar = "aarch64-cros-linux-gnu-ar"
 		EOF
 	fi
