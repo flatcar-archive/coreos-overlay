@@ -75,6 +75,7 @@ RESTRICT="installsources strip"
 S="${WORKDIR}/${P}/src/${COREOS_GO_PACKAGE}"
 
 ENGINE_PATCHES=(
+	${FILESDIR}/0001-components-engine-fix-name-of-gcc-binary-for-aarch64.patch
 )
 
 # see "contrib/check-config.sh" from upstream's sources
