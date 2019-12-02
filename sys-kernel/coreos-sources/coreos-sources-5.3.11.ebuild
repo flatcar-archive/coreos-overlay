@@ -24,7 +24,7 @@ else
 	PATCH_DIR="${FILESDIR}/${KV_MAJOR}.${KV_MINOR}"
 fi
 
-KEYWORDS="amd64"
+KEYWORDS="amd64 arm64"
 IUSE=""
 RDEPEND+="
 	sys-devel/bison
