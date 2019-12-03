@@ -93,3 +93,6 @@ dev-util/checkbashisms
 =dev-lang/rust-1.44.1 ~amd64 ~arm64
 
 =sys-fs/cryptsetup-2.0.3 ~amd64
+
+=sys-libs/libsepol-2.4 **
+=sys-libs/libselinux-2.4 **
