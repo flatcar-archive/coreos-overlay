@@ -65,13 +65,14 @@ IUSE="selinux"
 
 RDEPEND=">=sys-apps/baselayout-3.0.0"
 
-# Optionally enable SELinux and pull in policy for containers
+# Optionally enable SELinux for dbus and systemd but install packages and pull in policy for containers
 RDEPEND="${RDEPEND}
 	sys-apps/dbus[selinux?]
 	sys-apps/systemd[selinux?]
-	selinux? (
-		sec-policy/selinux-virt
-	)"
+	sec-policy/selinux-virt
+	sec-policy/selinux-base
+	sec-policy/selinux-base-policy
+"
 
 # Only applicable or available on amd64
 RDEPEND="${RDEPEND}
