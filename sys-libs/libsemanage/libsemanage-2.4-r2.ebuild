@@ -78,6 +78,7 @@ multilib_src_compile() {
 		AR="$(tc-getAR)" \
 		CC="$(tc-getCC)" \
 		LIBDIR="${EPREFIX}/usr/$(get_libdir)" \
+		PREFIX="${EPREFIX}" \
 		all
 
 	if multilib_is_native_abi && use python; then
