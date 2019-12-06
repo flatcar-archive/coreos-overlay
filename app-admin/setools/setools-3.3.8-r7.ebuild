@@ -53,6 +53,7 @@ pkg_setup() {
 
 src_prepare() {
 	epatch "${FILESDIR}/support-cross-build.patch"
+	epatch "${FILESDIR}/setools-configure-ac.patch"
 
 	EPATCH_MULTI_MSG="Applying various (Gentoo) setool fixes... " \
 	EPATCH_SUFFIX="patch" \
@@ -88,6 +89,7 @@ src_configure() {
 		--disable-selinux-check \
 		--disable-bwidget-check \
 		--with-sepol-devel=${ROOT}/usr \
+		--with-selinux-devel=${ROOT}/usr \
 		$(use_enable python swig-python) \
 		$(use_enable java swig-java) \
 		$(use_enable X swig-tcl) \
