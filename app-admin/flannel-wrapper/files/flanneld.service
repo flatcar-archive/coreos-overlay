@@ -5,23 +5,23 @@ After=etcd.service etcd2.service etcd-member.service
 Requires=flannel-docker-opts.service
 
 [Service]
-Type=notify
+Type=simple
 Restart=always
 RestartSec=10s
 TimeoutStartSec=300
 LimitNOFILE=40000
 LimitNPROC=1048576
 
+Environment="DOCKER_RUN_ARGS=--name=flanneld-docker"
 Environment="FLANNEL_IMAGE_TAG=@FLANNEL_IMAGE_TAG@"
 Environment="FLANNEL_OPTS=--ip-masq=true"
-Environment="RKT_RUN_ARGS=--uuid-file-save=/var/lib/flatcar/flannel-wrapper.uuid"
 EnvironmentFile=-/run/flannel/options.env
 
 ExecStartPre=/sbin/modprobe ip_tables
 ExecStartPre=/usr/bin/mkdir --parents /var/lib/flatcar /run/flannel
-ExecStartPre=-/usr/bin/rkt rm --uuid-file=/var/lib/flatcar/flannel-wrapper.uuid
+ExecStartPre=-/usr/bin/docker rm --force flanneld-docker
 ExecStart=/usr/lib/flatcar/flannel-wrapper $FLANNEL_OPTS
-ExecStop=-/usr/bin/rkt stop --uuid-file=/var/lib/flatcar/flannel-wrapper.uuid
+ExecStop=-/usr/bin/docker stop flanneld-docker
 
 [Install]
 WantedBy=multi-user.target

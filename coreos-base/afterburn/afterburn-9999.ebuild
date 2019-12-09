@@ -3,7 +3,7 @@
 
 EAPI=6
 
-CROS_WORKON_PROJECT="coreos/afterburn"
+CROS_WORKON_PROJECT="flatcar-linux/afterburn"
 CROS_WORKON_LOCALNAME="afterburn"
 CROS_WORKON_REPO="git://github.com"
 

@@ -60,6 +60,17 @@ dev-util/checkbashisms
 # https://bugs.gentoo.org/686744
 =dev-lang/spidermonkey-1.8.5-r7
 
+# required by perl-File-Spec-3.670.0
+=dev-lang/perl-5.26.1-r1 ~amd64
+=dev-lang/perl-5.26.1-r2 ~amd64
+=dev-lang/perl-5.26.9999 **
+=dev-lang/perl-5.28.0 ~amd64
+
+# required by perl 5.28
+=virtual/perl-Data-Dumper-2.170.0 ~amd64
+=virtual/perl-ExtUtils-MakeMaker-7.340.0 ~amd64
+=virtual/perl-Test-Harness-3.420.0 ~amd64
+
 =net-firewall/iptables-1.6.2-r2 ~arm64
 
 =sys-firmware/edk2-ovmf-2017_p20180211 ~arm64
@@ -67,6 +78,3 @@ dev-util/checkbashisms
 =sys-auth/google-oslogin-20180611 **
 
 =sys-process/tini-0.18.0 ~arm64
-
-=sys-libs/libsepol-2.4 **
-=sys-libs/libselinux-2.4 **
