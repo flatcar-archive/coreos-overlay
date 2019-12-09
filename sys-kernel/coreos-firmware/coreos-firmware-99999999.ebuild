@@ -13,7 +13,7 @@ if [[ ${PV} == 99999999* ]]; then
 	SRC_URI=""
 	EGIT_REPO_URI="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
 else
-	GIT_COMMIT="7ae3a09dcc7581da3fcc6c578429b89e2764a684"
+	GIT_COMMIT="03dcc2219a339ca826f8966a9005d74dd88c8b26"
 	SRC_URI="https://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-${GIT_COMMIT}.tar.gz -> linux-firmware-${PV}.tar.gz"
 	KEYWORDS="alpha amd64 arm arm64 hppa ia64 mips ppc ppc64 s390 sh sparc x86"
 fi
@@ -81,6 +81,14 @@ src_unpack() {
 		default
 		# rename directory from git snapshot tarball
 		mv linux-firmware-*/ linux-firmware-${PV} || die
+
+		# upstream linux-firmware tarball does not create symlinks for
+		# cxgb4 firmware files, but "modinfo cxgb4.ko" shows it requires
+		# t?fw.bin files. So we need to create the symlinks to avoid
+		# failures at the firmware scanning stage.
+		ln -sfn t4fw-1.24.3.0.bin linux-firmware-${PV}/cxgb4/t4fw.bin
+		ln -sfn t5fw-1.24.3.0.bin linux-firmware-${PV}/cxgb4/t5fw.bin
+		ln -sfn t6fw-1.24.3.0.bin linux-firmware-${PV}/cxgb4/t6fw.bin
 	fi
 }
 
