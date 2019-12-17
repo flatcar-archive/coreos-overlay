@@ -11,6 +11,7 @@ ETYPE="sources"
 K_BASE_VER="4.19"
 
 inherit kernel-2
+EXTRAVERSION="-flatcar"
 detect_version
 
 DESCRIPTION="Full sources for the CoreOS Linux kernel"
@@ -23,7 +24,7 @@ else
 	PATCH_DIR="${FILESDIR}/${KV_MAJOR}.${KV_MINOR}"
 fi
 
-KEYWORDS="amd64"
+KEYWORDS="amd64 arm64"
 IUSE=""
 
 # XXX: Note we must prefix the patch filenames with "z" to ensure they are
