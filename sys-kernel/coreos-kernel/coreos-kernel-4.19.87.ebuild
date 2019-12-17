@@ -6,7 +6,7 @@ COREOS_SOURCE_REVISION=""
 inherit coreos-kernel
 
 DESCRIPTION="CoreOS Linux kernel"
-KEYWORDS="amd64"
+KEYWORDS="amd64 arm64"
 
 RDEPEND="=sys-kernel/coreos-modules-${PVR}"
 DEPEND="${RDEPEND}
