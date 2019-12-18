@@ -17,7 +17,7 @@ fi
 inherit coreos-cargo cros-workon systemd
 
 DESCRIPTION="A tool for collecting instance metadata from various providers"
-HOMEPAGE="https://github.com/coreos/afterburn"
+HOMEPAGE="https://github.com/flatcar-linux/afterburn"
 LICENSE="Apache-2.0"
 SLOT="0"
 RDEPEND="!coreos-base/coreos-metadata"

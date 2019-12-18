@@ -1,5 +1,5 @@
 #!/bin/bash
-# Wrapper for launching kubelet via docker.
+# Wrapper for launching kubelet via rkt-fly.
 #
 # Make sure to set KUBELET_IMAGE_TAG to an image tag published here:
 # https://quay.io/repository/coreos/hyperkube?tab=tags Alternatively,
@@ -31,48 +31,59 @@ if [[ -n "${KUBELET_VERSION}" ]]; then
 fi
 
 if [[ -n "${KUBELET_ACI}" ]]; then
-	echo KUBELET_ACI environment variable is deprecated. This script uses Docker now, please use KUBELET_IMAGE_URL instead and pass a Docker image name
+	echo KUBELET_ACI environment variable is deprecated, please use the KUBELET_IMAGE_URL instead
 fi
 
 if [[ -n "${RKT_OPTS}" ]]; then
-	echo RKT_OPTS environment variable is deprecated, this script uses Docker now, please use DOCKER_RUN_ARGS instead and pass Docker options
-fi
-
-if [[ -n "${RKT_RUN_ARGS}" ]]; then
-	echo RKT_RUN_ARGS environment variable is deprecated, this script uses Docker now, please use DOCKER_RUN_ARGS instead and pass Docker options
+	echo RKT_OPTS environment variable is deprecated, please use the RKT_RUN_ARGS instead
 fi
 
 KUBELET_IMAGE_TAG="${KUBELET_IMAGE_TAG:-${KUBELET_VERSION}}"
 
 require_ev_one KUBELET_IMAGE KUBELET_IMAGE_TAG
 
-KUBELET_IMAGE_URL="${KUBELET_IMAGE_URL:-${KUBELET_ACI:-gcr.io/google-containers/hyperkube}}"
+KUBELET_IMAGE_URL="${KUBELET_IMAGE_URL:-${KUBELET_ACI:-quay.io/coreos/hyperkube}}"
 KUBELET_IMAGE="${KUBELET_IMAGE:-${KUBELET_IMAGE_URL}:${KUBELET_IMAGE_TAG}}"
 
-DOCKER_RUN_ARGS="${DOCKER_RUN_ARGS:---cap-add SYS_ADMIN --security-opt label:disable}"
-DOCKER_RUN_ARGS="${DOCKER_RUN_ARGS} ${RKT_OPTS}"
+RKT_RUN_ARGS="${RKT_RUN_ARGS} ${RKT_OPTS}"
+
+if [[ "${KUBELET_IMAGE%%/*}" == "quay.io" ]]; then
+	RKT_RUN_ARGS="${RKT_RUN_ARGS} --trust-keys-from-https"
+fi
 
 mkdir --parents /etc/kubernetes
 mkdir --parents /var/lib/docker
 mkdir --parents /var/lib/kubelet
 mkdir --parents /run/kubelet
 
-DOCKER="${DOCKER:-/usr/bin/docker}"
-KUBELET_IMAGE_ARGS=${KUBELET_IMAGE_ARGS:-/kubelet}
+RKT="${RKT:-/usr/bin/rkt}"
+RKT_STAGE1_ARG="${RKT_STAGE1_ARG:---stage1-from-dir=stage1-fly.aci}"
+KUBELET_IMAGE_ARGS=${KUBELET_IMAGE_ARGS:---exec=/kubelet}
 set -x
-exec ${DOCKER} ${DOCKER_GLOBAL_ARGS} \
-	run ${DOCKER_RUN_ARGS} \
-	--mount type=bind,bind-propagation=rprivate,source=/etc/kubernetes,target=/etc/kubernetes \
-	--mount type=bind,bind-propagation=rprivate,source=/etc/ssl/certs,target=/etc/ssl/certs,readonly \
-	--mount type=bind,bind-propagation=rprivate,source=/usr/share/ca-certificates,target=/usr/share/ca-certificates,readonly\
-	--mount type=bind,bind-propagation=rslave,source=/var/lib/docker,target=/var/lib/docker \
-	--mount type=bind,bind-propagation=shared,source=/var/lib/kubelet,target=/var/lib/kubelet \
-	--mount type=bind,bind-propagation=rprivate,source=/var/log,target=/var/log \
-	--mount type=bind,bind-propagation=rprivate,source=/usr/lib/os-release,target=/usr/lib/os-release,readonly \
-	--mount type=bind,bind-propagation=rprivate,source=/run,target=/run \
-	--mount type=bind,bind-propagation=rprivate,source=/sys,target=/sys \
-	--mount type=bind,bind-propagation=rprivate,source=/lib/modules,target=/lib/modules,readonly \
-	--mount type=bind,bind-propagation=rprivate,source=/etc/machine-id,target=/etc/machine-id,readonly \
+exec ${RKT} ${RKT_GLOBAL_ARGS} \
+	run ${RKT_RUN_ARGS} \
+	--volume coreos-etc-kubernetes,kind=host,source=/etc/kubernetes,readOnly=false \
+	--volume coreos-etc-ssl-certs,kind=host,source=/etc/ssl/certs,readOnly=true \
+	--volume coreos-usr-share-certs,kind=host,source=/usr/share/ca-certificates,readOnly=true \
+	--volume coreos-var-lib-docker,kind=host,source=/var/lib/docker,readOnly=false \
+	--volume coreos-var-lib-kubelet,kind=host,source=/var/lib/kubelet,readOnly=false,recursive=true \
+	--volume coreos-var-log,kind=host,source=/var/log,readOnly=false \
+	--volume coreos-os-release,kind=host,source=/usr/lib/os-release,readOnly=true \
+	--volume coreos-run,kind=host,source=/run,readOnly=false \
+	--volume coreos-lib-modules,kind=host,source=/lib/modules,readOnly=true \
+	--volume coreos-etc-machine-id,kind=host,source=/etc/machine-id,readOnly=true \
+	--mount volume=coreos-etc-kubernetes,target=/etc/kubernetes \
+	--mount volume=coreos-etc-ssl-certs,target=/etc/ssl/certs \
+	--mount volume=coreos-usr-share-certs,target=/usr/share/ca-certificates \
+	--mount volume=coreos-var-lib-docker,target=/var/lib/docker \
+	--mount volume=coreos-var-lib-kubelet,target=/var/lib/kubelet \
+	--mount volume=coreos-var-log,target=/var/log \
+	--mount volume=coreos-os-release,target=/etc/os-release \
+	--mount volume=coreos-run,target=/run \
+	--mount volume=coreos-lib-modules,target=/lib/modules \
+	--mount volume=coreos-etc-machine-id,target=/etc/machine-id \
+	--hosts-entry host \
+	${RKT_STAGE1_ARG} \
 	${KUBELET_IMAGE} \
 		${KUBELET_IMAGE_ARGS} \
-		"$@"
+		-- "$@"
