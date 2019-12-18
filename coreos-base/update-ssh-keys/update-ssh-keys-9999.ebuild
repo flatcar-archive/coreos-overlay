@@ -10,14 +10,14 @@ CROS_WORKON_REPO="git://github.com"
 if [[ ${PV} == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="79449498bdfbbf62e6290dc76732bda619eed37e" # v0.3.0
+	CROS_WORKON_COMMIT="033d8a20a040f0055e4a82a457ddcd9bf1a6b5ba" # flatcar-build-x
 	KEYWORDS="amd64 arm64"
 fi
 
 inherit coreos-cargo cros-workon
 
 DESCRIPTION="Utility for managing OpenSSH authorized public keys"
-HOMEPAGE="https://github.com/coreos/update-ssh-keys"
+HOMEPAGE="https://github.com/flatcar-linux/update-ssh-keys"
 LICENSE="Apache-2.0"
 SLOT="0"
 
