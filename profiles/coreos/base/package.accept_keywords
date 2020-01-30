@@ -78,3 +78,6 @@ dev-util/checkbashisms
 =sys-auth/google-oslogin-20180611 **
 
 =sys-process/tini-0.18.0 ~arm64
+
+=dev-util/dwarves-1.16 ~amd64
+=dev-libs/elfutils-0.178 ~amd64
