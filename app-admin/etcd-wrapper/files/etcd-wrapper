@@ -1,5 +1,5 @@
 #!/usr/bin/bash -e
-# Wrapper for launching etcd via docker.
+# Wrapper for launching etcd via rkt.
 #
 # Make sure to set ETCD_IMAGE_TAG to an image tag published here:
 # https://quay.io/repository/coreos/etcd?tab=tags Alternatively,
@@ -30,6 +30,10 @@ require_ev_all ETCD_USER ETCD_DATA_DIR
 ETCD_IMAGE_URL="${ETCD_IMAGE_URL:-quay.io/coreos/etcd}"
 ETCD_IMAGE="${ETCD_IMAGE:-${ETCD_IMAGE_URL}:${ETCD_IMAGE_TAG}}"
 
+if [[ "${ETCD_IMAGE%%/*}" == "quay.io" ]]; then
+	RKT_RUN_ARGS="${RKT_RUN_ARGS} --trust-keys-from-https"
+fi
+
 if [[ ! -e "${ETCD_DATA_DIR}" ]]; then
 	mkdir --parents "${ETCD_DATA_DIR}"
 	chown "${ETCD_USER}" "${ETCD_DATA_DIR}"
@@ -44,29 +48,38 @@ ETCD_SSL_DIR="${ETCD_SSL_DIR:-/etc/ssl/certs}"
 
 SYSTEMD_SYSTEM_DIR_SRC="${SYSTEMD_SYSTEM_DIR_SRC:-/run/systemd/system}"
 if [[ -d "${SYSTEMD_SYSTEM_DIR_SRC}" ]]; then
-	DOCKER_RUN_ARGS="${DOCKER_RUN_ARGS} \
-		--mount type=bind,bind-propagation=rprivate,source=/run/systemd/system,target=/run/systemd/system,readonly \
+	RKT_RUN_ARGS="${RKT_RUN_ARGS} \
+		--mount volume=coreos-systemd-dir,target=/run/systemd/system \
+		--volume coreos-systemd-dir,kind=host,source=${SYSTEMD_SYSTEM_DIR_SRC},readOnly=true \
 	"
 fi
 
 if [[ -S "${NOTIFY_SOCKET}" ]]; then
-	DOCKER_RUN_ARGS="${DOCKER_RUN_ARGS} \
-		--env NOTIFY_SOCKET=/run/systemd/notify \
-		--mount type=bind,bind-propagation=rprivate,source=/run/systemd/notify,target=/run/systemd/notify \
+	RKT_RUN_ARGS="${RKT_RUN_ARGS} \
+		--mount volume=coreos-notify,target=/run/systemd/notify \
+		--volume coreos-notify,kind=host,source=${NOTIFY_SOCKET} \
+		--set-env=NOTIFY_SOCKET=/run/systemd/notify \
 	"
 fi
 
-DOCKER="${DOCKER:-/usr/bin/docker}"
+RKT="${RKT:-/usr/bin/rkt}"
+RKT_STAGE1_ARG="${RKT_STAGE1_ARG:---stage1-from-dir=stage1-fly.aci}"
 set -x
-exec ${DOCKER} ${DOCKER_GLOBAL_ARGS} \
-	run ${DOCKER_RUN_ARGS} \
-	--name=etcd-docker --entrypoint=/usr/local/bin/etcd \
-	--mount type=bind,bind-propagation=rshared,source=${etcd_data_dir},target=/var/lib/etcd \
-	--mount type=bind,bind-propagation=rprivate,source=${ETCD_SSL_DIR},target=/etc/ssl/certs,readonly \
-	--mount type=bind,bind-propagation=rprivate,source=/usr/share/ca-certificates,target=/usr/share/ca-certificates,readonly \
-	--mount type=bind,bind-propagation=rprivate,source=/etc/hosts,target=/etc/hosts,readonly \
-	--mount type=bind,bind-propagation=rprivate,source=/etc/resolv.conf,target=/etc/resolv.conf,readonly \
-	--user=$(id -u "${ETCD_USER}") \
+exec ${RKT} ${RKT_GLOBAL_ARGS} \
+	run ${RKT_RUN_ARGS} \
+	--volume coreos-data-dir,kind=host,source="${etcd_data_dir}",readOnly=false \
+	--volume coreos-etc-ssl-certs,kind=host,source="${ETCD_SSL_DIR}",readOnly=true \
+	--volume coreos-usr-share-certs,kind=host,source=/usr/share/ca-certificates,readOnly=true \
+	--volume coreos-etc-hosts,kind=host,source=/etc/hosts,readOnly=true \
+	--volume coreos-etc-resolv,kind=host,source=/etc/resolv.conf,readOnly=true \
+	--mount volume=coreos-data-dir,target=/var/lib/etcd \
+	--mount volume=coreos-etc-ssl-certs,target=/etc/ssl/certs \
+	--mount volume=coreos-usr-share-certs,target=/usr/share/ca-certificates \
+	--mount volume=coreos-etc-hosts,target=/etc/hosts  \
+	--mount volume=coreos-etc-resolv,target=/etc/resolv.conf  \
+	--inherit-env \
+	${RKT_STAGE1_ARG} \
 	${ETCD_IMAGE} \
 		${ETCD_IMAGE_ARGS} \
-		--data-dir=/var/lib/etcd "$@"
+		--user=$(id -u "${ETCD_USER}") \
+		-- "$@"
