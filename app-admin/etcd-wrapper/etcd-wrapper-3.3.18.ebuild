@@ -14,6 +14,7 @@ IUSE=""
 SLOT=0
 
 DEPEND=""
+RDEPEND=">=app-emulation/rkt-1.9.1[rkt_stage1_fly]"
 
 S=${WORKDIR}
 

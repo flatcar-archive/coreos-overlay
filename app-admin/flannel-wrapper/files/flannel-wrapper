@@ -1,5 +1,5 @@
 #!/bin/bash -e
-# Wrapper for launching flannel via docker.
+# Wrapper for launching flannel via rkt.
 #
 # Make sure to set FLANNEL_IMAGE_TAG to an image tag published here:
 # https://quay.io/repository/coreos/flannel?tab=tags Alternatively,
@@ -39,33 +39,46 @@ require_ev_one FLANNEL_IMAGE FLANNEL_IMAGE_TAG
 FLANNEL_IMAGE_URL="${FLANNEL_IMAGE_URL:-${FLANNEL_IMG:-quay.io/coreos/flannel}}"
 FLANNEL_IMAGE="${FLANNEL_IMAGE:-${FLANNEL_IMAGE_URL}:${FLANNEL_IMAGE_TAG}}"
 
+if [[ "${FLANNEL_IMAGE%%/*}" == "quay.io" ]]; then
+	RKT_RUN_ARGS="${RKT_RUN_ARGS} --trust-keys-from-https"
+fi
+
 ETCD_SSL_DIR="${ETCD_SSL_DIR:-/etc/ssl/etcd}"
 if [[ -d "${ETCD_SSL_DIR}" ]]; then
-	DOCKER_RUN_ARGS="${DOCKER_RUN_ARGS} \
-		--mount type=bind,bind-propagation=rprivate,source=${ETCD_SSL_DIR},target=${ETCD_SSL_DIR},readonly \
+	RKT_RUN_ARGS="${RKT_RUN_ARGS} \
+		--volume coreos-ssl,kind=host,source=${ETCD_SSL_DIR},readOnly=true \
+		--mount volume=coreos-ssl,target=${ETCD_SSL_DIR} \
 	"
 fi
 
 if [[ -S "${NOTIFY_SOCKET}" ]]; then
-	DOCKER_RUN_ARGS="${DOCKER_RUN_ARGS} \
-		--env NOTIFY_SOCKET=/run/systemd/notify \
-		--mount type=bind,bind-propagation=rprivate,source=${NOTIFY_SOCKET},target=/run/systemd/notify \
+	RKT_RUN_ARGS="${RKT_RUN_ARGS} \
+		--mount volume=coreos-notify,target=/run/systemd/notify \
+		--volume coreos-notify,kind=host,source=${NOTIFY_SOCKET} \
+		--set-env=NOTIFY_SOCKET=/run/systemd/notify \
 	"
 fi
 
 mkdir --parents /run/flannel
 
-DOCKER="${DOCKER:-/usr/bin/docker}"
+RKT="${RKT:-/usr/bin/rkt}"
+RKT_STAGE1_ARG="${RKT_STAGE1_ARG:---stage1-from-dir=stage1-fly.aci}"
 set -x
-exec ${DOCKER} ${DOCKER_GLOBAL_ARGS} \
-	run ${DOCKER_RUN_ARGS} \
-	--entrypoint=/opt/bin/flanneld \
+exec ${RKT} ${RKT_GLOBAL_ARGS} \
+	run ${RKT_RUN_ARGS} \
 	--net=host \
-	--mount type=bind,bind-propagation=rprivate,source=/run/flannel,target=/run/flannel \
-	--mount type=bind,bind-propagation=rprivate,source=/etc/ssl/certs,target=/etc/ssl/certs,readonly \
-	--mount type=bind,bind-propagation=rprivate,source=/usr/share/ca-certificates,target=/usr/share/ca-certificates,readonly \
-	--mount type=bind,bind-propagation=rprivate,source=/etc/hosts,target=/etc/hosts,readonly \
-	--mount type=bind,bind-propagation=rprivate,source=/etc/resolv.conf,target=/etc/resolv.conf,readonly \
+	--volume coreos-run-flannel,kind=host,source=/run/flannel,readOnly=false \
+	--volume coreos-etc-ssl-certs,kind=host,source=/etc/ssl/certs,readOnly=true \
+	--volume coreos-usr-share-certs,kind=host,source=/usr/share/ca-certificates,readOnly=true \
+	--volume coreos-etc-hosts,kind=host,source=/etc/hosts,readOnly=true \
+	--volume coreos-etc-resolv,kind=host,source=/etc/resolv.conf,readOnly=true \
+	--mount volume=coreos-run-flannel,target=/run/flannel \
+	--mount volume=coreos-etc-ssl-certs,target=/etc/ssl/certs \
+	--mount volume=coreos-usr-share-certs,target=/usr/share/ca-certificates \
+	--mount volume=coreos-etc-hosts,target=/etc/hosts  \
+	--mount volume=coreos-etc-resolv,target=/etc/resolv.conf \
+	--inherit-env \
+	${RKT_STAGE1_ARG} \
 	${FLANNEL_IMAGE} \
 		${FLANNEL_IMAGE_ARGS} \
-		"$@"
+		-- "$@"
