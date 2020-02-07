@@ -11,7 +11,7 @@ inherit coreos-go cros-workon systemd udev
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="466927f4d56b695f080f9b807f8b6f0e1da72587" # flatcar-master
+	CROS_WORKON_COMMIT="09c3766878cf89e24301d65e7c495f4a486a279c" # flatcar-master
 	KEYWORDS="amd64 arm64"
 fi
 
@@ -39,11 +39,6 @@ RDEPEND="
 "
 
 RDEPEND+="${DEPEND}"
-
-PATCHES=(
-	"${FILESDIR}/0001-providers-allow-FetchConfig-to-mutate-the-fetcher.patch"
-	"${FILESDIR}/0002-providers-aws-get-region-after-getting-config.patch"
-)
 
 src_compile() {
 	export GO15VENDOREXPERIMENT="1"
