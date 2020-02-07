@@ -8,7 +8,22 @@
 : ${COREOS_SOURCE_REVISION:=}
 
 COREOS_SOURCE_VERSION="${PV}${COREOS_SOURCE_REVISION}"
-COREOS_SOURCE_NAME="linux-${PV/_rc/-rc}-coreos${COREOS_SOURCE_REVISION}"
+
+# $COREOS_KERNEL_SOURCE_NAME is the kernel source name to be used for
+# $KERNEL_DIR, e.g. linux-4.19.0-coreos. This comes from upstream, so
+# Flatcar should not change it.
+#
+# On the other hand, $COREOS_SOURCE_NAME is the kernel name to be used for
+# $KV_OUT_DIR in individual coreos-kernel*.ebuild files. That one needs to
+# have a flatcar-specific name. We cannot define another variable like
+# $FLATCAR_SOURCE_NAME, because it will then be rewritten by upstream changes
+# that set $COREOS_SOURCE_NAME by default. In the Gentoo world, the ebuild
+# for each new version has a totally new file name. So it's hard to replace
+# a new $COREOS_SOURCE_NAME variable for every new ebuild.
+# $COREOS_SOURCE_NAME should be a name without a revision suffix (e.g. "-r1"),
+# because $KV_FULL would not include such a suffix.
+COREOS_KERNEL_SOURCE_NAME="linux-${PV/_rc/-rc}-coreos${COREOS_SOURCE_REVISION}"
+COREOS_SOURCE_NAME="linux-${PV/_rc/-rc}-flatcar"
 
 [[ ${EAPI} != "5" ]] && die "Only EAPI=5 is supported"
 
@@ -29,9 +44,11 @@ RESTRICT="binchecks strip"
 QA_MULTILIB_PATHS="usr/lib/modules/.*/build/scripts/.*"
 
 # Use source installed by coreos-sources
-KERNEL_DIR="${SYSROOT}/usr/src/${COREOS_SOURCE_NAME}"
+# KERNEL_DIR must find the kernel source tree under /usr/src/linux-*-coreos,
+# not /usr/src/linux-*-flatcar, which does not exist at all.
+KERNEL_DIR="${SYSROOT}/usr/src/${COREOS_KERNEL_SOURCE_NAME}"
 
-# Search for an appropriate config in ${FILESDIR}. The config should reflect
+# Search for an apropriate config in ${FILESDIR}. The config should reflect
 # the kernel version but partial matching is allowed if the config is
 # applicalbe to multiple ebuilds, such as different -r revisions or stable
 # kernel releases. For an amd64 ebuild with version 3.12.4-r2 the order is:
@@ -42,9 +59,8 @@ KERNEL_DIR="${SYSROOT}/usr/src/${COREOS_SOURCE_NAME}"
 #  - amd64_defconfig
 # and similarly for _rcN releases.
 # The first matching config is used, die otherwise.
-find_archconfig() {
-	local config="${ARCH}"_defconfig
-	local base_path="${FILESDIR}/${config}"
+find_config() {
+	local base_path="${FILESDIR}/${1}"
 	local try_suffix try_path
 	for try_suffix in "-${PVR}" "-${PV}" "-${PV%[._]*}" ""; do
 		try_path="${base_path}${try_suffix}"
@@ -54,7 +70,23 @@ find_archconfig() {
 		fi
 	done
 
-	die "No ${config} found for ${PVR} in ${FILESDIR}"
+	die "No ${1} found for ${PVR} in ${FILESDIR}"
+}
+
+find_archconfig () {
+	path=$(find_config "${ARCH}"_defconfig)
+	if [ -z ${path} ]; then
+		die "No arch config found for ${PVR} in ${FILESDIR}"
+	fi
+	echo "${path}"
+}
+
+find_commonconfig () {
+	path=$(find_config commonconfig)
+	if [ -z ${path} ]; then
+		die "No common config found for ${PVR} in ${FILESDIR}"
+	fi
+	echo "${path}"
 }
 
 config_update() {
@@ -125,7 +157,7 @@ setup_keys() {
 		x509_extensions = myexts
 
 		[ req_distinguished_name ]
-		O = CoreOS, Inc
+		O = Kinvolk GmbH
 		CN = Module signing key for ${KV_FULL}
 
 		[ myexts ]

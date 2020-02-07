@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-CROS_WORKON_PROJECT="coreos/ignition"
+CROS_WORKON_PROJECT="flatcar-linux/ignition"
 CROS_WORKON_LOCALNAME="ignition"
 CROS_WORKON_REPO="git://github.com"
 COREOS_GO_PACKAGE="github.com/coreos/ignition"
@@ -39,11 +39,6 @@ RDEPEND="
 "
 
 RDEPEND+="${DEPEND}"
-
-PATCHES=(
-	"${FILESDIR}/0001-providers-allow-FetchConfig-to-mutate-the-fetcher.patch"
-	"${FILESDIR}/0002-providers-aws-get-region-after-getting-config.patch"
-)
 
 src_compile() {
 	export GO15VENDOREXPERIMENT="1"
