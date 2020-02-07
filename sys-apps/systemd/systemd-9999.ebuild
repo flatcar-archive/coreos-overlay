@@ -3,14 +3,14 @@
 
 EAPI=7
 
-CROS_WORKON_PROJECT="coreos/systemd"
+CROS_WORKON_PROJECT="flatcar-linux/systemd"
 CROS_WORKON_REPO="git://github.com"
 
 if [[ ${PV} == 9999 ]]; then
 	# Use ~arch instead of empty keywords for compatibility with cros-workon
 	KEYWORDS="~amd64 ~arm64 ~arm ~x86"
 else
-	CROS_WORKON_COMMIT="8bf05c9deabb395e78592bb39747cde2b4115fd0" # v241-coreos
+	CROS_WORKON_COMMIT="be3cc547ebe95215d437dc11453e648d3ffb7a4d" # v241-flatcar
 	KEYWORDS="~alpha amd64 ~arm arm64 ~ia64 ~ppc ~ppc64 ~sparc ~x86"
 fi
 
@@ -78,7 +78,7 @@ RDEPEND="${COMMON_DEPEND}
 		sys-apps/coreutils[kill(-)]
 	) )
 	!sys-auth/nss-myhostname
-	!<sys-kernel/dracut-044
+	!<sys-kernel/dracut-048
 	!sys-fs/eudev
 	!sys-fs/udev"
 
@@ -274,7 +274,7 @@ multilib_src_configure() {
 		-Ddbussessionservicedir="${EPREFIX}/usr/share/dbus-1/services"
 		-Ddbussystemservicedir="${EPREFIX}/usr/share/dbus-1/system-services"
 
-		-Dntp-servers="0.coreos.pool.ntp.org 1.coreos.pool.ntp.org 2.coreos.pool.ntp.org 3.coreos.pool.ntp.org"
+		-Dntp-servers="0.flatcar.pool.ntp.org 1.flatcar.pool.ntp.org 2.flatcar.pool.ntp.org 3.flatcar.pool.ntp.org"
 
 		-Dpamconfdir=/usr/share/pam.d
 
@@ -371,7 +371,7 @@ multilib_src_install_all() {
 	fowners root:systemd-journal /var/log/journal
 	fperms 2755 /var/log/journal
 
-	systemd_dotmpfilesd "${FILESDIR}"/systemd-coreos.conf
+	systemd_dotmpfilesd "${FILESDIR}"/systemd-flatcar.conf
 	systemd_dotmpfilesd "${FILESDIR}"/systemd-resolv.conf
 
 	# Don't default to graphical.target

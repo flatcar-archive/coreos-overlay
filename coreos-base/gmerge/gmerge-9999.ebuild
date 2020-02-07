@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
-CROS_WORKON_PROJECT="coreos/dev-util"
+CROS_WORKON_PROJECT="flatcar-linux/dev-util"
 CROS_WORKON_REPO="git://github.com"
 CROS_WORKON_LOCALNAME="dev"
 CROS_WORKON_LOCALDIR="src/platform"
@@ -10,7 +10,7 @@ CROS_WORKON_LOCALDIR="src/platform"
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 else
-	CROS_WORKON_COMMIT="7b9092b9f6d93f00527591a7c393e2be3099278d"
+	CROS_WORKON_COMMIT="ce5afaebfd17f01e2aa151c2dc6d5c9949e42241" # flatcar-master
 	KEYWORDS="amd64 arm arm64 x86"
 fi
 
