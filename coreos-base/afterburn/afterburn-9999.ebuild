@@ -10,7 +10,7 @@ CROS_WORKON_REPO="git://github.com"
 if [[ ${PV} == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="76f4a2beea674d796002c4b98de2ee293f036b41" # flatcar-master
+	CROS_WORKON_COMMIT="114caa6aeabe22095a21a034a53a975973c87163" # flatcar-master
 	KEYWORDS="amd64 arm64"
 fi
 

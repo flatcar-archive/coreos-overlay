@@ -11,7 +11,7 @@ inherit coreos-go cros-workon
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64"
 else
-	CROS_WORKON_COMMIT="c254f67464ec838a0460c30eb27fa33e18b18414" # flatcar-master
+	CROS_WORKON_COMMIT="73624345e480f8f10181781a99255276ab7a825c" # flatcar-master
 	KEYWORDS="amd64 arm64"
 fi
 
