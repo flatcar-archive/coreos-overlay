@@ -19,17 +19,35 @@ sed -i -e '/^FLATCAR_PUBLIC_IPV4=/d' \
 
 # We spin loop until the nova-agent sets up the ip addresses
 function get_ip () {
-	IF=$1
-	IP=
+	PREFIX="$1"
 	while [ 1 ]; do
-		IP=$(ifconfig $IF | awk '/inet /{print $2}')
+		IP=""
+		IF="$(ip -4 route get $PREFIX | awk '{for(i=1;i<=NF;i++)if($i=="dev")print $(i+1)}')"
+		if [ "$IF" != "" ] && [ "$IF" != "lo" ]; then
+		  IP=$(ifconfig $IF | awk '/inet /{print $2}')
+		fi
 		if [ "$IP" != "" ]; then
 			break
 		fi
 		sleep .1
 	done
-	echo $IP	
+	echo "$IP"
 }
 
-echo FLATCAR_PUBLIC_IPV4=$(get_ip eth0) >> $ENV
-echo FLATCAR_PRIVATE_IPV4=$(get_ip eth1) >> $ENV
+function get_private_ip () {
+	STARTSWITH="$1"
+	IP=""
+	while [ 1 ]; do
+		IP="$(ifconfig | awk "/inet $STARTSWITH/"'{print $2}' | head -n 1)"
+		if [ "$IP" != "" ]; then
+			break
+		fi
+		sleep .1
+	done
+	echo "$IP"
+}
+
+# Gets IP for interface with route to 1.0.0.0
+echo FLATCAR_PUBLIC_IPV4=$(get_ip 1) >> $ENV
+# Gets IP starting with 10.
+echo FLATCAR_PRIVATE_IPV4=$(get_private_ip "10.") >> $ENV
