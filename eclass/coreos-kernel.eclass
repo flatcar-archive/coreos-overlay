@@ -116,6 +116,7 @@ kmake() {
 	if gcc-specs-pie; then
 		kernel_cflags="-nopie -fstack-check=no"
 	fi
+	kernel_cflags="-Wno-error=implicit-fallthrough"
 	emake "--directory=${S}/source" \
 		ARCH="${kernel_arch}" \
 		CROSS_COMPILE="${CHOST}-" \
