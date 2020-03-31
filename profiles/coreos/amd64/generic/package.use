@@ -18,3 +18,5 @@ sys-firmware/intel-microcode vanilla
 
 # Enable gssapi only for amd64, to avoid build errors in arm64.
 net-dns/bind-tools           gssapi
+
+cross-x86_64-cros-linux-gnu/gdb -python_single_target_python3_6 python_single_target_python3_7

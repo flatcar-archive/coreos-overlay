@@ -20,6 +20,9 @@ app-emulation/qemu	aio caps curl jpeg ncurses png python threads uuid vhost-net 
 # python3 problems
 dev-python/cryptography -python_targets_python3_6 -python_targets_python3_7
 dev-python/pyopenssl -python_targets_python3_6 -python_targets_python3_7
+dev-util/gdbus-codegen -python_single_target_python3_6 -python_single_target_python3_7
+
+dev-util/gdb -python_single_target_python3_6 python_single_target_python3_7
 
 # python3 only
 dev-util/gdbus-codegen python_single_target_python3_6

@@ -9,3 +9,5 @@ sys-libs/ncurses unicode
 sys-apps/systemd -selinux
 
 sys-auth/polkit -introspection
+
+cross-aarch64-cros-linux-gnu/gdb -python_single_target_python3_6 python_single_target_python3_7
