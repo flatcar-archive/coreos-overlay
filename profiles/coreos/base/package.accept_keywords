@@ -81,3 +81,5 @@ dev-util/checkbashisms
 
 =dev-util/dwarves-1.16 ~amd64
 =dev-libs/elfutils-0.178 ~amd64
+
+=net-misc/openssh-8.1_p1-r3 ~arm64
