@@ -102,3 +102,6 @@ sys-apps/man-db -nls
 sys-fs/btrfs-progs -zstd
 
 >=dev-lang/python-2.7.15 sqlite
+
+# enable regular expression processing in jq
+app-misc/jq oniguruma
