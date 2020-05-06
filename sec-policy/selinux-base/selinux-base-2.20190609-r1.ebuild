@@ -3,6 +3,8 @@
 
 EAPI="6"
 
+inherit systemd
+
 if [[ ${PV} == 9999* ]]; then
 	EGIT_REPO_URI="${SELINUX_GIT_REPO:-https://anongit.gentoo.org/git/proj/hardened-refpolicy.git}"
 	EGIT_BRANCH="${SELINUX_GIT_BRANCH:-master}"
@@ -28,6 +30,12 @@ RDEPEND=">=sys-apps/policycoreutils-2.8
 DEPEND="${RDEPEND}
 	sys-devel/m4
 	>=sys-apps/checkpolicy-2.8"
+
+PATCHES=(
+	"${FILESDIR}"/kernel_mcs.diff
+	"${FILESDIR}"/mcs_create.diff
+	"${FILESDIR}"/mcs_range_target.diff
+)
 
 S=${WORKDIR}/
 
@@ -141,6 +149,7 @@ src_install() {
 		echo "run_init_t" > "${D}/etc/selinux/${i}/contexts/run_init_type" || die
 
 		echo "textrel_shlib_t" >> "${D}/etc/selinux/${i}/contexts/customizable_types" || die
+		cp "${FILESDIR}/booleans" "${D}/etc/selinux/${i}/booleans"
 
 		# libsemanage won't make this on its own
 		keepdir "/etc/selinux/${i}/policy"
@@ -155,13 +164,25 @@ src_install() {
 
 	done
 
+	systemd_dotmpfilesd "${FILESDIR}/tmpfiles.d/selinux-base.conf"
+	systemd-tmpfiles --root="${D}" --create selinux-base.conf
+
 	docinto /
 	dodoc doc/Makefile.example doc/example.{te,fc,if}
 
 	doman man/man8/*.8;
 
-	insinto /etc/selinux
+	insinto /usr/lib/selinux
 	doins "${FILESDIR}/config"
+
+	insinto /etc/selinux/mcs/contexts
+	doins "${FILESDIR}/lxc_contexts"
+
+	mkdir -p "${D}/usr/lib/selinux"
+	for i in ${POLICY_TYPES}; do
+		mv "${D}/etc/selinux/${i}" "${D}/usr/lib/selinux"
+		dosym "../../usr/lib/selinux/${i}" "/etc/selinux/${i}"
+	done
 
 	insinto /usr/share/portage/config/sets
 	doins "${FILESDIR}/selinux.conf"
