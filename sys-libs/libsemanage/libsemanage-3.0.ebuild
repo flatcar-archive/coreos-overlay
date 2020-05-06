@@ -48,6 +48,9 @@ DEPEND="${RDEPEND}
 RESTRICT="test"
 
 src_prepare() {
+	eapply_user
+
+	echo "" >> "${S}/src/semanage.conf"
 	echo "# Set this to true to save the linked policy." >> "${S}/src/semanage.conf"
 	echo "# This is normally only useful for analysis" >> "${S}/src/semanage.conf"
 	echo "# or debugging of policy." >> "${S}/src/semanage.conf"
@@ -70,9 +73,6 @@ src_prepare() {
 	echo "# Reduce memory usage for bzip2 compression and" >> "${S}/src/semanage.conf"
 	echo "# decompression of modules in the module store." >> "${S}/src/semanage.conf"
 	echo "bzip-small=true" >> "${S}/src/semanage.conf"
-	echo "handle-unknown=allow" >> "${S}/src/semanage.conf"
-
-	eapply_user
 
 	multilib_copy_sources
 }
@@ -99,16 +99,16 @@ multilib_src_compile() {
 
 multilib_src_install() {
 	emake \
-		DEFAULT_SEMANAGE_CONF_LOCATION="${ED}/usr/lib/selinux/semanage.conf" \
-		LIBDIR="${ED}/usr/$(get_libdir)" \
-		SHLIBDIR="${ED}/usr/$(get_libdir)" \
+		DEFAULT_SEMANAGE_CONF_LOCATION="/usr/lib/selinux/semanage.conf" \
+		LIBDIR="/usr/$(get_libdir)" \
+		SHLIBDIR="/usr/$(get_libdir)" \
 		DESTDIR="${ED}" install
 
 	if multilib_is_native_abi && use python; then
 		installation_py() {
 			emake DESTDIR="${ED}" \
-				LIBDIR="${ED}/usr/$(get_libdir)" \
-				SHLIBDIR="${ED}/usr/$(get_libdir)" \
+				LIBDIR="${EPREFIX}/usr/$(get_libdir)" \
+				SHLIBDIR="${EPREFIX}/usr/$(get_libdir)" \
 				LIBSEPOLA="${EPREFIX%/}/usr/$(get_libdir)/libsepol.a" \
 				install-pywrap
 			python_optimize # bug 531638
