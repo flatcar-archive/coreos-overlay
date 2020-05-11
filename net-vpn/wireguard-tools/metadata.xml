@@ -6,6 +6,6 @@
 		<name>Jason A. Donenfeld</name>
 	</maintainer>
 	<use>
-		<flag name="tools">Compile the wg(8) tool and related helpers. You probably want this enabled.</flag>
+		<flag name="wg-quick">Install the wg-quick(8) helper tool. Most users want to use this.</flag>
 	</use>
 </pkgmetadata>
