@@ -88,11 +88,10 @@ REQUIRED_USE="|| ( ${ALL_LLVM_TARGETS[*]} )
 "
 
 PATCHES=(
-	"${FILESDIR}"/0001-llvm-cmake-Add-additional-headers-only-if-they-exist.patch
-	"${FILESDIR}"/1.34.2-fix-custom-libdir.patch
-	"${FILESDIR}"/1.35.0-revert-commits-triggering-multiple-llvm-rebuilds.patch
-	"${FILESDIR}"/1.36.0-libressl.patch
-	"${FILESDIR}"/1.36.0-libressl3.patch
+	"${FILESDIR}"/1.40.0-add-soname.patch
+	"${FILESDIR}"/0012-Ignore-broken-and-non-applicable-tests.patch
+	"${FILESDIR}"/1.43.0-llvm10.patch
+	"${FILESDIR}"/1.42.0-libressl.patch
 )
 
 S="${WORKDIR}/${MY_P}-src"
