@@ -26,6 +26,7 @@ jobs:
       - name: Apply patch for Edge
         id: apply-patch-edge
         env:
+          CHANNEL: edge
           BASE_BRANCH: ${{ steps.fetch-latest-release.outputs.BASE_BRANCH_EDGE }}
           VERSION_NEW: ${{ steps.fetch-latest-release.outputs.VERSION_EDGE }}
           COMMIT_HASH: ${{ steps.fetch-latest-release.outputs.COMMIT_EDGE }}
@@ -33,6 +34,7 @@ jobs:
         run: .github/workflows/containerd-apply-patch.sh
       - name: Create pull request for Edge
         uses: peter-evans/create-pull-request@v2
+        if: steps.apply-patch-edge.outputs.UPDATE_NEEDED == 1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: ${{ steps.fetch-latest-release.outputs.BASE_BRANCH_EDGE }}
