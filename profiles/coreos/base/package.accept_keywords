@@ -89,3 +89,8 @@ dev-util/checkbashisms
 
 >=dev-util/dwarves-1.18 ~amd64
 >=dev-libs/elfutils-0.178 ~amd64
+
+=sec-policy/selinux-base-2.20190609-r1 ~amd64 ~arm64
+=sec-policy/selinux-base-policy-2.20190609-r1 ~amd64 ~arm64
+=sec-policy/selinux-unconfined-2.20190609-r1 ~amd64 ~arm64
+=sec-policy/selinux-virt-2.20190609-r1 ~amd64 ~arm64
