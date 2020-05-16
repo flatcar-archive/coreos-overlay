@@ -1,33 +1,33 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
 
 if [[ ${PV} == 9999* ]]; then
-	EGIT_REPO_URI="${SELINUX_GIT_REPO:-git://anongit.gentoo.org/proj/hardened-refpolicy.git https://anongit.gentoo.org/git/proj/hardened-refpolicy.git}"
+	EGIT_REPO_URI="${SELINUX_GIT_REPO:-https://anongit.gentoo.org/git/proj/hardened-refpolicy.git}"
 	EGIT_BRANCH="${SELINUX_GIT_BRANCH:-master}"
 	EGIT_CHECKOUT_DIR="${WORKDIR}/refpolicy"
 
 	inherit git-r3
 else
-	SRC_URI="https://raw.githubusercontent.com/wiki/TresysTechnology/refpolicy/files/refpolicy-${PV}.tar.bz2
-			https://dev.gentoo.org/~swift/patches/selinux-base-policy/patchbundle-selinux-base-policy-${PVR}.tar.bz2"
+	SRC_URI="https://github.com/SELinuxProject/refpolicy/releases/download/RELEASE_${PV/./_}/refpolicy-${PV}.tar.bz2
+			https://dev.gentoo.org/~perfinion/patches/selinux-base-policy/patchbundle-selinux-base-policy-${PVR}.tar.bz2"
 
-	KEYWORDS="amd64 -arm ~arm64 ~mips x86"
+	KEYWORDS="~amd64 -arm ~arm64 ~mips ~x86"
 fi
 
-IUSE="doc +open_perms +peer_perms systemd +ubac +unconfined"
+IUSE="doc +open_perms +peer_perms +unknown-perms systemd +ubac +unconfined"
 
 DESCRIPTION="Gentoo base policy for SELinux"
 HOMEPAGE="https://www.gentoo.org/proj/en/hardened/selinux/"
 LICENSE="GPL-2"
 SLOT="0"
 
-RDEPEND=">=sys-apps/policycoreutils-2.3
+RDEPEND=">=sys-apps/policycoreutils-2.8
 	virtual/udev"
 DEPEND="${RDEPEND}
 	sys-devel/m4
-	>=sys-apps/checkpolicy-2.3"
+	>=sys-apps/checkpolicy-2.8"
 
 S=${WORKDIR}/
 
@@ -56,6 +56,13 @@ src_configure() {
 	if ! use open_perms; then
 		sed -i -e '/open_perms/d' \
 			"${S}/refpolicy/policy/policy_capabilities" || die
+	fi
+
+	if use unknown-perms; then
+		sed -i -e '/^UNK_PERMS/s/deny/allow/' "${S}/refpolicy/build.conf" \
+			|| die "Failed to allow Unknown Permissions Handling"
+		sed -i -e '/^UNK_PERMS/s/deny/allow/' "${S}/refpolicy/Makefile" \
+			|| die "Failed to allow Unknown Permissions Handling"
 	fi
 
 	if ! use ubac; then
@@ -112,7 +119,7 @@ src_compile() {
 
 	for i in ${POLICY_TYPES}; do
 		cd "${S}/${i}" || die
-		emake base
+		emake base BINDIR="${ROOT}/usr/bin" || die "${i} compile failed"
 		if use doc; then
 			emake html
 		fi
