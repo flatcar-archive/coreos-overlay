@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
@@ -10,20 +10,21 @@ if [[ ${PV} == 9999* ]]; then
 
 	inherit git-r3
 else
-	SRC_URI="https://raw.githubusercontent.com/wiki/TresysTechnology/refpolicy/files/refpolicy-${PV}.tar.bz2
-			https://dev.gentoo.org/~swift/patches/${PN}/patchbundle-${PN}-${PVR}.tar.bz2"
+	SRC_URI="https://github.com/SELinuxProject/refpolicy/releases/download/RELEASE_${PV/./_}/refpolicy-${PV}.tar.bz2
+			https://dev.gentoo.org/~perfinion/patches/${PN}/patchbundle-${PN}-${PVR}.tar.bz2"
 	KEYWORDS="~amd64 -arm ~arm64 ~mips ~x86"
 fi
 
-HOMEPAGE="https://www.gentoo.org/proj/en/hardened/selinux/"
+HOMEPAGE="https://wiki.gentoo.org/wiki/Project:SELinux"
 DESCRIPTION="SELinux policy for core modules"
 
 IUSE="systemd +unconfined"
 
 PDEPEND="unconfined? ( sec-policy/selinux-unconfined )"
 DEPEND="=sec-policy/selinux-base-${PVR}[systemd?]"
+RDEPEND="$DEPEND"
 
-MODS="application authlogin bootloader clock consoletype cron dmesg fstools getty hostname hotplug init iptables libraries locallogin logging lvm miscfiles modutils mount mta netutils nscd portage raid rsync selinuxutil setrans ssh staff storage su sysadm sysnetwork tmpfiles udev userdomain usermanage unprivuser xdg"
+MODS="application authlogin bootloader clock consoletype cron dmesg fstools getty hostname hotplug init iptables libraries locallogin logging lvm miscfiles modutils mount mta netutils nscd portage raid rsync selinuxutil setrans ssh staff storage su sysadm sysnetwork systemd tmpfiles udev userdomain usermanage unprivuser xdg"
 LICENSE="GPL-2"
 SLOT="0"
 S="${WORKDIR}/"
@@ -31,12 +32,6 @@ S="${WORKDIR}/"
 # Code entirely copied from selinux-eclass (cannot inherit due to dependency on
 # itself), when reworked reinclude it. Only postinstall (where -b base.pp is
 # added) needs to remain then.
-
-pkg_setup() {
-	if use systemd; then
-		MODS="${MODS} systemd"
-	fi
-}
 
 pkg_pretend() {
 	for i in ${POLICY_TYPES}; do
@@ -85,38 +80,7 @@ src_install() {
 		for j in ${MODS}; do
 			einfo "Installing ${i} ${j} policy package"
 			insinto ${BASEDIR}/${i}
-			doins "${S}"/${i}/${j}.pp || die "Failed to add ${j}.pp to ${i}"
+			doins "${S}"/${i}/${j}.pp
 		done
 	done
-}
-
-pkg_postinst() {
-	# Override the command from the eclass, we need to load in base as well here
-	local COMMAND="-i base.pp"
-	if has_version "<sys-apps/policycoreutils-2.5"; then
-		COMMAND="-b base.pp"
-	fi
-
-	for i in ${MODS}; do
-		COMMAND="${COMMAND} -i ${i}.pp"
-	done
-
-	for i in ${POLICY_TYPES}; do
-		einfo "Inserting the following modules, with base, into the $i module store: ${MODS}"
-
-		cd /usr/share/selinux/${i} || die "Could not enter /usr/share/selinux/${i}"
-
-		semodule -s ${i} ${COMMAND} || die "Failed to load in base and modules ${MODS} in the $i policy store"
-	done
-
-	# Relabel depending packages
-	local PKGSET="";
-	if [[ -x /usr/bin/qdepends ]] ; then
-		PKGSET=$(/usr/bin/qdepends -Cq -r -Q ${CATEGORY}/${PN} | grep -v 'sec-policy/selinux-');
-	elif [[ -x /usr/bin/equery ]] ; then
-		PKGSET=$(/usr/bin/equery -Cq depends ${CATEGORY}/${PN} | grep -v 'sec-policy/selinux-');
-	fi
-	if [[ -n "${PKGSET}" ]] ; then
-		rlpkg ${PKGSET};
-	fi
 }
