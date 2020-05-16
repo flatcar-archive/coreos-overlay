@@ -116,3 +116,5 @@ sys-kernel/coreos-firmware -savedconfig
 
 # Make kmod support kernel modules compressed via lzma(xz)
 sys-apps/kmod lzma
+
+sys-apps/policycoreutils semodule
