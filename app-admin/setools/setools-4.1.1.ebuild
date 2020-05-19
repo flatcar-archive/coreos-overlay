@@ -2,19 +2,19 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
-PYTHON_COMPAT=( python2_7 python3_4 python3_5 )
+PYTHON_COMPAT=( python2_7 python3_6 python3_7 )
 
 DISTUTILS_OPTIONAL=1
 inherit distutils-r1
 
 DESCRIPTION="Policy Analysis Tools for SELinux"
-HOMEPAGE="https://github.com/TresysTechnology/setools/wiki"
+HOMEPAGE="https://github.com/SELinuxProject/setools/wiki"
 
 if [[ ${PV} == 9999 ]] ; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/TresysTechnology/setools.git"
+	EGIT_REPO_URI="https://github.com/SELinuxProject/setools.git"
 else
-	SRC_URI="https://github.com/TresysTechnology/setools/archive/${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/SELinuxProject/setools/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="amd64 x86 arm64"
 fi
 
