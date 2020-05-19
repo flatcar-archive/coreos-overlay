@@ -54,6 +54,7 @@
 =sys-apps/man-db-2.7.6.1-r2 ~arm64
 =sys-apps/rng-tools-5-r2 **
 =sys-apps/sandbox-2.12 ~arm64
+=sys-apps/semodule-utils-3.0 ~arm64
 =sys-apps/smartmontools-6.4 **
 =sys-block/parted-3.2-r1 ~arm64
 =sys-block/thin-provisioning-tools-0.7.0 ~arm64
