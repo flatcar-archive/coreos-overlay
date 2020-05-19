@@ -32,9 +32,7 @@ DEPEND="${RDEPEND}
 	>=sys-apps/checkpolicy-2.8"
 
 PATCHES=(
-	"${FILESDIR}"/kernel_mcs.diff
-	"${FILESDIR}"/mcs_create.diff
-	"${FILESDIR}"/mcs_range_target.diff
+	"${FILESDIR}"/mcs-sshd.patch
 )
 
 S=${WORKDIR}/
@@ -45,6 +43,7 @@ src_prepare() {
 		eapply -p0 "${WORKDIR}/0001-full-patch-against-stable-release.patch"
 	fi
 
+	eapply -p0 "${PATCHES[@]}"
 	eapply_user
 
 	cd "${S}/refpolicy" || die
