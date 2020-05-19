@@ -126,7 +126,8 @@ src_compile() {
 
 	for i in ${POLICY_TYPES}; do
 		cd "${S}/${i}" || die
-		emake base BINDIR="${ROOT}/usr/bin" || die "${i} compile failed"
+		emake base BINDIR="${ROOT}/usr/bin" NAME=$i SHAREDIR="${ROOT%/}"/usr/share/selinux \
+			LD_LIBRARY_PATH="${ROOT}/usr/lib64:${LD_LIBRARY_PATH}" -C "${S}"/${i}
 		if use doc; then
 			emake html
 		fi
