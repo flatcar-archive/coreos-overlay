@@ -13,3 +13,13 @@ DESCRIPTION="SELinux policy for unconfined"
 if [[ ${PV} != 9999* ]] ; then
 	KEYWORDS="~amd64 -arm ~arm64 ~mips ~x86"
 fi
+
+src_compile() {
+	[ -z "${POLICY_TYPES}" ] && local POLICY_TYPES="targeted strict mls mcs"
+
+	for i in ${POLICY_TYPES}; do
+		cd "${S}/${i}" || die
+		emake BINDIR="${ROOT}/usr/bin" NAME=$i SHAREDIR="${ROOT%/}"/usr/share/selinux \
+			LD_LIBRARY_PATH="${ROOT}/usr/lib64:${LD_LIBRARY_PATH}" -C "${S}"/${i}
+	done
+}
