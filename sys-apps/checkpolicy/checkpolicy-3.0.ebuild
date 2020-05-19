@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
@@ -6,7 +6,7 @@ EAPI="6"
 inherit toolchain-funcs
 
 MY_P="${P//_/-}"
-MY_RELEASEDATE="20161014"
+MY_RELEASEDATE="20191204"
 
 SEPOL_VER="${PV}"
 SEMNG_VER="${PV}"
@@ -20,7 +20,7 @@ if [[ ${PV} == 9999 ]] ; then
 	S="${WORKDIR}/${MY_P}/${PN}"
 else
 	SRC_URI="https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/${MY_RELEASEDATE}/${MY_P}.tar.gz"
-	KEYWORDS="amd64 ~arm ~arm64 ~mips x86"
+	KEYWORDS="amd64 ~arm arm64 ~mips x86"
 	S="${WORKDIR}/${MY_P}"
 fi
 
@@ -36,11 +36,17 @@ DEPEND=">=sys-libs/libsepol-${SEPOL_VER}
 RDEPEND=">=sys-libs/libsemanage-${SEMNG_VER}"
 
 src_compile() {
-	emake CC="$(tc-getCC)" YACC="bison -y" LIBDIR="\$(PREFIX)/$(get_libdir)"
+	emake \
+		CC="$(tc-getCC)" \
+		YACC="bison -y" \
+		PREFIX="/usr" \
+		LIBDIR="${ROOT:-/}\$(PREFIX)/$(get_libdir)"
 }
 
 src_install() {
-	emake DESTDIR="${D}" install
+	emake DESTDIR="${D}" \
+		LIBSEPOLA="${ROOT:-/}usr/$(get_libdir)/libsepol.a" \
+		install
 
 	if use debug; then
 		dobin "${S}/test/dismod"
