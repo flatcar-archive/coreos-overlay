@@ -1,13 +1,13 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
-PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
+PYTHON_COMPAT=( python{2_7,3_6,3_7} )
 
-inherit multilib python-r1 toolchain-funcs multilib-minimal
+inherit multilib python-r1 toolchain-funcs multilib-minimal systemd
 
 MY_P="${P//_/-}"
-MY_RELEASEDATE="20161014"
+MY_RELEASEDATE="20191204"
 
 SEPOL_VER="${PV}"
 SELNX_VER="${PV}"
@@ -21,13 +21,13 @@ if [[ ${PV} == 9999 ]]; then
 	S="${WORKDIR}/${MY_P}/${PN}"
 else
 	SRC_URI="https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/${MY_RELEASEDATE}/${MY_P}.tar.gz"
-	KEYWORDS="amd64 ~arm ~arm64 ~mips x86"
+	KEYWORDS="amd64 ~arm arm64 ~mips x86"
 	S="${WORKDIR}/${MY_P}"
 fi
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="python"
+IUSE="python postinst"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 RDEPEND=">=sys-libs/libsepol-${SEPOL_VER}[${MULTILIB_USEDEP}]
@@ -70,9 +70,7 @@ src_prepare() {
 	echo "# Reduce memory usage for bzip2 compression and" >> "${S}/src/semanage.conf"
 	echo "# decompression of modules in the module store." >> "${S}/src/semanage.conf"
 	echo "bzip-small=true" >> "${S}/src/semanage.conf"
-
-	eapply "${FILESDIR}"/${PN}-2.6-build-paths.patch
-	eapply "${FILESDIR}"/${PN}-2.6-0001-libsemanage-genhomedircon-only-set-MLS-level-if-MLS-.patch
+	echo "handle-unknown=allow" >> "${S}/src/semanage.conf"
 
 	eapply_user
 
@@ -88,8 +86,11 @@ multilib_src_compile() {
 
 	if multilib_is_native_abi && use python; then
 		building_py() {
-			python_export PYTHON_INCLUDEDIR PYTHON_LIBPATH
-			emake CC="$(tc-getCC)" PYINC="-I${PYTHON_INCLUDEDIR}" PYTHONLBIDIR="${PYTHON_LIBPATH}" PYPREFIX="${EPYTHON##*/}" "$@"
+			emake \
+				AR="$(tc-getAR)" \
+				CC="$(tc-getCC)" \
+				LIBDIR="${EPREFIX}/usr/$(get_libdir)" \
+				"$@"
 		}
 		python_foreach_impl building_py swigify
 		python_foreach_impl building_py pywrap
@@ -98,21 +99,29 @@ multilib_src_compile() {
 
 multilib_src_install() {
 	emake \
+		DEFAULT_SEMANAGE_CONF_LOCATION="${ED}/usr/lib/selinux/semanage.conf" \
 		LIBDIR="${ED}/usr/$(get_libdir)" \
 		SHLIBDIR="${ED}/usr/$(get_libdir)" \
 		DESTDIR="${ED}" install
 
 	if multilib_is_native_abi && use python; then
 		installation_py() {
-			emake DESTDIR="${ED}" LIBDIR="${ED}/usr/$(get_libdir)" \
-				SHLIBDIR="${ED}/usr/$(get_libdir)" install-pywrap
+			emake DESTDIR="${ED}" \
+				LIBDIR="${ED}/usr/$(get_libdir)" \
+				SHLIBDIR="${ED}/usr/$(get_libdir)" \
+				LIBSEPOLA="${EPREFIX%/}/usr/$(get_libdir)/libsepol.a" \
+				install-pywrap
 			python_optimize # bug 531638
 		}
 		python_foreach_impl installation_py
 	fi
+
+	systemd_dotmpfilesd "${FILESDIR}/tmpfiles.d/libsemanage.conf"
 }
 
 pkg_postinst() {
+	use postinst || return
+
 	# Migrate the SELinux semanage configuration store if not done already
 	local selinuxtype=$(awk -F'=' '/SELINUXTYPE=/ {print $2}' "${EROOT}"/etc/selinux/config 2>/dev/null)
 	if [ -n "${selinuxtype}" ] && [ ! -d "${EROOT}"/var/lib/selinux/${mcs}/active ] ; then
