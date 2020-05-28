@@ -15,9 +15,9 @@ if [[ ${PV} = *9999* ]]; then
 else
 	inherit versionator
 	if [ "$(get_version_component_count)" = 4 ]; then
-		MY_PV="$(replace_version_separator 3 '-ce-')"
+		MY_PV="$(replace_version_separator 3 '-')"
 	else
-		MY_PV="$PV-ce"
+		MY_PV="$PV"
 	fi
 	DOCKER_GITCOMMIT="9368c53" # v19.03.8
 	SRC_URI="https://${COREOS_GO_PACKAGE}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
@@ -250,7 +250,7 @@ src_compile() {
 
 	pushd components/cli || die
 
-	# Imitating https://github.com/docker/docker-ce/blob/v18.06.3-ce/components/cli/scripts/build/.variables#L7
+	# Imitating https://github.com/docker/docker-ce/blob/v19.03.8/components/cli/scripts/build/.variables#L7
 	CLI_BUILDTIME="$(date -d "@${DOCKER_BUILD_DATE}" --utc --rfc-3339 ns 2> /dev/null | sed -e 's/ /T/')"
 	# build cli
 	emake \
