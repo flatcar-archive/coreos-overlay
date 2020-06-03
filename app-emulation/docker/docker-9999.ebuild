@@ -231,6 +231,10 @@ src_compile() {
 		fi
 	done
 
+	# need to set go1.13 in DOCKER_BUILDTAGS, to avoid build
+	# failures caused by github.com/pkg/errors >= 0.9.1.
+	DOCKER_BUILDTAGS+=" go1.13"
+
 	pushd components/engine || die
 
 	if use hardened; then
