@@ -4,6 +4,9 @@
 app-emulation/docker-runc   selinux
 app-emulation/runc          selinux
 
+# Disable gssapi for arm64 to avoid build errors.
+net-dns/bind-tools -gssapi
+
 # FIXME: why isn't this set by default???
 sys-libs/ncurses unicode
 
