@@ -1,9 +1,5 @@
 # arm64 use
 
-# Enable SELinux for runc
-app-emulation/docker-runc   selinux
-app-emulation/runc          selinux
-
 # Disable gssapi for arm64 to avoid build errors.
 net-dns/bind-tools -gssapi
 

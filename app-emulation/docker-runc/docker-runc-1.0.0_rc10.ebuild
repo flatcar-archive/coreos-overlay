@@ -44,6 +44,7 @@ src_unpack() {
 PATCHES=(
 	"${FILESDIR}/0001-Delay-unshare-of-clone-newipc-for-selinux.patch"
 	"${FILESDIR}/0001-Add-static-hooks-opt-bin-runc-hook-prestart-poststar.patch"
+	"${FILESDIR}/0001-temporarily-disable-selinux.GetEnabled-error-checks.patch"
 	"${FILESDIR}/0001-cgroups-systemd-add-cgroup-v2-path-to-the-list-when-.patch"
 )
 
