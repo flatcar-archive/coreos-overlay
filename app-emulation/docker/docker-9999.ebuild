@@ -19,7 +19,7 @@ else
 	else
 		MY_PV="$PV"
 	fi
-	DOCKER_GITCOMMIT="9368c53" # v19.03.8
+	DOCKER_GITCOMMIT="1d3ea1a" # v19.03.11
 	SRC_URI="https://${COREOS_GO_PACKAGE}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="amd64 arm64"
 	[ "$DOCKER_GITCOMMIT" ] || die "DOCKER_GITCOMMIT must be added manually for each bump!"
@@ -254,7 +254,7 @@ src_compile() {
 
 	pushd components/cli || die
 
-	# Imitating https://github.com/docker/docker-ce/blob/v19.03.8/components/cli/scripts/build/.variables#L7
+	# Imitating https://github.com/docker/docker-ce/blob/v19.03.11/components/cli/scripts/build/.variables#L7
 	CLI_BUILDTIME="$(date -d "@${DOCKER_BUILD_DATE}" --utc --rfc-3339 ns 2> /dev/null | sed -e 's/ /T/')"
 	# build cli
 	emake \
