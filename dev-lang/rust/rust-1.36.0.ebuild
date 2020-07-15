@@ -140,9 +140,6 @@ src_configure() {
 	if use wasm; then
 		rust_targets="${rust_targets},\"wasm32-unknown-unknown\""
 	fi
-	if [ -f /usr/bin/aarch64-cros-linux-gnu-gcc ]; then
-		rust_targets="${rust_targets},\"aarch64-unknown-linux-gnu\""
-	fi
 	rust_targets="${rust_targets#,}"
 
 	local extended="true" tools="\"cargo\","
@@ -218,18 +215,6 @@ src_configure() {
 			EOF
 		fi
 	done
-	if [ -f /usr/bin/aarch64-cros-linux-gnu-gcc ]; then
-		printf '#!/bin/sh\naarch64-cros-linux-gnu-gcc --sysroot=/usr/aarch64-cros-linux-gnu "$@"' > ${S}/cc.sh
-		printf '#!/bin/sh\naarch64-cros-linux-gnu-g++ --sysroot=/usr/aarch64-cros-linux-gnu "$@"' > ${S}/cxx.sh
-		chmod +x ${S}/cc.sh ${S}/cxx.sh
-		cat <<- EOF >> "${S}"/config.toml
-			[target.aarch64-unknown-linux-gnu]
-			cc = "${S}/cc.sh"
-			cxx = "${S}/cxx.sh"
-			linker = "${S}/cc.sh"
-			ar = "aarch64-cros-linux-gnu-ar"
-		EOF
-	fi
 
 	if use wasm; then
 		cat <<- EOF >> "${S}"/config.toml
