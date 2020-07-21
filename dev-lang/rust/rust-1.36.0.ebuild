@@ -1,3 +1,6 @@
+# Difference from upstream Gentoo ebuild:
+# - Ported Flatcar patch from 8bbe5171c531692739977e3edcbeea5f2bc4b7fc
+#
 # Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
@@ -140,6 +143,7 @@ src_configure() {
 	if use wasm; then
 		rust_targets="${rust_targets},\"wasm32-unknown-unknown\""
 	fi
+	# Auto-enable cross-building only if the cross-compiler is available
 	if [ -f /usr/bin/aarch64-cros-linux-gnu-gcc ]; then
 		rust_targets="${rust_targets},\"aarch64-unknown-linux-gnu\""
 	fi
@@ -218,10 +222,21 @@ src_configure() {
 			EOF
 		fi
 	done
+	# Could soon be replaced by the "experimental cross support" below
 	if [ -f /usr/bin/aarch64-cros-linux-gnu-gcc ]; then
-		printf '#!/bin/sh\naarch64-cros-linux-gnu-gcc --sysroot=/usr/aarch64-cros-linux-gnu "$@"' > ${S}/cc.sh
-		printf '#!/bin/sh\naarch64-cros-linux-gnu-g++ --sysroot=/usr/aarch64-cros-linux-gnu "$@"' > ${S}/cxx.sh
-		chmod +x ${S}/cc.sh ${S}/cxx.sh
+		cat <<- 'EOF' > "${S}/cc.sh"
+			#!/bin/bash
+			args=("$@")
+			filtered=()
+			for i in "${args[@]}"; do
+			  if [ "$i" != "-mindirect-branch-register" ] && [ "$i" != "-mindirect-branch=thunk" ]; then
+			    filtered+=("$i")
+			  fi
+			done
+			aarch64-cros-linux-gnu-gcc --sysroot=/usr/aarch64-cros-linux-gnu "${filtered[@]}"
+		EOF
+		sed 's/gcc/g++/g' "${S}/cc.sh" > "${S}/cxx.sh"
+		chmod +x "${S}/cc.sh" "${S}/cxx.sh"
 		cat <<- EOF >> "${S}"/config.toml
 			[target.aarch64-unknown-linux-gnu]
 			cc = "${S}/cc.sh"
