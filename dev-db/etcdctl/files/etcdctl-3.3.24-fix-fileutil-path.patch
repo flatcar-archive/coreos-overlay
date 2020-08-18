@@ -1,0 +1,27 @@
+From 386ebbb70432544ff683f433852f27fe8f4e26bf Mon Sep 17 00:00:00 2001
+From: Sergey Vilgelm <sergey.vilgelm@ibm.com>
+Date: Sat, 22 Aug 2020 07:17:46 -0500
+Subject: [PATCH] Fix import path to fileutils in listener
+
+transport/listener: change the import path of fileutil
+
+Version 3.3 still uses the github.com/coreos/etcd prefix, but the transport/listener package
+used the go.etcd.io/etcd path prefix.
+---
+ pkg/transport/listener.go | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pkg/transport/listener.go b/pkg/transport/listener.go
+index 412c3c2a6d..5e0d87abc5 100644
+--- a/pkg/transport/listener.go
++++ b/pkg/transport/listener.go
+@@ -31,8 +31,8 @@ import (
+ 	"strings"
+ 	"time"
+
++	"github.com/coreos/etcd/pkg/fileutil"
+ 	"github.com/coreos/etcd/pkg/tlsutil"
+-	"go.etcd.io/etcd/pkg/fileutil"
+ )
+
+ func NewListener(addr, scheme string, tlsinfo *TLSInfo) (l net.Listener, err error) {

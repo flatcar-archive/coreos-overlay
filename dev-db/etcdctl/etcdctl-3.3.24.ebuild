@@ -18,6 +18,10 @@ IUSE=""
 
 S=${WORKDIR}/etcd-${PV}
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-3.3.24-fix-fileutil-path.patch
+)
+
 src_compile() {
 	go_build "${COREOS_GO_PACKAGE}/etcdctl"
 }
