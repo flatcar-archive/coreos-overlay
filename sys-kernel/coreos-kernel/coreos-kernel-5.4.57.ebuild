@@ -73,6 +73,8 @@ src_prepare() {
 }
 
 src_compile() {
+	KBUILD_BUILD_USER=build
+	KBUILD_BUILD_HOST=pony-truck
 	kmake "$(kernel_target)"
 
 	# sanity check :)
