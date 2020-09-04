@@ -1,0 +1,58 @@
+From: Or Cohen <orco...@paloaltonetworks.com>
+
+Using tp_reserve to calculate netoff can overflow as
+tp_reserve is unsigned int and netoff is unsigned short.
+
+This may lead to macoff receving a smaller value then
+sizeof(struct virtio_net_hdr), and if po->has_vnet_hdr
+is set, an out-of-bounds write will occur when
+calling virtio_net_hdr_from_skb.
+
+The bug is fixed by converting netoff to unsigned int
+and checking if it exceeds USHRT_MAX.
+
+This addresses CVE-2020-14386
+
+Fixes: 8913336a7e8d ("packet: add PACKET_RESERVE sockopt")
+Signed-off-by: Or Cohen <orco...@paloaltonetworks.com>
+Signed-off-by: Eric Dumazet <eduma...@google.com>
+
+[ snu: backported to 4.9, changed tp_drops counting/locking ]
+
+Signed-off-by: Stefan Nuernberger <s...@amazon.com>
+CC: David Woodhouse <d...@amazon.co.uk>
+CC: Amit Shah <a...@amazon.com>
+CC: sta...@vger.kernel.org
+---
+ net/packet/af_packet.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index fb643945e424..b5b79f501541 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2161,7 +2161,8 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+	int skb_len = skb->len;
+	unsigned int snaplen, res;
+	unsigned long status = TP_STATUS_USER;
+-	unsigned short macoff, netoff, hdrlen;
++	unsigned short macoff, hdrlen;
++	unsigned int netoff;
+	struct sk_buff *copy_skb = NULL;
+	struct timespec ts;
+	__u32 ts_status;
+@@ -2223,6 +2224,12 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+		}
+		macoff = netoff - maclen;
+	}
++	if (netoff > USHRT_MAX) {
++		spin_lock(&sk->sk_receive_queue.lock);
++		po->stats.stats1.tp_drops++;
++		spin_unlock(&sk->sk_receive_queue.lock);
++		goto drop_n_restore;
++	}
+	if (po->tp_version <= TPACKET_V2) {
+		if (macoff + snaplen > po->rx_ring.frame_size) {
+			if (po->copy_thresh &&
+-- 
+2.28.0
