@@ -2,12 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-admin/setools/setools-3.3.8-r7.ebuild,v 1.6 2015/05/10 09:06:14 perfinion Exp $
 
-# Flatcar: Based on setools-3.3.8-r7.ebuild from revision 1.6 in
-# Gentoo CVS repo (see
-# https://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-admin/setools/setools-3.3.8-r7.ebuild?revision=1.6)
-
 EAPI="5"
-PYTHON_COMPAT=( python2_7 python3_4 python3_5 python3_6 )
+PYTHON_COMPAT=( python2_7 python3_4 )
 
 inherit autotools java-pkg-opt-2 python-r1 eutils toolchain-funcs
 
@@ -56,8 +52,6 @@ pkg_setup() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}/support-cross-build.patch"
-
 	EPATCH_MULTI_MSG="Applying various (Gentoo) setool fixes... " \
 	EPATCH_SUFFIX="patch" \
 	EPATCH_SOURCE="${WORKDIR}/gentoo-patches" \
@@ -91,7 +85,6 @@ src_configure() {
 		--with-java-prefix=${JAVA_HOME} \
 		--disable-selinux-check \
 		--disable-bwidget-check \
-		--with-sepol-devel=${ROOT}/usr \
 		$(use_enable python swig-python) \
 		$(use_enable java swig-java) \
 		$(use_enable X swig-tcl) \

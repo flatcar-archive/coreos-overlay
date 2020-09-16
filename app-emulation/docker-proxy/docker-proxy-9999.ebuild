@@ -1,6 +1,10 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
+# Flatcar: Based on docker-proxy-0.8.0_p20180626.ebuild from commit
+# 3c4b080c3be104d392547da48767776e343f23c0 in Gentoo repo (see
+# https://gitweb.gentoo.org/repo/gentoo.git/plain/app-emulation/docker-proxy/docker-proxy-0.8.0_p20180626.ebuild?id=3c4b080c3be104d392547da48767776e343f23c0)
+
 EAPI=6
 EGO_PN="github.com/docker/libnetwork"
 

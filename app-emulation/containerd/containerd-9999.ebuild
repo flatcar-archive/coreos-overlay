@@ -1,6 +1,10 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
+# Flatcar: Based on containerd-1.0.1.ebuild from commit
+# 681cbfee60f214c2cfb719ba6f6cdf59cbab03a1 in Gentoo repo (see
+# https://gitweb.gentoo.org/repo/gentoo.git/plain/app-emulation/containerd/containerd-1.0.1.ebuild?id=681cbfee60f214c2cfb719ba6f6cdf59cbab03a1)
+
 EAPI=6
 
 GITHUB_URI="github.com/containerd/containerd"

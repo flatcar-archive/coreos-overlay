@@ -1,6 +1,10 @@
 # Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
+# Flatcar: Based on docker-18.06.2.ebuild from commit
+# 50ef975b503569836ce4f77dc07e04928009235c in Gentoo repo (see
+# https://gitweb.gentoo.org/repo/gentoo.git/plain/app-emulation/docker/docker-18.06.2.ebuild?id=50ef975b503569836ce4f77dc07e04928009235c)
+
 EAPI=6
 
 COREOS_GO_PACKAGE="github.com/docker/docker-ce"
@@ -15,6 +19,7 @@ if [[ ${PV} = *9999* ]]; then
 else
 	inherit versionator
 	if [ "$(get_version_component_count)" = 4 ]; then
+		# Flatcar: Used to be -ce-, but it's no more since v18.09.
 		MY_PV="$(replace_version_separator 3 '-')"
 	else
 		MY_PV="$PV"

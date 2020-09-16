@@ -1,6 +1,10 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
+# Flatcar: Based on docker-runc-1.0.0_rc4_p20180122.ebuild from commit
+# 95c9943bd856cea19a2b9f8aef56928742c6d7e5 in Gentoo repo (see
+# https://gitweb.gentoo.org/repo/gentoo.git/plain/app-emulation/docker-runc/docker-runc-1.0.0_rc4_p20180122.ebuild?id=95c9943bd856cea19a2b9f8aef56928742c6d7e5)
+
 EAPI=6
 
 GITHUB_URI="github.com/opencontainers/runc"

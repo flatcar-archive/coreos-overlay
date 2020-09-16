@@ -1,6 +1,10 @@
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
+# Flatcar: Based on sbsigntools-0.9.1-r1.ebuild from commit
+# c638678c995810739309b8582e90a3957bc98615 in Gentoo repo (see
+# https://gitweb.gentoo.org/repo/gentoo.git/plain/app-crypt/sbsigntools/sbsigntools-0.9.1-r1.ebuild?id=c638678c995810739309b8582e90a3957bc98615)
+
 EAPI="6"
 
 MY_PN="${PN::-1}"

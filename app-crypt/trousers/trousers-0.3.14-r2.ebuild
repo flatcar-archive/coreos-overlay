@@ -1,10 +1,9 @@
-# Flatcar modifications:
-# - added "Flatcar:" customizations
-# - added condition to files/tcsd.service
-# - created files/tmpfiles.d/trousers.conf
-# - created files/system.data
 # Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
+
+# Flatcar: Based on trousers-0.3.14-r2.ebuild from commit
+# ab24dd5b2a618468b4ec566fdaad537a44847c21 in Gentoo repo (see
+# https://gitweb.gentoo.org/repo/gentoo.git/plain/app-crypt/trousers/trousers-0.3.14-r2.ebuild?id=ab24dd5b2a618468b4ec566fdaad537a44847c21)
 
 EAPI=7
 

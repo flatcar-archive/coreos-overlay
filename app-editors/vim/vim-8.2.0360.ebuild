@@ -1,6 +1,9 @@
 # Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
+# Flatcar: Based on vim-8.2.0360.ebuild from commit
+# 463dc7816d6e225c2af05000977a210c4c2a4567 in Gentoo repo (see https://gitweb.gentoo.org/repo/gentoo.git/plain/app-editors/vim/vim-8.2.0360.ebuild?id=463dc7816d6e225c2af05000977a210c4c2a4567)
+
 EAPI=7
 VIM_VERSION="8.2"
 PYTHON_COMPAT=( python3_{6,7} )

@@ -1,6 +1,10 @@
 # Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
+# Flatcar: Based on qemu-5.0.0.ebuild from commit
+# 8e48feb9032f24f231becaa1ec76bd2f6650a101 in Gentoo repo (see
+# https://gitweb.gentoo.org/repo/gentoo.git/plain/app-emulation/qemu/qemu-5.0.0.ebuild?id=8e48feb9032f24f231becaa1ec76bd2f6650a101)
+
 EAPI="7"
 
 PYTHON_COMPAT=( python{3_6,3_7} )

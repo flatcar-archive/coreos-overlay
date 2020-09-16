@@ -2,6 +2,10 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
+# Flatcar: Based on bash-4.3_p42-r1.ebuild from commit
+# 9215aba15eba99f7284abb90e9fde8d76c56db1c in Gentoo repo (see
+# https://gitweb.gentoo.org/repo/gentoo.git/plain/app-shells/bash/bash-4.3_p42-r1.ebuild?id=9215aba15eba99f7284abb90e9fde8d76c56db1c)
+
 EAPI="4"
 
 inherit eutils flag-o-matic toolchain-funcs multilib

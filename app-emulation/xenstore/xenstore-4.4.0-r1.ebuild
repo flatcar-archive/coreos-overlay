@@ -2,6 +2,10 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-emulation/xen-tools/xen-tools-4.4.0.ebuild,v 1.3 2014/04/04 01:06:31 idella4 Exp $
 
+# Flatcar: This is based on xen-tools-4.4.0.ebuild, revision 1.3 from
+# Gentoo CVS repo (see
+# https://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-emulation/xen-tools/xen-tools-4.4.0.ebuild?revision=1.3)
+
 EAPI=5
 
 PYTHON_COMPAT=( python2_7 )

@@ -1,10 +1,6 @@
 # Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-# Flatcar: Based on bzip1-1.0.6-r11.ebuild (not r12!) from commit
-# cf839bcdf5a7dfbb33040efd01e630292c96c995 in Gentoo repo (see
-# https://gitweb.gentoo.org/repo/gentoo.git/plain/app-arch/bzip2/bzip2-1.0.6-r11.ebuild?id=cf839bcdf5a7dfbb33040efd01e630292c96c995)
-
 # XXX: atm, libbz2.a is always PIC :(, so it is always built quickly
 #      (since we're building shared libs) ...
 
@@ -32,6 +28,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-1.0.6-out-of-tree-build.patch
 	"${FILESDIR}"/${PN}-1.0.6-CVE-2016-3189.patch #620466
 	"${FILESDIR}"/${PN}-1.0.6-ubsan-error.patch
+	"${FILESDIR}"/${PN}-1.0.6-nselectors-upper-bound-check.patch
 )
 
 DOCS=( CHANGES README{,.COMPILATION.PROBLEMS,.XML.STUFF} manual.pdf )
