@@ -102,3 +102,6 @@ sys-fs/btrfs-progs -zstd
 
 # enable regular expression processing in jq
 app-misc/jq oniguruma
+
+# Don't read the firmware config from /etc/portage/savedconfig/
+sys-kernel/coreos-firmware -savedconfig
