@@ -44,6 +44,7 @@ src_unpack() {
 PATCHES=(
 	"${FILESDIR}/0001-Delay-unshare-of-clone-newipc-for-selinux.patch"
 	"${FILESDIR}/0001-temporarily-disable-selinux.GetEnabled-error-checks.patch"
+	"${FILESDIR}/runc-seccomp-notify.patch"
 )
 
 src_compile() {
