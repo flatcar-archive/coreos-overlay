@@ -1,0 +1,868 @@
+diff --git a/Makefile b/Makefile
+index 916a5cc2..4c9fed95 100644
+--- a/Makefile
++++ b/Makefile
+@@ -33,11 +33,17 @@ GO_BUILD_STATIC := CGO_ENABLED=1 $(GO) build $(MOD_VENDOR) $(EXTRA_FLAGS) -tags
+ runc:
+ 	$(GO_BUILD) -o runc .
+ 
+-all: runc recvtty
++all: runc recvtty seccomphook seccompagent
+ 
+ recvtty:
+ 	$(GO_BUILD) -o contrib/cmd/recvtty/recvtty ./contrib/cmd/recvtty
+ 
++seccomphook:
++	$(GO_BUILD) -o contrib/cmd/seccomphook/seccomphook ./contrib/cmd/seccomphook
++
++seccompagent:
++	$(GO_BUILD) -o contrib/cmd/seccompagent/seccompagent ./contrib/cmd/seccompagent
++
+ static:
+ 	$(GO_BUILD_STATIC) -o runc .
+ 	$(GO_BUILD_STATIC) -o contrib/cmd/recvtty/recvtty ./contrib/cmd/recvtty
+diff --git a/contrib/cmd/seccompagent/seccompagent.go b/contrib/cmd/seccompagent/seccompagent.go
+new file mode 100644
+index 00000000..a3cf4ffc
+--- /dev/null
++++ b/contrib/cmd/seccompagent/seccompagent.go
+@@ -0,0 +1,189 @@
++package main
++
++import (
++	"encoding/json"
++	"flag"
++	"fmt"
++	"net"
++	"os"
++
++	"github.com/opencontainers/runtime-spec/specs-go"
++	"golang.org/x/sys/unix"
++)
++
++/*
++#include <stdint.h>
++#include <stdio.h>
++#include <string.h>
++#include <sys/ioctl.h>
++
++// Flags for seccomp notification fd ioctl.
++// Taken from https://elixir.bootlin.com/linux/v5.9-rc3/source/tools/testing/selftests/seccomp/seccomp_bpf.c#L3958
++
++#define SECCOMP_IOC_MAGIC		'!'
++#define SECCOMP_IOWR(nr, type)		_IOWR(SECCOMP_IOC_MAGIC, nr, type)
++
++#define SECCOMP_IOCTL_NOTIF_RECV	SECCOMP_IOWR(0, struct seccomp_notif)
++#define SECCOMP_IOCTL_NOTIF_SEND	SECCOMP_IOWR(1,	\
++						struct seccomp_notif_resp)
++#define SECCOMP_IOCTL_NOTIF_ID_VALID	SECCOMP_IOW(2, uint64_t)
++
++struct seccomp_data {
++	int nr;
++	uint32_t arch;
++	uint64_t instruction_pointer;
++	uint64_t args[6];
++};
++
++struct seccomp_metadata {
++	uint64_t filter_off;       // Input: which filter
++	uint64_t flags;             // Output: filter's flags
++};
++
++struct seccomp_notif {
++	uint64_t id;
++	uint32_t pid;
++	uint32_t flags;
++	struct seccomp_data data;
++};
++
++struct seccomp_notif_resp {
++	uint64_t id;
++	int64_t val;
++	int32_t error;
++	uint32_t flags;
++};
++
++static int handle_syscall(int notify_fd, int64_t resp_val)
++{
++	struct seccomp_notif req = {};
++	struct seccomp_notif_resp resp = {};
++	int ret;
++
++	memset(&req, 0, sizeof(req));
++	ret = ioctl(notify_fd, SECCOMP_IOCTL_NOTIF_RECV, &req);
++	if (ret != 0)
++		return ret;
++
++	printf("Received event on seccomp fd %d: id=%llu pid=%d flags=%d nr=%d arch=%u instruction_pointer=%llu args=[%llx %llx %llx %llx %llx %llx]\n",
++		notify_fd, req.id, req.pid, req.flags,
++		req.data.nr, req.data.arch, req.data.instruction_pointer,
++		req.data.args[0], req.data.args[1], req.data.args[2],
++		req.data.args[3], req.data.args[4], req.data.args[5]);
++
++	memset(&resp, 0, sizeof(resp));
++	resp.id = req.id;
++	resp.error = 0;
++	resp.val = resp_val;
++	ret = ioctl(notify_fd, SECCOMP_IOCTL_NOTIF_SEND, &resp);
++	if (ret != 0)
++		return ret;
++
++	return 0;
++}
++*/
++import "C"
++
++var (
++	socketFile string
++)
++
++func init() {
++	flag.StringVar(&socketFile, "socketfile", "/run/seccomp-agent.socket", "Socket file")
++}
++
++func handleNewMessage(sockfd int) (*os.File, error) {
++	MaxNameLen := 4096
++	oobSpace := unix.CmsgSpace(4)
++	stateBuf := make([]byte, 4096)
++	oob := make([]byte, oobSpace)
++
++	n, oobn, _, _, err := unix.Recvmsg(sockfd, stateBuf, oob, 0)
++	if err != nil {
++		return nil, err
++	}
++	if n >= MaxNameLen || oobn != oobSpace {
++		return nil, fmt.Errorf("recvfd: incorrect number of bytes read (n=%d oobn=%d)", n, oobn)
++	}
++
++	// Truncate.
++	stateBuf = stateBuf[:n]
++	oob = oob[:oobn]
++
++	ociState := &specs.State{}
++	err = json.Unmarshal(stateBuf, ociState)
++	if err != nil {
++		return nil, fmt.Errorf("cannot parse OCI state: %v\n", err)
++	}
++
++	scms, err := unix.ParseSocketControlMessage(oob)
++	if err != nil {
++		return nil, err
++	}
++	if len(scms) != 1 {
++		return nil, fmt.Errorf("recvfd: number of SCMs is not 1: %d", len(scms))
++	}
++	scm := scms[0]
++
++	fds, err := unix.ParseUnixRights(&scm)
++	if err != nil {
++		return nil, err
++	}
++	if len(fds) != 1 {
++		return nil, fmt.Errorf("recvfd: number of fds is not 1: %d", len(fds))
++	}
++	fd := uintptr(fds[0])
++
++	return os.NewFile(fd, "seccomp-fd"), nil
++}
++
++func main() {
++	// Parse arguments
++	flag.Parse()
++	if flag.NArg() > 0 {
++		flag.PrintDefaults()
++		panic(fmt.Errorf("invalid command"))
++	}
++
++	if err := os.RemoveAll(socketFile); err != nil {
++		panic(err)
++	}
++
++	l, err := net.Listen("unix", socketFile)
++	if err != nil {
++		panic(fmt.Errorf("cannot listen on %s:", socketFile, err))
++	}
++	defer l.Close()
++
++	for {
++		conn, err := l.Accept()
++		if err != nil {
++			panic(fmt.Errorf("cannot accept connection: %s", err))
++		}
++		socket, err := conn.(*net.UnixConn).File()
++		conn.Close()
++		if err != nil {
++			panic(fmt.Errorf("cannot get socket: %v\n", err))
++		}
++
++		newFd, err := handleNewMessage(int(socket.Fd()))
++		if err != nil {
++			fmt.Printf("%s\n", err)
++		}
++		socket.Close()
++
++		fmt.Printf("Received new seccomp fd: %v\n", newFd.Fd())
++
++		go func() {
++			for {
++				ret := C.handle_syscall(C.int(newFd.Fd()), C.int64_t(-42))
++				if ret != 0 {
++					fmt.Printf("Closing seccomp fd %d\n", newFd.Fd())
++					newFd.Close()
++					return
++				}
++			}
++		}()
++	}
++
++}
+diff --git a/contrib/cmd/seccomphook/seccomphook.go b/contrib/cmd/seccomphook/seccomphook.go
+new file mode 100644
+index 00000000..247aefa5
+--- /dev/null
++++ b/contrib/cmd/seccomphook/seccomphook.go
+@@ -0,0 +1,60 @@
++package main
++
++import (
++	"encoding/json"
++	"flag"
++	"fmt"
++	"io/ioutil"
++	"net"
++	"os"
++
++	"github.com/opencontainers/runc/libcontainer/utils"
++
++	"github.com/opencontainers/runtime-spec/specs-go"
++)
++
++var (
++	socketFile string
++)
++
++func init() {
++	flag.StringVar(&socketFile, "socketfile", "/run/seccomp-agent.socket", "Socket file")
++}
++
++func main() {
++	// Parse arguments
++	flag.Parse()
++	if flag.NArg() > 0 {
++		flag.PrintDefaults()
++		panic(fmt.Errorf("invalid command"))
++	}
++
++	// Parse state from stdin
++	stateBuf, err := ioutil.ReadAll(os.Stdin)
++	if err != nil {
++		panic(fmt.Errorf("cannot read stdin: %v\n", err))
++	}
++
++	ociState := &specs.State{}
++	err = json.Unmarshal(stateBuf, ociState)
++	if err != nil {
++		panic(fmt.Errorf("cannot parse OCI state: %v\n", err))
++	}
++
++	conn, err := net.Dial("unix", socketFile)
++	if err != nil {
++		panic(fmt.Errorf("cannot connect to %s: %v\n", socketFile, err))
++	}
++
++	/* Thanks Go! */
++	socket, err := conn.(*net.UnixConn).File()
++	if err != nil {
++		panic(fmt.Errorf("cannot get socket: %v\n", err))
++	}
++	defer socket.Close()
++
++	err = utils.SendFd(socket, string(stateBuf), uintptr(3 /* ociState.SeccompFd */))
++	if err != nil {
++		panic(fmt.Errorf("cannot send seccomp fd to %s: %v\n", socketFile, err))
++	}
++}
+diff --git a/libcontainer/configs/config.go b/libcontainer/configs/config.go
+index 55ca65f2..50411b9a 100644
+--- a/libcontainer/configs/config.go
++++ b/libcontainer/configs/config.go
+@@ -4,6 +4,7 @@ import (
+ 	"bytes"
+ 	"encoding/json"
+ 	"fmt"
++	"os"
+ 	"os/exec"
+ 	"time"
+ 
+@@ -45,6 +46,7 @@ const (
+ 	Allow
+ 	Trace
+ 	Log
++	UserNotif
+ )
+ 
+ // Operator is a comparison operator to be used when matching syscall arguments in Seccomp
+@@ -223,6 +225,9 @@ const (
+ 	// CreateRuntime commands are called in the Runtime Namespace.
+ 	CreateRuntime = "createRuntime"
+ 
++	// SendSeccompFd hook.
++	SendSeccompFd = "sendSeccompFd"
++
+ 	// CreateContainer commands MUST be called as part of the create operation after
+ 	// the runtime environment has been created but before the pivot_root has been executed.
+ 	// CreateContainer commands are called in the Container namespace.
+@@ -304,6 +309,7 @@ func (hooks *Hooks) MarshalJSON() ([]byte, error) {
+ 	return json.Marshal(map[string]interface{}{
+ 		"prestart":        serialize((*hooks)[Prestart]),
+ 		"createRuntime":   serialize((*hooks)[CreateRuntime]),
++		"sendSeccompFd":   serialize((*hooks)[SendSeccompFd]),
+ 		"createContainer": serialize((*hooks)[CreateContainer]),
+ 		"startContainer":  serialize((*hooks)[StartContainer]),
+ 		"poststart":       serialize((*hooks)[Poststart]),
+@@ -364,6 +370,17 @@ func (c Command) Run(s *specs.State) error {
+ 		Stdout: &stdout,
+ 		Stderr: &stderr,
+ 	}
++	if s.SeccompFd != 0 {
++		cmd.ExtraFiles = []*os.File{os.NewFile(uintptr(s.SeccompFd), "seccomp-fd")}
++		/*
++			s.SeccompFd = 3
++			b, err := json.Marshal(s)
++			if err != nil {
++				return err
++			}
++			cmd.Stdin = bytes.NewReader(b)
++		*/
++	}
+ 	if err := cmd.Start(); err != nil {
+ 		return err
+ 	}
+diff --git a/libcontainer/factory_linux.go b/libcontainer/factory_linux.go
+index 59548ef8..97511c92 100644
+--- a/libcontainer/factory_linux.go
++++ b/libcontainer/factory_linux.go
+@@ -379,7 +379,7 @@ func (l *LinuxFactory) StartInitialization() (err error) {
+ 	defer func() {
+ 		// We have an error during the initialization of the container's init,
+ 		// send it back to the parent process in the form of an initError.
+-		if werr := utils.WriteJSON(pipe, syncT{procError}); werr != nil {
++		if werr := utils.WriteJSON(pipe, syncT{procError, -1}); werr != nil {
+ 			fmt.Fprintln(os.Stderr, err)
+ 			return
+ 		}
+diff --git a/libcontainer/init_linux.go b/libcontainer/init_linux.go
+index f2dc17e0..0859a595 100644
+--- a/libcontainer/init_linux.go
++++ b/libcontainer/init_linux.go
+@@ -238,6 +238,20 @@ func syncParentHooks(pipe io.ReadWriter) error {
+ 	return readSync(pipe, procResume)
+ }
+ 
++// syncParentSeccompHooks sends to the given pipe a JSON payload which
++// indicates that the parent should pick up the seccomp fd with pidfd_getfd()
++// and executes the OCI Seccomp Hook. It then waits for the parent to indicate
++// that it is cleared to resume.
++func syncParentSeccompHooks(pipe io.ReadWriter, seccompFd int) error {
++	// Tell parent.
++	if err := writeSyncWithFd(pipe, procSeccomp, seccompFd); err != nil {
++		return err
++	}
++
++	// Wait for parent to give the all-clear.
++	return readSync(pipe, procSeccompDone)
++}
++
+ // setupUser changes the groups, gid, and uid for the user inside the container
+ func setupUser(config *initConfig) error {
+ 	// Set up defaults.
+diff --git a/libcontainer/process_linux.go b/libcontainer/process_linux.go
+index cb8c724a..b9e353ae 100644
+--- a/libcontainer/process_linux.go
++++ b/libcontainer/process_linux.go
+@@ -11,6 +11,7 @@ import (
+ 	"os/exec"
+ 	"path/filepath"
+ 	"strconv"
++	"syscall"
+ 
+ 	"github.com/opencontainers/runc/libcontainer/cgroups"
+ 	"github.com/opencontainers/runc/libcontainer/cgroups/fs2"
+@@ -375,7 +376,38 @@ func (p *initProcess) start() (retErr error) {
+ 
+ 	ierr := parseSync(p.messageSockPair.parent, func(sync *syncT) error {
+ 		switch sync.Type {
++		case procSeccomp:
++			// receive seccomp-fd
++			pidfd, _, _ := syscall.Syscall(434 /* syscall.SYS_PIDFD_OPEN */, uintptr(childPid), 0, 0)
++			seccompFd, _, _ := syscall.Syscall(438 /* syscall.SYS_PIDFD_GETFD */, pidfd, uintptr(sync.Fd), 0)
++
++			defer func() {
++				syscall.Close(int(pidfd))
++				syscall.Close(int(seccompFd))
++			}()
++
++			if p.config.Config.Hooks != nil {
++				s, err := p.container.currentOCIState()
++				if err != nil {
++					return err
++				}
++				// initProcessStartTime hasn't been set yet.
++				s.Pid = p.cmd.Process.Pid
++				s.Status = specs.StateCreating
++				s.SeccompFd = int(seccompFd)
++				hooks := p.config.Config.Hooks
++
++				if err := hooks[configs.SendSeccompFd].RunHooks(s); err != nil {
++					return err
++				}
++			}
++
++			// Sync with child.
++			if err := writeSync(p.messageSockPair.parent, procSeccompDone); err != nil {
++				return newSystemErrorWithCause(err, "writing syncT 'SeccompDone'")
++			}
+ 		case procReady:
++
+ 			// set rlimits, this has to be done here because we lose permissions
+ 			// to raise the limits once we enter a user-namespace
+ 			if err := setupRlimits(p.config.Rlimits, p.pid()); err != nil {
+diff --git a/libcontainer/seccomp/config.go b/libcontainer/seccomp/config.go
+index c3212279..23d2702a 100644
+--- a/libcontainer/seccomp/config.go
++++ b/libcontainer/seccomp/config.go
+@@ -17,12 +17,13 @@ var operators = map[string]configs.Operator{
+ }
+ 
+ var actions = map[string]configs.Action{
+-	"SCMP_ACT_KILL":  configs.Kill,
+-	"SCMP_ACT_ERRNO": configs.Errno,
+-	"SCMP_ACT_TRAP":  configs.Trap,
+-	"SCMP_ACT_ALLOW": configs.Allow,
+-	"SCMP_ACT_TRACE": configs.Trace,
+-	"SCMP_ACT_LOG":   configs.Log,
++	"SCMP_ACT_KILL":       configs.Kill,
++	"SCMP_ACT_ERRNO":      configs.Errno,
++	"SCMP_ACT_TRAP":       configs.Trap,
++	"SCMP_ACT_ALLOW":      configs.Allow,
++	"SCMP_ACT_TRACE":      configs.Trace,
++	"SCMP_ACT_LOG":        configs.Log,
++	"SCMP_ACT_USER_NOTIF": configs.UserNotif,
+ }
+ 
+ var archs = map[string]string{
+diff --git a/libcontainer/seccomp/seccomp_linux.go b/libcontainer/seccomp/seccomp_linux.go
+index 2370a5be..1f8ddef0 100644
+--- a/libcontainer/seccomp/seccomp_linux.go
++++ b/libcontainer/seccomp/seccomp_linux.go
+@@ -16,12 +16,13 @@ import (
+ )
+ 
+ var (
+-	actAllow = libseccomp.ActAllow
+-	actTrap  = libseccomp.ActTrap
+-	actKill  = libseccomp.ActKill
+-	actTrace = libseccomp.ActTrace.SetReturnCode(int16(unix.EPERM))
+-	actLog   = libseccomp.ActLog
+-	actErrno = libseccomp.ActErrno.SetReturnCode(int16(unix.EPERM))
++	actAllow     = libseccomp.ActAllow
++	actTrap      = libseccomp.ActTrap
++	actKill      = libseccomp.ActKill
++	actTrace     = libseccomp.ActTrace.SetReturnCode(int16(unix.EPERM))
++	actLog       = libseccomp.ActLog
++	actErrno     = libseccomp.ActErrno.SetReturnCode(int16(unix.EPERM))
++	actUserNotif = libseccomp.ActUserNotif
+ )
+ 
+ const (
+@@ -33,54 +34,54 @@ const (
+ // Started in the container init process, and carried over to all child processes
+ // Setns calls, however, require a separate invocation, as they are not children
+ // of the init until they join the namespace
+-func InitSeccomp(config *configs.Seccomp) error {
++func InitSeccomp(config *configs.Seccomp) (int, error) {
+ 	if config == nil {
+-		return errors.New("cannot initialize Seccomp - nil config passed")
++		return -1, errors.New("cannot initialize Seccomp - nil config passed")
+ 	}
+ 
+ 	defaultAction, err := getAction(config.DefaultAction, nil)
+ 	if err != nil {
+-		return errors.New("error initializing seccomp - invalid default action")
++		return -1, errors.New("error initializing seccomp - invalid default action")
+ 	}
+ 
+ 	filter, err := libseccomp.NewFilter(defaultAction)
+ 	if err != nil {
+-		return fmt.Errorf("error creating filter: %s", err)
++		return -1, fmt.Errorf("error creating filter: %s", err)
+ 	}
+ 
+ 	// Add extra architectures
+ 	for _, arch := range config.Architectures {
+ 		scmpArch, err := libseccomp.GetArchFromString(arch)
+ 		if err != nil {
+-			return fmt.Errorf("error validating Seccomp architecture: %s", err)
++			return -1, fmt.Errorf("error validating Seccomp architecture: %s", err)
+ 		}
+ 
+ 		if err := filter.AddArch(scmpArch); err != nil {
+-			return fmt.Errorf("error adding architecture to seccomp filter: %s", err)
++			return -1, fmt.Errorf("error adding architecture to seccomp filter: %s", err)
+ 		}
+ 	}
+ 
+ 	// Unset no new privs bit
+ 	if err := filter.SetNoNewPrivsBit(false); err != nil {
+-		return fmt.Errorf("error setting no new privileges: %s", err)
++		return -1, fmt.Errorf("error setting no new privileges: %s", err)
+ 	}
+ 
+ 	// Add a rule for each syscall
+ 	for _, call := range config.Syscalls {
+ 		if call == nil {
+-			return errors.New("encountered nil syscall while initializing Seccomp")
++			return -1, errors.New("encountered nil syscall while initializing Seccomp")
+ 		}
+ 
+ 		if err = matchCall(filter, call); err != nil {
+-			return err
++			return -1, err
+ 		}
+ 	}
+ 
+-	if err = filter.Load(); err != nil {
+-		return fmt.Errorf("error loading seccomp filter into kernel: %s", err)
++	if seccompFd, err := filter.Load(); err != nil {
++		return -1, fmt.Errorf("error loading seccomp filter into kernel: %s", err)
++	} else {
++		return seccompFd, nil
+ 	}
+-
+-	return nil
+ }
+ 
+ // IsEnabled returns if the kernel has been configured to support seccomp.
+@@ -122,6 +123,8 @@ func getAction(act configs.Action, errnoRet *uint) (libseccomp.ScmpAction, error
+ 		return actTrace, nil
+ 	case configs.Log:
+ 		return actLog, nil
++	case configs.UserNotif:
++		return actUserNotif, nil
+ 	default:
+ 		return libseccomp.ActInvalid, errors.New("invalid action, cannot use in rule")
+ 	}
+diff --git a/libcontainer/setns_init_linux.go b/libcontainer/setns_init_linux.go
+index 0b9cd885..4b9b6224 100644
+--- a/libcontainer/setns_init_linux.go
++++ b/libcontainer/setns_init_linux.go
+@@ -69,7 +69,7 @@ func (l *linuxSetnsInit) Init() error {
+ 	// do this before dropping capabilities; otherwise do it as late as possible
+ 	// just before execve so as few syscalls take place after it as possible.
+ 	if l.config.Config.Seccomp != nil && !l.config.NoNewPrivileges {
+-		if err := seccomp.InitSeccomp(l.config.Config.Seccomp); err != nil {
++		if _, err := seccomp.InitSeccomp(l.config.Config.Seccomp); err != nil {
+ 			return err
+ 		}
+ 	}
+@@ -83,8 +83,14 @@ func (l *linuxSetnsInit) Init() error {
+ 	// place afterward (reducing the amount of syscalls that users need to
+ 	// enable in their seccomp profiles).
+ 	if l.config.Config.Seccomp != nil && l.config.NoNewPrivileges {
+-		if err := seccomp.InitSeccomp(l.config.Config.Seccomp); err != nil {
++		if seccompFd, err := seccomp.InitSeccomp(l.config.Config.Seccomp); err != nil {
+ 			return newSystemErrorWithCause(err, "init seccomp")
++		} else {
++			if seccompFd != -1 {
++				if err := syncParentSeccompHooks(l.pipe, seccompFd); err != nil {
++					return errors.Wrap(err, "seccomp hooks")
++				}
++			}
+ 		}
+ 	}
+ 	return system.Execv(l.config.Args[0], l.config.Args[0:], os.Environ())
+diff --git a/libcontainer/specconv/spec_linux.go b/libcontainer/specconv/spec_linux.go
+index 11235acc..51fc083c 100644
+--- a/libcontainer/specconv/spec_linux.go
++++ b/libcontainer/specconv/spec_linux.go
+@@ -910,6 +910,10 @@ func createHooks(rspec *specs.Spec, config *configs.Config) {
+ 			cmd := createCommandHook(h)
+ 			config.Hooks[configs.CreateRuntime] = append(config.Hooks[configs.CreateRuntime], configs.NewCommandHook(cmd))
+ 		}
++		for _, h := range rspec.Hooks.SendSeccompFd {
++			cmd := createCommandHook(h)
++			config.Hooks[configs.SendSeccompFd] = append(config.Hooks[configs.SendSeccompFd], configs.NewCommandHook(cmd))
++		}
+ 		for _, h := range rspec.Hooks.CreateContainer {
+ 			cmd := createCommandHook(h)
+ 			config.Hooks[configs.CreateContainer] = append(config.Hooks[configs.CreateContainer], configs.NewCommandHook(cmd))
+diff --git a/libcontainer/standard_init_linux.go b/libcontainer/standard_init_linux.go
+index b20ce148..bdfe37f6 100644
+--- a/libcontainer/standard_init_linux.go
++++ b/libcontainer/standard_init_linux.go
+@@ -140,12 +140,6 @@ func (l *linuxStandardInit) Init() error {
+ 			return errors.Wrap(err, "set nonewprivileges")
+ 		}
+ 	}
+-	// Tell our parent that we're ready to Execv. This must be done before the
+-	// Seccomp rules have been applied, because we need to be able to read and
+-	// write to a socket.
+-	if err := syncParentReady(l.pipe); err != nil {
+-		return errors.Wrap(err, "sync ready")
+-	}
+ 	if err := selinux.SetExecLabel(l.config.ProcessLabel); err != nil {
+ 		return errors.Wrap(err, "set process label")
+ 	}
+@@ -154,10 +148,22 @@ func (l *linuxStandardInit) Init() error {
+ 	// do this before dropping capabilities; otherwise do it as late as possible
+ 	// just before execve so as few syscalls take place after it as possible.
+ 	if l.config.Config.Seccomp != nil && !l.config.NoNewPrivileges {
+-		if err := seccomp.InitSeccomp(l.config.Config.Seccomp); err != nil {
++		if seccompFd, err := seccomp.InitSeccomp(l.config.Config.Seccomp); err != nil {
+ 			return err
++		} else {
++			if seccompFd != -1 {
++				if err := syncParentSeccompHooks(l.pipe, seccompFd); err != nil {
++					return errors.Wrap(err, "seccomp hooks")
++				}
++			}
+ 		}
+ 	}
++	// Tell our parent that we're ready to Execv. This must be done before the
++	// Seccomp rules have been applied, because we need to be able to read and
++	// write to a socket.
++	if err := syncParentReady(l.pipe); err != nil {
++		return errors.Wrap(err, "sync ready")
++	}
+ 	if err := finalizeNamespace(l.config); err != nil {
+ 		return err
+ 	}
+@@ -203,8 +209,14 @@ func (l *linuxStandardInit) Init() error {
+ 	// place afterward (reducing the amount of syscalls that users need to
+ 	// enable in their seccomp profiles).
+ 	if l.config.Config.Seccomp != nil && l.config.NoNewPrivileges {
+-		if err := seccomp.InitSeccomp(l.config.Config.Seccomp); err != nil {
++		if seccompFd, err := seccomp.InitSeccomp(l.config.Config.Seccomp); err != nil {
+ 			return newSystemErrorWithCause(err, "init seccomp")
++		} else {
++			if seccompFd != -1 {
++				if err := syncParentSeccompHooks(l.pipe, seccompFd); err != nil {
++					return errors.Wrap(err, "seccomp hooks")
++				}
++			}
+ 		}
+ 	}
+ 
+diff --git a/libcontainer/sync.go b/libcontainer/sync.go
+index ac88ad22..fa2c6150 100644
+--- a/libcontainer/sync.go
++++ b/libcontainer/sync.go
+@@ -22,22 +22,34 @@ type syncType string
+ //
+ // procReady   --> [final setup]
+ //             <-- procRun
++//
++// procSeccomp --> [pick up seccomp fd with pidfd_getfd()]
++//             <-- procSeccompDone
+ const (
+-	procError  syncType = "procError"
+-	procReady  syncType = "procReady"
+-	procRun    syncType = "procRun"
+-	procHooks  syncType = "procHooks"
+-	procResume syncType = "procResume"
++	procError       syncType = "procError"
++	procReady       syncType = "procReady"
++	procRun         syncType = "procRun"
++	procHooks       syncType = "procHooks"
++	procResume      syncType = "procResume"
++	procSeccomp     syncType = "procSeccomp"
++	procSeccompDone syncType = "procSeccompDone"
+ )
+ 
+ type syncT struct {
+ 	Type syncType `json:"type"`
++	Fd   int      `json:"fd"`
+ }
+ 
+ // writeSync is used to write to a synchronisation pipe. An error is returned
+ // if there was a problem writing the payload.
+ func writeSync(pipe io.Writer, sync syncType) error {
+-	return utils.WriteJSON(pipe, syncT{sync})
++	return utils.WriteJSON(pipe, syncT{sync, -1})
++}
++
++// writeSyncWithFd is used to write to a synchronisation pipe. An error is
++// returned if there was a problem writing the payload.
++func writeSyncWithFd(pipe io.Writer, sync syncType, fd int) error {
++	return utils.WriteJSON(pipe, syncT{sync, fd})
+ }
+ 
+ // readSync is used to read from a synchronisation pipe. An error is returned
+diff --git a/vendor/github.com/opencontainers/runtime-spec/specs-go/config.go b/vendor/github.com/opencontainers/runtime-spec/specs-go/config.go
+index 3dc9efd2..97555a41 100644
+--- a/vendor/github.com/opencontainers/runtime-spec/specs-go/config.go
++++ b/vendor/github.com/opencontainers/runtime-spec/specs-go/config.go
+@@ -134,6 +134,9 @@ type Hooks struct {
+ 	// CreateRuntime is a list of hooks to be run after the container has been created but before pivot_root or any equivalent operation has been called
+ 	// It is called in the Runtime Namespace
+ 	CreateRuntime []Hook `json:"createRuntime,omitempty"`
++	// SendSeccompFd is a list of hooks to be run after a new seccomp fd is created
++	// It is called in the Runtime Namespace
++	SendSeccompFd []Hook `json:"sendSeccompFd,omitempty"`
+ 	// CreateContainer is a list of hooks to be run after the container has been created but before pivot_root or any equivalent operation has been called
+ 	// It is called in the Container Namespace
+ 	CreateContainer []Hook `json:"createContainer,omitempty"`
+diff --git a/vendor/github.com/opencontainers/runtime-spec/specs-go/state.go b/vendor/github.com/opencontainers/runtime-spec/specs-go/state.go
+index e2e64c66..57481f02 100644
+--- a/vendor/github.com/opencontainers/runtime-spec/specs-go/state.go
++++ b/vendor/github.com/opencontainers/runtime-spec/specs-go/state.go
+@@ -5,17 +5,17 @@ type ContainerState string
+ 
+ const (
+ 	// StateCreating indicates that the container is being created
+-	StateCreating ContainerState  = "creating"
++	StateCreating ContainerState = "creating"
+ 
+ 	// StateCreated indicates that the runtime has finished the create operation
+-	StateCreated ContainerState  = "created"
++	StateCreated ContainerState = "created"
+ 
+ 	// StateRunning indicates that the container process has executed the
+ 	// user-specified program but has not exited
+-	StateRunning ContainerState  = "running"
++	StateRunning ContainerState = "running"
+ 
+ 	// StateStopped indicates that the container process has exited
+-	StateStopped ContainerState  = "stopped"
++	StateStopped ContainerState = "stopped"
+ )
+ 
+ // State holds information about the runtime state of the container.
+@@ -32,4 +32,6 @@ type State struct {
+ 	Bundle string `json:"bundle"`
+ 	// Annotations are key values associated with the container.
+ 	Annotations map[string]string `json:"annotations,omitempty"`
++
++	SeccompFd int `json:"seccompFd"`
+ }
+diff --git a/vendor/github.com/seccomp/libseccomp-golang/seccomp.go b/vendor/github.com/seccomp/libseccomp-golang/seccomp.go
+index a3cc5382..8b7df871 100644
+--- a/vendor/github.com/seccomp/libseccomp-golang/seccomp.go
++++ b/vendor/github.com/seccomp/libseccomp-golang/seccomp.go
+@@ -141,6 +141,9 @@ const (
+ 	// This action is only usable when libseccomp API level 3 or higher is
+ 	// supported.
+ 	ActLog ScmpAction = iota
++	// ActUserNotif causes the syscall to notify an agent via the seccomp
++	// fd.
++	ActUserNotif ScmpAction = iota
+ )
+ 
+ const (
+@@ -301,6 +304,8 @@ func (a ScmpAction) String() string {
+ 			(a >> 16))
+ 	case ActLog:
+ 		return "Action: Log system call"
++	case ActUserNotif:
++		return "Action: Notify user"
+ 	case ActAllow:
+ 		return "Action: Allow system call"
+ 	default:
+@@ -519,12 +524,18 @@ func NewFilter(defaultAction ScmpAction) (*ScmpFilter, error) {
+ 	filter.valid = true
+ 	runtime.SetFinalizer(filter, filterFinalizer)
+ 
+-	// Enable TSync so all goroutines will receive the same rules
+-	// If the kernel does not support TSYNC, allow us to continue without error
+-	if err := filter.setFilterAttr(filterAttrTsync, 0x1); err != nil && err != syscall.ENOTSUP {
+-		filter.Release()
+-		return nil, fmt.Errorf("could not create filter - error setting tsync bit: %v", err)
+-	}
++	// FIXME: We need to be able to use filterAttrTsync + filterAttrUserNotif together
++	// Needs: Linux 5.7
++	// See: https://github.com/torvalds/linux/commit/51891498f2da78ee64dfad88fa53c9e85fb50abf
++	// Since I am testing on 5.6.11-200.fc31.x86_64, I disable Tsync as a workaround...
++	// TODO: fix the test below. And use Linux with the patch above...
++
++	// // Enable TSync so all goroutines will receive the same rules
++	// // If the kernel does not support TSYNC, allow us to continue without error
++	// if err := filter.setFilterAttr(filterAttrTsync, 0x1); err != nil && err != syscall.ENOTSUP {
++	//	filter.Release()
++	//	return nil, fmt.Errorf("could not create filter - error setting tsync bit: %v", err)
++	// }
+ 
+ 	return filter, nil
+ }
+@@ -696,19 +707,20 @@ func (f *ScmpFilter) RemoveArch(arch ScmpArch) error {
+ 
+ // Load loads a filter context into the kernel.
+ // Returns an error if the filter context is invalid or the syscall failed.
+-func (f *ScmpFilter) Load() error {
++func (f *ScmpFilter) Load() (int, error) {
+ 	f.lock.Lock()
+ 	defer f.lock.Unlock()
+ 
+ 	if !f.valid {
+-		return errBadFilter
++		return -1, errBadFilter
+ 	}
+ 
+ 	if retCode := C.seccomp_load(f.filterCtx); retCode != 0 {
+-		return syscall.Errno(-1 * retCode)
++		return -1, syscall.Errno(-1 * retCode)
+ 	}
+ 
+-	return nil
++	fd := int(C.seccomp_notify_fd(f.filterCtx))
++	return fd, nil
+ }
+ 
+ // GetDefaultAction returns the default action taken on a syscall which does not
+diff --git a/vendor/github.com/seccomp/libseccomp-golang/seccomp_internal.go b/vendor/github.com/seccomp/libseccomp-golang/seccomp_internal.go
+index 4e36b27a..282dbd30 100644
+--- a/vendor/github.com/seccomp/libseccomp-golang/seccomp_internal.go
++++ b/vendor/github.com/seccomp/libseccomp-golang/seccomp_internal.go
+@@ -71,12 +71,16 @@ const uint32_t C_ARCH_S390X        = SCMP_ARCH_S390X;
+ #ifndef SCMP_ACT_LOG
+ #define SCMP_ACT_LOG 0x7ffc0000U
+ #endif
++#ifndef SCMP_ACT_USER_NOTIF
++#define SCMP_ACT_USER_NOTIF 0x7fc00000U
++#endif
+ 
+ const uint32_t C_ACT_KILL          = SCMP_ACT_KILL;
+ const uint32_t C_ACT_TRAP          = SCMP_ACT_TRAP;
+ const uint32_t C_ACT_ERRNO         = SCMP_ACT_ERRNO(0);
+ const uint32_t C_ACT_TRACE         = SCMP_ACT_TRACE(0);
+ const uint32_t C_ACT_LOG           = SCMP_ACT_LOG;
++const uint32_t C_ACT_USER_NOTIF    = SCMP_ACT_USER_NOTIF;
+ const uint32_t C_ACT_ALLOW         = SCMP_ACT_ALLOW;
+ 
+ // The libseccomp SCMP_FLTATR_CTL_LOG member of the scmp_filter_attr enum was
+@@ -203,7 +207,7 @@ const (
+ 	archEnd   ScmpArch = ArchS390X
+ 	// Comparison boundaries to check for action validity
+ 	actionStart ScmpAction = ActKill
+-	actionEnd   ScmpAction = ActLog
++	actionEnd   ScmpAction = ActUserNotif
+ 	// Comparison boundaries to check for comparison operator validity
+ 	compareOpStart ScmpCompareOp = CompareNotEqual
+ 	compareOpEnd   ScmpCompareOp = CompareMaskedEqual
+@@ -525,6 +529,8 @@ func actionFromNative(a C.uint32_t) (ScmpAction, error) {
+ 		return ActTrace.SetReturnCode(int16(aTmp)), nil
+ 	case C.C_ACT_LOG:
+ 		return ActLog, nil
++	case C.C_ACT_USER_NOTIF:
++		return ActUserNotif, nil
+ 	case C.C_ACT_ALLOW:
+ 		return ActAllow, nil
+ 	default:
+@@ -545,6 +551,8 @@ func (a ScmpAction) toNative() C.uint32_t {
+ 		return C.C_ACT_TRACE | (C.uint32_t(a) >> 16)
+ 	case ActLog:
+ 		return C.C_ACT_LOG
++	case ActUserNotif:
++		return C.C_ACT_USER_NOTIF
+ 	case ActAllow:
+ 		return C.C_ACT_ALLOW
+ 	default:
