@@ -15,15 +15,17 @@ diff --git a/Makefile b/Makefile
 index 4d29c7370b46..a04c9783adac 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -143,7 +143,7 @@ $(filter-out _all sub-make $(CURDIR)/Makefile, $(MAKECMDGOALS)) _all: sub-make
+@@ -230,9 +230,7 @@ else
+ 	building_out_of_srctree := 1
  endif
- 
- ifneq ($(KBUILD_ABS_SRCTREE),)
+
+-ifneq ($(KBUILD_ABS_SRCTREE),)
 -srctree := $(abs_srctree)
+-endif
 +srctree := $(shell realpath --relative-to=$(KBUILD_OUTPUT) $(abs_srctree))
- endif
- 
+
  objtree		:= .
--- 
-2.21.0
+ VPATH		:= $(srctree)
+--
+2.26.2
 
