@@ -7,7 +7,7 @@
 EAPI=7
 
 # Flatcar: Use cros setup
-CROS_WORKON_PROJECT="flatcar-linux/systemd"
+CROS_WORKON_PROJECT="kinvolk/systemd"
 CROS_WORKON_REPO="git://github.com"
 
 if [[ ${PV} == 9999 ]]; then
@@ -16,7 +16,7 @@ if [[ ${PV} == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64 ~arm ~x86"
 else
 	# Flatcar: Use cros setup
-	CROS_WORKON_COMMIT="d5568ff804c2bda9a3869aa249bb6300aa3be7dd" # v245-flatcar
+	CROS_WORKON_COMMIT="5fe0e614b88198e4e3e05add4de50bcc470e5922" # v245-flatcar
 	KEYWORDS="~alpha amd64 ~arm arm64 ~ia64 ~ppc ~ppc64 ~sparc ~x86"
 fi
 
