@@ -84,8 +84,6 @@ src_configure() {
 		# --with-default-luks-format=LUKS2
 		--with-tmpfilesdir="${EPREFIX%/}/usr/lib/tmpfiles.d"
 		--with-crypto_backend=$(for x in ${CRYPTO_BACKENDS//+/} ; do usev ${x} ; done)
-		#$(use_enable fips)
-		--enable-fips
 		$(use_enable argon2 libargon2)
 		$(use_enable nls)
 		$(use_enable pwquality)
