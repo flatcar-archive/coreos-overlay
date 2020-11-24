@@ -15,6 +15,3 @@ sys-boot/syslinux perl
 
 # not needed, problems building with GCC 7.3.0
 sys-libs/ncurses cxx
-
-# 'static-libs' support on sys-apps/systemd is not provided
-sys-fs/cryptsetup static static-libs
