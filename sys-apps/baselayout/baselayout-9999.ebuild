@@ -113,6 +113,23 @@ src_install() {
 	for sym in "${!LIB_SYMS[@]}" ; do
 		dosym "${LIB_SYMS[$sym]}" "${sym}"
 	done
+
+	if use cros_host; then
+		# Since later systemd-tmpfiles --root is used only users from
+		# /etc/passwd are considered but we don't want to add core there
+		# because it would make emerge overwrite the system's database on
+		# installation when the SDK user is already there. Instead, just
+		# create the folder manually and remove the tmpfile directive.
+		rm "${S}/tmpfiles.d/baselayout-home.conf"
+		mkdir -p "${D}"/home/core
+		chown 500:500 "${D}"/home/core
+	else
+		# Initialize /etc/passwd, group, and friends now, so
+		# systemd-tmpfiles can resolve user information in ${D}
+		# rootfs.
+		bash "scripts/flatcar-tmpfiles" "${D}" "${S}/baselayout" || die
+	fi
+
 	if use symlink-usr; then
 		systemd_dotmpfilesd "${T}/baselayout-usr.conf"
 		systemd-tmpfiles --root="${D}" --create
@@ -162,9 +179,6 @@ src_install() {
 		mv "${D}"/usr/lib/modprobe.d "${D}"/lib/modprobe.d || die
 	fi
 
-	# For compatibility with older SDKs which use 1000 for the core user.
-	fowners -R 500:500 /home/core || die
-
 	if use arm64; then
 		sed -i 's/ sss//' "${D}"/usr/share/baselayout/nsswitch.conf || die
 	fi
@@ -181,7 +195,6 @@ src_install() {
 			"${D}"/usr/lib/tmpfiles.d/baselayout-etc.conf || die
 
 		# Initialize /etc/passwd, group, and friends on boot.
-		bash "scripts/flatcar-tmpfiles" "${D}" || die
 		dosbin "scripts/flatcar-tmpfiles"
 		systemd_dounit "scripts/flatcar-tmpfiles.service"
 		systemd_enable_service sysinit.target flatcar-tmpfiles.service
