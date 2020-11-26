@@ -5,7 +5,7 @@ EAPI=6
 
 GITHUB_URI="github.com/containerd/containerd"
 COREOS_GO_PACKAGE="${GITHUB_URI}"
-COREOS_GO_VERSION="go1.13"
+COREOS_GO_VERSION="go1.15"
 
 if [[ ${PV} == *9999 ]]; then
 	EGIT_REPO_URI="https://${GITHUB_URI}.git"
@@ -13,7 +13,7 @@ if [[ ${PV} == *9999 ]]; then
 else
 	MY_PV="${PV/_rc/-rc.}"
 	EGIT_COMMIT="v${MY_PV}"
-	CONTAINERD_COMMIT="40779f9760e207feb7ff24cf21236bf5e63b2b17"
+	CONTAINERD_COMMIT="380151a8cd5a993e485ad4f4fd93c881b65cc13f"
 	SRC_URI="https://${GITHUB_URI}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="amd64 arm64"
 	inherit vcs-snapshot
@@ -29,7 +29,7 @@ SLOT="0"
 IUSE="+btrfs hardened"
 
 DEPEND="btrfs? ( sys-fs/btrfs-progs )"
-RDEPEND="~app-emulation/docker-runc-1.0.0_rc90
+RDEPEND="~app-emulation/docker-runc-1.0.0_rc92
 	sys-libs/libseccomp"
 
 S=${WORKDIR}/${P}/src/${COREOS_GO_PACKAGE}
@@ -58,7 +58,7 @@ src_compile() {
 }
 
 src_install() {
-	dobin bin/containerd{-shim,-stress,} bin/ctr
+	dobin bin/containerd{-shim,-shim-runc-v*,-stress,} bin/ctr
 	systemd_newunit "${FILESDIR}/${PN}-1.0.0.service" "${PN}.service"
 	insinto /usr/share/containerd
 	doins "${FILESDIR}/config.toml"

@@ -20,12 +20,10 @@ dev-python/boto
 # no version marked stable upstream
 dev-util/checkbashisms
 
-# Older versions of sssd fail to build
-=sys-auth/sssd-1.13.1 ~amd64 ~arm64
-
-# heap overflow fix
+# jq 1.5-r2 for heap overflow fix
 # https://bugs.gentoo.org/show_bug.cgi?id=580606
-=app-misc/jq-1.5-r2 ~amd64 ~arm64
+# jq 1.6-r3 for CVE-2015-8863
+>=app-misc/jq-1.5-r2 ~amd64 ~arm64
 
 # Must use the same version across all architectures
 =dev-libs/protobuf-2.6.1-r3
@@ -46,10 +44,14 @@ dev-util/checkbashisms
 # https://git.kernel.org/pub/scm/linux/kernel/git/shemminger/iproute2.git/commit/?id=d6a4076b6ba6547d7e52c377a7c58c56eb5ea16e
 =sys-apps/iproute2-4.13.0 ~amd64 ~arm64
 
-# Upgrade to GCC 7.3 for retpoline support.
-=sys-devel/gcc-7.3.0
-=cross-aarch64-cros-linux-gnu/gcc-7.3.0 ~arm64
-=cross-x86_64-cros-linux-gnu/gcc-7.3.0 ~amd64
+# Upgrade to GCC 9.3.0 to support latest glibc builds
+=sys-devel/gcc-config-1.9.1 ~amd64 ~arm64
+=sys-devel/binutils-2.35 ~amd64 ~arm64
+=sys-libs/binutils-libs-2.35 ~amd64 ~arm64
+=sys-devel/gcc-8.3.0  ~amd64 ~arm64
+=sys-devel/gcc-9.3.0-r1 ~amd64 ~arm64
+=cross-aarch64-cros-linux-gnu/gcc-9.3.0-r1 ~arm64
+=cross-x86_64-cros-linux-gnu/gcc-9.3.0-r1 ~amd64
 
 # Force upgrades to work around catalyst problems while upgrading ncurses.
 =app-crypt/gnupg-2.2.20 ~amd64 ~arm64
@@ -79,6 +81,11 @@ dev-util/checkbashisms
 
 >=dev-util/strace-5.3 ~amd64 ~arm64
 
-=dev-lang/rust-1.44.1 ~amd64 ~arm64
+=dev-lang/rust-1.46.0 ~amd64 ~arm64
 
 =sys-fs/cryptsetup-2.0.3 ~amd64
+
+=sys-libs/libseccomp-2.5.0 ~amd64 ~arm64
+
+>=dev-util/dwarves-1.18 ~amd64
+>=dev-libs/elfutils-0.178 ~amd64

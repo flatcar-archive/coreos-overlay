@@ -1,33 +1,30 @@
 # Copyright 2011-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-# Flatcar: Based on systemd-245.5.ebuild from commit
-# 960277ffec44c6245e1ae16b3b36fed9d76496b1 in gentoo repo.
+# Flatcar: Based on systemd-246-r2.ebuild from commit
+# 4bf7b81548f70cbf7ce5ae377e85fd21ae259ce7 in gentoo repo (see
+# https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-apps/systemd/systemd-246-r2.ebuild?id=4bf7b81548f70cbf7ce5ae377e85fd21ae259ce7).
 
 EAPI=7
 
-# Flatcar: Use cros setup
-CROS_WORKON_PROJECT="kinvolk/systemd"
-CROS_WORKON_REPO="git://github.com"
-
 if [[ ${PV} == 9999 ]]; then
-	# Flatcar: Use cros setup
-	# Use ~arch instead of empty keywords for compatibility with cros-workon
-	KEYWORDS="~amd64 ~arm64 ~arm ~x86"
+	EGIT_REPO_URI="https://github.com/systemd/systemd.git"
+	inherit git-r3
 else
-	# Flatcar: Use cros setup
-	CROS_WORKON_COMMIT="29cb7c447e3544e74b45b067909019893a5132d2" # v245-flatcar
-	KEYWORDS="~alpha amd64 ~arm arm64 ~ia64 ~ppc ~ppc64 ~sparc ~x86"
+	if [[ ${PV} == *.* ]]; then
+		MY_PN=systemd-stable
+	else
+		MY_PN=systemd
+	fi
+	MY_PV=${PV/_/-}
+	MY_P=${MY_PN}-${MY_PV}
+	S=${WORKDIR}/${MY_P}
+	SRC_URI="https://github.com/systemd/${MY_PN}/archive/v${MY_PV}/${MY_P}.tar.gz"
+	KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~mips ppc ppc64 sparc x86"
 fi
 
 # Flatcar: We still have python 3.5, and have no python3.8 yet.
 PYTHON_COMPAT=( python3_{5,6,7} )
-
-# Flatcar: cros-workon must be imported first, in cases where
-# cros-workon and another eclass exports the same function (say
-# src_compile) we want the later eclass's version to win. Only need
-# src_unpack from workon.
-inherit cros-workon
 
 inherit bash-completion-r1 linux-info meson multilib-minimal ninja-utils pam python-any-r1 systemd toolchain-funcs udev user
 
@@ -39,7 +36,7 @@ SLOT="0/2"
 # Flatcar: Dropped cgroup-hybrid. We use legacy hierarchy by default
 # to keep docker working. Dropped static-libs, we don't care about
 # static libraries.
-IUSE="acl apparmor audit build cryptsetup curl elfutils +gcrypt gnuefi homed http +hwdb idn importd +kmod +lz4 lzma nat pam pcre pkcs11 policykit pwquality qrcode repart +resolvconf +seccomp selinux +split-usr ssl +sysv-utils test vanilla xkb"
+IUSE="acl apparmor audit build cryptsetup curl dns-over-tls elfutils +gcrypt gnuefi homed http +hwdb idn importd +kmod +lz4 lzma nat pam pcre pkcs11 policykit pwquality qrcode repart +resolvconf +seccomp selinux +split-usr ssl +sysv-utils test vanilla xkb +zstd"
 
 REQUIRED_USE="
 	homed? ( cryptsetup )
@@ -58,6 +55,7 @@ COMMON_DEPEND=">=sys-apps/util-linux-2.30:0=[${MULTILIB_USEDEP}]
 	audit? ( >=sys-process/audit-2:0= )
 	cryptsetup? ( >=sys-fs/cryptsetup-2.0.1:0= )
 	curl? ( net-misc/curl:0= )
+	dns-over-tls? ( >=net-libs/gnutls-3.6.0:0= )
 	elfutils? ( >=dev-libs/elfutils-0.158:0= )
 	gcrypt? ( >=dev-libs/libgcrypt-1.4.5:0=[${MULTILIB_USEDEP}] )
 	homed? ( ${OPENSSL_DEP} )
@@ -82,7 +80,9 @@ COMMON_DEPEND=">=sys-apps/util-linux-2.30:0=[${MULTILIB_USEDEP}]
 	repart? ( ${OPENSSL_DEP} )
 	seccomp? ( >=sys-libs/libseccomp-2.3.3:0= )
 	selinux? ( sys-libs/libselinux:0= )
-	xkb? ( >=x11-libs/libxkbcommon-0.4.1:0= )"
+	xkb? ( >=x11-libs/libxkbcommon-0.4.1:0= )
+	zstd? ( >=app-arch/zstd-1.4.0:0=[${MULTILIB_USEDEP}] )
+"
 
 RDEPEND="${COMMON_DEPEND}
 	sysv-utils? ( !sys-apps/sysvinit )
@@ -135,7 +135,7 @@ pkg_pretend() {
 		local CONFIG_CHECK="~AUTOFS4_FS ~BLK_DEV_BSG ~CGROUPS
 			~CHECKPOINT_RESTORE ~DEVTMPFS ~EPOLL ~FANOTIFY ~FHANDLE
 			~INOTIFY_USER ~IPV6 ~NET ~NET_NS ~PROC_FS ~SIGNALFD ~SYSFS
-			~TIMERFD ~TMPFS_XATTR ~UNIX
+			~TIMERFD ~TMPFS_XATTR ~UNIX ~USER_NS
 			~CRYPTO_HMAC ~CRYPTO_SHA256 ~CRYPTO_USER_API_HASH
 			~!GRKERNSEC_PROC ~!IDE ~!SYSFS_DEPRECATED
 			~!SYSFS_DEPRECATED_V2"
@@ -171,14 +171,40 @@ pkg_setup() {
 
 src_unpack() {
 	default
-	# Flatcar: Use cros setup.
-	cros-workon_src_unpack
+	[[ ${PV} != 9999 ]] || git-r3_src_unpack
 }
 
 src_prepare() {
-	# Flatcar: We don't have separate patches, so no patching code here.
+	# Do NOT add patches here
+	local PATCHES=()
+
+	[[ -d "${WORKDIR}"/patches ]] && PATCHES+=( "${WORKDIR}"/patches )
+
+	# Add local patches here
+	PATCHES+=(
+		# Flatcar: Adding our own patches here.
+		"${FILESDIR}/0001-sysctl.d-50-default.conf-remove-.all-source-route-se.patch"
+		"${FILESDIR}/0002-sysctl.d-50-default-better-comments-re-activate-prom.patch"
+		"${FILESDIR}/0003-sysctl.d-50-default.conf-re-activate-default-accept_.patch"
+		"${FILESDIR}/0004-wait-online-set-any-by-default.patch"
+		"${FILESDIR}/0005-networkd-default-to-kernel-IPForwarding-setting.patch"
+		"${FILESDIR}/0006-needs-update-don-t-require-strictly-newer-usr.patch"
+		"${FILESDIR}/0007-core-use-max-for-DefaultTasksMax.patch"
+		"${FILESDIR}/0008-systemd-Disable-SELinux-permissions-checks.patch"
+	)
+
+	# Flatcar: We carry our own patches, we don't use the ones
+	# from Gentoo. Thus we dropped the `if ! use vanilla` code
+	# here.
 	#
 	# Flatcar: Use the resolv.conf managed by systemd-resolved.
+	# This shouldn't be necessary anymore. Added because of a bug
+	# https://github.com/systemd/systemd/issues/3826, which is
+	# apparently resolved in
+	# https://github.com/systemd/systemd/pull/5276 but another reason is
+	# that when /etc/resolve.conf is bind-mounted to a new network
+	# namespace it shouldn't contain the loopback IP address of the host
+	# which is not reachable from another network namespace.
 	sed -i -e 's,/run/systemd/resolve/stub-resolv.conf,/run/systemd/resolve/resolv.conf,' tmpfiles.d/etc.conf.m4 || die
 
 	default
@@ -258,6 +284,7 @@ multilib_src_configure() {
 		-Dkmod=$(meson_multilib_native_use kmod)
 		-Dlz4=$(meson_use lz4)
 		-Dxz=$(meson_use lzma)
+		-Dzstd=$(meson_use zstd)
 		-Dlibiptc=$(meson_multilib_native_use nat)
 		-Dpam=$(meson_use pam)
 		-Dp11kit=$(meson_multilib_native_use pkcs11)
@@ -433,16 +460,25 @@ multilib_src_install_all() {
 	# Flatcar: getty@.service is enabled manually below.
 	systemd_enable_service sysinit.target systemd-timesyncd.service
 	systemd_enable_service multi-user.target systemd-networkd.service
-	# For systemd-networkd.service, it has it in Also, which also
+	# Flatcar: For systemd-networkd.service, it has it in Also, which also
 	# needs to be enabled
 	systemd_enable_service sockets.target systemd-networkd.socket
-	# For systemd-networkd.service, it has it in Also, which also
+	# Flatcar: For systemd-networkd.service, it has it in Also, which also
 	# needs to be enabled
 	systemd_enable_service network-online.target systemd-networkd-wait-online.service
 	systemd_enable_service multi-user.target systemd-resolved.service
+	if use homed; then
+		systemd_enable_service multi-user.target systemd-homed.target
+		# Flatcar: systemd-homed.target has
+		# Also=systemd-userdbd.service, but the service has no
+		# WantedBy entry. It's likely going to be executed through
+		# systemd-userdbd.socket, which is enabled in upstream's
+		# presets file.
+		systemd_enable_service sockets.target systemd-userdbd.socket
+	fi
+	systemd_enable_service sysinit.target systemd-pstore.service
 	# Flatcar: not enabling reboot.target - it has no WantedBy
 	# entry.
-	systemd_enable_service remount-fs.target systemd-pstore.service
 
 	# Flatcar: Enable getty manually.
 	mkdir --parents "${ED}/usr/lib/systemd/system/getty.target.wants"
