@@ -112,6 +112,7 @@ RDEPEND="${RDEPEND}
 	coreos-base/coreos-init
 	coreos-base/update-ssh-keys
 	coreos-base/update_engine
+	coreos-base/update-vendortools
 	dev-db/etcdctl
 	dev-util/strace
 	dev-vcs/git

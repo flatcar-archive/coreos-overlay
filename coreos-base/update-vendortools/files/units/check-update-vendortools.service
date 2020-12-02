@@ -1,0 +1,15 @@
+[Unit]
+Description=Vendor tools version validator and updater
+Wants=usr-share-oem.mount tmp.mount
+After=usr-share-oem.mount tmp.mount
+
+[Service]
+Type=simple
+Restart=no
+Environment=PATH=/opt/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+ExecStart=/usr/bin/check-update-vendortools.sh
+StandardOutput=journal+console
+StandardError=journal+console
+
+[Install]
+WantedBy=local-fs.target
