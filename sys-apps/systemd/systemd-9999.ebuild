@@ -16,7 +16,7 @@ if [[ ${PV} == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm64 ~arm ~x86"
 else
 	# Flatcar: Use cros setup
-	CROS_WORKON_COMMIT="5fe0e614b88198e4e3e05add4de50bcc470e5922" # v245-flatcar
+	CROS_WORKON_COMMIT="29cb7c447e3544e74b45b067909019893a5132d2" # v245-flatcar
 	KEYWORDS="~alpha amd64 ~arm arm64 ~ia64 ~ppc ~ppc64 ~sparc ~x86"
 fi
 
