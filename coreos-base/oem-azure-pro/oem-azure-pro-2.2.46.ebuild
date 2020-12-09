@@ -34,4 +34,6 @@ src_install() {
 	doins "${T}/oem-release"
 	doins -r "${FILESDIR}/base"
 	doins -r "${FILESDIR}/units"
+    insinto "/etc/flatcar"
+    doins "${FILESDIR}/update.conf"
 }
