@@ -8,6 +8,9 @@ subreaper = true
 oom_score = -999
 disabled_plugins = []
 
+[plugins.cri]
+disable_tcp_service = true
+
 # grpc configuration
 [grpc]
 address = "/run/docker/libcontainerd/docker-containerd.sock"
