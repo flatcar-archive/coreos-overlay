@@ -1,0 +1,10 @@
+[Unit]
+Description=Hyper-V VSS Protocol Daemon
+ConditionVirtualization=microsoft
+BindsTo=sys-devices-virtual-misc-vmbus\x21hv_vss.device
+
+[Service]
+ExecStart=/usr/sbin/hv_vss_daemon -n
+
+[Install]
+WantedBy=multi-user.target

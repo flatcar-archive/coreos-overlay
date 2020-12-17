@@ -21,6 +21,7 @@ S="${WORKDIR}"
 RDEPEND="
   ~app-emulation/wa-linux-agent-${PV}
   x11-drivers/nvidia-drivers
+  sys-apps/hyperv-daemons
 "
 
 src_prepare() {
