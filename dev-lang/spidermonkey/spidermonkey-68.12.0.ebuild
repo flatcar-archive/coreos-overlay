@@ -43,6 +43,10 @@ PATCH_URIS=(
 	https://dev.gentoo.org/~{whissi,polynomial-c,axs}/mozilla/patchsets/${SPIDERMONKEY_PATCHSET}.tar.xz
 )
 
+PATCHES=(
+	"${FILESDIR}"/0001-js-src-build-js.pc.in-Fix-cross-compiled-pkg-config-.patch
+)
+
 SRC_URI="${MOZ_SRC_URI}
 	${PATCH_URIS[@]}"
 
