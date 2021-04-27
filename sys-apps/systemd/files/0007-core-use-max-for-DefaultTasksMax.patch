@@ -21,23 +21,23 @@ Signed-off-by: Sayan Chowdhury <sayan@kinvolk.io>
  3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/man/systemd-system.conf.xml b/man/systemd-system.conf.xml
-index d39928ec23..4d89a68b16 100644
+index c64e57c277..c6824f976f 100644
 --- a/man/systemd-system.conf.xml
 +++ b/man/systemd-system.conf.xml
-@@ -376,7 +376,7 @@
+@@ -361,7 +361,7 @@
          <listitem><para>Configure the default value for the per-unit <varname>TasksMax=</varname> setting. See
          <citerefentry><refentrytitle>systemd.resource-control</refentrytitle><manvolnum>5</manvolnum></citerefentry>
          for details. This setting applies to all unit types that support resource control settings, with the exception
--        of slice units. Defaults to 15% of the minimum of <varname>kernel.pid_max=</varname>, <varname>kernel.threads-max=</varname>
-+        of slice units. Defaults to 100% of the minimum of <varname>kernel.pid_max=</varname>, <varname>kernel.threads-max=</varname>
-         and root cgroup <varname>pids.max</varname>.
-         Kernel has a default value for <varname>kernel.pid_max=</varname> and an algorithm of counting in case of more than 32 cores.
-         For example with the default <varname>kernel.pid_max=</varname>, <varname>DefaultTasksMax=</varname> defaults to 4915,
+-        of slice units. Defaults to 15%, which equals 4915 with the kernel's defaults on the host, but might be smaller
++        of slice units. Defaults to 100%, which equals 4915 with the kernel's defaults on the host, but might be smaller
+         in OS containers.</para></listitem>
+       </varlistentry>
+
 diff --git a/src/core/main.c b/src/core/main.c
-index 0ddd629851..5e25a1b4b7 100644
+index 9a834a875e..851c0a929d 100644
 --- a/src/core/main.c
 +++ b/src/core/main.c
-@@ -91,7 +91,7 @@
+@@ -90,7 +90,7 @@
  #include <sanitizer/lsan_interface.h>
  #endif
 
@@ -47,10 +47,10 @@ index 0ddd629851..5e25a1b4b7 100644
  static enum {
          ACTION_RUN,
 diff --git a/src/core/system.conf.in b/src/core/system.conf.in
-index fa6fb690c7..1e6df17d94 100644
+index 40bb548887..c6cddf4f79 100644
 --- a/src/core/system.conf.in
 +++ b/src/core/system.conf.in
-@@ -55,7 +55,7 @@
+@@ -52,7 +52,7 @@
  #DefaultBlockIOAccounting=no
  #DefaultMemoryAccounting=@MEMORY_ACCOUNTING_DEFAULT@
  #DefaultTasksAccounting=yes
@@ -61,5 +61,4 @@ index fa6fb690c7..1e6df17d94 100644
  #DefaultLimitDATA=
 --
 2.30.2
-
 
