@@ -86,6 +86,9 @@ COMMON_DEPEND=">=sys-apps/util-linux-2.30:0=[${MULTILIB_USEDEP}]
 "
 
 RDEPEND="${COMMON_DEPEND}
+	acct-group/users
+	>=acct-user/root-0-r1
+	acct-user/nobody
 	sysv-utils? ( !sys-apps/sysvinit )
 	!sysv-utils? ( sys-apps/sysvinit )
 	resolvconf? ( !net-dns/openresolv )
@@ -189,6 +192,7 @@ src_prepare() {
 		"${FILESDIR}/0006-needs-update-don-t-require-strictly-newer-usr.patch"
 		"${FILESDIR}/0007-core-use-max-for-DefaultTasksMax.patch"
 		"${FILESDIR}/0008-systemd-Disable-SELinux-permissions-checks.patch"
+		"${FILESDIR}/0009-rfkill.patch"
 	)
 
 	# Flatcar: We carry our own patches, we don't use the ones
