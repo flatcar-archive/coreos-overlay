@@ -1,0 +1,41 @@
+From 7b2b5e4ca66c5c020848f2fd0d3335a2bb8bec95 Mon Sep 17 00:00:00 2001
+Message-Id: <7b2b5e4ca66c5c020848f2fd0d3335a2bb8bec95.1620832610.git.dongsu@kinvolk.io>
+From: Kir Kolyshkin <kolyshkin@gmail.com>
+Date: Tue, 23 Feb 2021 17:58:07 -0800
+Subject: [PATCH 1/5] libct/newInitConfig: nit
+
+Move the initialization of Console* fields as they are unconditional.
+
+Signed-off-by: Kir Kolyshkin <kolyshkin@gmail.com>
+---
+ libcontainer/container_linux.go | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/libcontainer/container_linux.go b/libcontainer/container_linux.go
+index e2f64fcb..65d64867 100644
+--- a/libcontainer/container_linux.go
++++ b/libcontainer/container_linux.go
+@@ -607,6 +607,9 @@ func (c *linuxContainer) newInitConfig(process *Process) *initConfig {
+ 		AppArmorProfile:  c.config.AppArmorProfile,
+ 		ProcessLabel:     c.config.ProcessLabel,
+ 		Rlimits:          c.config.Rlimits,
++		CreateConsole:    process.ConsoleSocket != nil,
++		ConsoleWidth:     process.ConsoleWidth,
++		ConsoleHeight:    process.ConsoleHeight,
+ 	}
+ 	if process.NoNewPrivileges != nil {
+ 		cfg.NoNewPrivileges = *process.NoNewPrivileges
+@@ -620,9 +623,7 @@ func (c *linuxContainer) newInitConfig(process *Process) *initConfig {
+ 	if len(process.Rlimits) > 0 {
+ 		cfg.Rlimits = process.Rlimits
+ 	}
+-	cfg.CreateConsole = process.ConsoleSocket != nil
+-	cfg.ConsoleWidth = process.ConsoleWidth
+-	cfg.ConsoleHeight = process.ConsoleHeight
++
+ 	return cfg
+ }
+ 
+-- 
+2.31.1
+
