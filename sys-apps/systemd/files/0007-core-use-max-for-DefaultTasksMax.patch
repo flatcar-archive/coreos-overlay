@@ -28,11 +28,11 @@ index c64e57c277..c6824f976f 100644
          <listitem><para>Configure the default value for the per-unit <varname>TasksMax=</varname> setting. See
          <citerefentry><refentrytitle>systemd.resource-control</refentrytitle><manvolnum>5</manvolnum></citerefentry>
          for details. This setting applies to all unit types that support resource control settings, with the exception
--        of slice units. Defaults to 15%, which equals 4915 with the kernel's defaults on the host, but might be smaller
-+        of slice units. Defaults to 100%, which equals 4915 with the kernel's defaults on the host, but might be smaller
-         in OS containers.</para></listitem>
-       </varlistentry>
-
+-        of slice units. Defaults to 15% of the sysctl setting <varname>kernel.pid_max=</varname> or root cgroup <varname>pids.max</varname>.
++        of slice units. Defaults to 100% of the sysctl setting <varname>kernel.pid_max=</varname> or root cgroup <varname>pids.max</varname>.
+         Kernel has a default value for <varname>kernel.pid_max=</varname> and an algorithm of counting in case of more than 32 cores.
+         For example with the default <varname>kernel.pid_max=</varname>, <varname>DefaultTasksMax=</varname> defaults to 4915,
+         but might be greater in other systems or smaller in OS containers.</para></listitem>
 diff --git a/src/core/main.c b/src/core/main.c
 index 9a834a875e..851c0a929d 100644
 --- a/src/core/main.c
