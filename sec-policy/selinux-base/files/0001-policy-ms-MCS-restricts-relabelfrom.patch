@@ -1,0 +1,29 @@
+--- refpolicy/policy/mcs
++++ refpolicy/policy/mcs
+@@ -1,4 +1,7 @@
+ ifdef(`enable_mcs',`
++
++default_range dir_file_class_set target low-high;
++
+ #
+ # Define sensitivities
+ #
+@@ -92,15 +95,15 @@ mlsconstrain { lnk_file chr_file blk_file sock_file } { write setattr }
+ # New filesystem object labels must be dominated by the relabeling subject
+ # clearance, also the objects are single-level.
+ mlsconstrain { file lnk_file fifo_file } { create relabelto }
+-	((( h1 dom h2 ) and ( l2 eq h2 )) or
++	((( h1 dom h2 ) and ( l2 eq h2 )) or (t1 == mcswriteall) or
+ 	 ( t1 != mcs_constrained_type ));
+ 
+ # new file labels must be dominated by the relabeling subject clearance
+ mlsconstrain { dir file lnk_file chr_file blk_file sock_file fifo_file } { relabelfrom }
+-	(( h1 dom h2 ) or ( t1 != mcs_constrained_type ));
++	(( h1 dom h2 ) or ( t1 != mcs_constrained_type ) or (t1 == mcswriteall));
+ 
+ mlsconstrain { dir file lnk_file chr_file blk_file sock_file fifo_file } { create relabelto }
+-	(( h1 dom h2 ) or ( t1 != mcs_constrained_type ));
++	(( h1 dom h2 ) or ( t1 != mcs_constrained_type ) or (t1 == mcswriteall));
+ 
+ mlsconstrain process { transition dyntransition }
+ 	(( h1 dom h2 ) or ( t1 != mcs_constrained_type ));
