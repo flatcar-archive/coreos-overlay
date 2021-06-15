@@ -42,8 +42,6 @@ src_unpack() {
 
 PATCHES=(
 	"${FILESDIR}/0001-Delay-unshare-of-clone-newipc-for-selinux.patch"
-	"${FILESDIR}/0002-temporarily-disable-selinux.GetEnabled-error-checks.patch"
-	"${FILESDIR}/0003-libcontainer-disable-prctl-with-NoNewPrivileges.patch"
 	# empty, kept for context: "${FILESDIR}/rc93-0000-cover-letter.patch"
 	"${FILESDIR}/rc93-0001-libct-newInitConfig-nit.patch"
 	"${FILESDIR}/rc93-0002-libct-rootfs-introduce-and-use-mountConfig.patch"
