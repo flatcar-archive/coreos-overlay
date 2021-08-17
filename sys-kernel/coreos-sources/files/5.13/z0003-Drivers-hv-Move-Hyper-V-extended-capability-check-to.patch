@@ -1,0 +1,186 @@
+From a4d7e8ae4a541557d7a2c815835b786c18c3613c Mon Sep 17 00:00:00 2001
+From: Michael Kelley <mikelley@microsoft.com>
+Date: Wed, 2 Jun 2021 14:36:44 -0700
+Subject: [PATCH] Drivers: hv: Move Hyper-V extended capability check to arch
+ neutral code
+
+The extended capability query code is currently under arch/x86, but it
+is architecture neutral, and is used by arch neutral code in the Hyper-V
+balloon driver. Hence the balloon driver fails to build on other
+architectures.
+
+Fix by moving the ext cap code out from arch/x86.  Because it is also
+called from built-in architecture specific code, it can't be in a module,
+so the Makefile treats as built-in even when CONFIG_HYPERV is "m".  Also
+drivers/Makefile is tweaked because this is the first occurrence of a
+Hyper-V file that is built-in even when CONFIG_HYPERV is "m".
+
+While here, update the hypercall status check to use the new helper
+function instead of open coding. No functional change.
+
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Reviewed-by: Sunil Muthuswamy <sunilmut@microsoft.com>
+Link: https://lore.kernel.org/r/1622669804-2016-1-git-send-email-mikelley@microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+---
+ arch/x86/hyperv/hv_init.c | 47 ----------------------------
+ drivers/Makefile          |  2 +-
+ drivers/hv/Makefile       |  3 ++
+ drivers/hv/hv_common.c    | 66 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 70 insertions(+), 48 deletions(-)
+ create mode 100644 drivers/hv/hv_common.c
+
+diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
+index bb0ae4b5c00f..6952e219cba3 100644
+--- a/arch/x86/hyperv/hv_init.c
++++ b/arch/x86/hyperv/hv_init.c
+@@ -614,50 +614,3 @@ bool hv_is_isolation_supported(void)
+ 	return hv_get_isolation_type() != HV_ISOLATION_TYPE_NONE;
+ }
+ EXPORT_SYMBOL_GPL(hv_is_isolation_supported);
+-
+-/* Bit mask of the extended capability to query: see HV_EXT_CAPABILITY_xxx */
+-bool hv_query_ext_cap(u64 cap_query)
+-{
+-	/*
+-	 * The address of the 'hv_extended_cap' variable will be used as an
+-	 * output parameter to the hypercall below and so it should be
+-	 * compatible with 'virt_to_phys'. Which means, it's address should be
+-	 * directly mapped. Use 'static' to keep it compatible; stack variables
+-	 * can be virtually mapped, making them imcompatible with
+-	 * 'virt_to_phys'.
+-	 * Hypercall input/output addresses should also be 8-byte aligned.
+-	 */
+-	static u64 hv_extended_cap __aligned(8);
+-	static bool hv_extended_cap_queried;
+-	u64 status;
+-
+-	/*
+-	 * Querying extended capabilities is an extended hypercall. Check if the
+-	 * partition supports extended hypercall, first.
+-	 */
+-	if (!(ms_hyperv.priv_high & HV_ENABLE_EXTENDED_HYPERCALLS))
+-		return false;
+-
+-	/* Extended capabilities do not change at runtime. */
+-	if (hv_extended_cap_queried)
+-		return hv_extended_cap & cap_query;
+-
+-	status = hv_do_hypercall(HV_EXT_CALL_QUERY_CAPABILITIES, NULL,
+-				 &hv_extended_cap);
+-
+-	/*
+-	 * The query extended capabilities hypercall should not fail under
+-	 * any normal circumstances. Avoid repeatedly making the hypercall, on
+-	 * error.
+-	 */
+-	hv_extended_cap_queried = true;
+-	status &= HV_HYPERCALL_RESULT_MASK;
+-	if (status != HV_STATUS_SUCCESS) {
+-		pr_err("Hyper-V: Extended query capabilities hypercall failed 0x%llx\n",
+-		       status);
+-		return false;
+-	}
+-
+-	return hv_extended_cap & cap_query;
+-}
+-EXPORT_SYMBOL_GPL(hv_query_ext_cap);
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 5a6d613e868d..1c2e1acbd098 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -161,7 +161,7 @@ obj-$(CONFIG_SOUNDWIRE)		+= soundwire/
+ 
+ # Virtualization drivers
+ obj-$(CONFIG_VIRT_DRIVERS)	+= virt/
+-obj-$(CONFIG_HYPERV)		+= hv/
++obj-$(subst m,y,$(CONFIG_HYPERV))	+= hv/
+ 
+ obj-$(CONFIG_PM_DEVFREQ)	+= devfreq/
+ obj-$(CONFIG_EXTCON)		+= extcon/
+diff --git a/drivers/hv/Makefile b/drivers/hv/Makefile
+index 94daf8240c95..d76df5c8c2a9 100644
+--- a/drivers/hv/Makefile
++++ b/drivers/hv/Makefile
+@@ -11,3 +11,6 @@ hv_vmbus-y := vmbus_drv.o \
+ 		 channel_mgmt.o ring_buffer.o hv_trace.o
+ hv_vmbus-$(CONFIG_HYPERV_TESTING)	+= hv_debugfs.o
+ hv_utils-y := hv_util.o hv_kvp.o hv_snapshot.o hv_fcopy.o hv_utils_transport.o
++
++# Code that must be built-in
++obj-$(subst m,y,$(CONFIG_HYPERV)) += hv_common.o
+diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+new file mode 100644
+index 000000000000..f0053c786891
+--- /dev/null
++++ b/drivers/hv/hv_common.c
+@@ -0,0 +1,66 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/*
++ * Architecture neutral utility routines for interacting with
++ * Hyper-V. This file is specifically for code that must be
++ * built-in to the kernel image when CONFIG_HYPERV is set
++ * (vs. being in a module) because it is called from architecture
++ * specific code under arch/.
++ *
++ * Copyright (C) 2021, Microsoft, Inc.
++ *
++ * Author : Michael Kelley <mikelley@microsoft.com>
++ */
++
++#include <linux/types.h>
++#include <linux/export.h>
++#include <linux/bitfield.h>
++#include <asm/hyperv-tlfs.h>
++#include <asm/mshyperv.h>
++
++
++/* Bit mask of the extended capability to query: see HV_EXT_CAPABILITY_xxx */
++bool hv_query_ext_cap(u64 cap_query)
++{
++	/*
++	 * The address of the 'hv_extended_cap' variable will be used as an
++	 * output parameter to the hypercall below and so it should be
++	 * compatible with 'virt_to_phys'. Which means, it's address should be
++	 * directly mapped. Use 'static' to keep it compatible; stack variables
++	 * can be virtually mapped, making them imcompatible with
++	 * 'virt_to_phys'.
++	 * Hypercall input/output addresses should also be 8-byte aligned.
++	 */
++	static u64 hv_extended_cap __aligned(8);
++	static bool hv_extended_cap_queried;
++	u64 status;
++
++	/*
++	 * Querying extended capabilities is an extended hypercall. Check if the
++	 * partition supports extended hypercall, first.
++	 */
++	if (!(ms_hyperv.priv_high & HV_ENABLE_EXTENDED_HYPERCALLS))
++		return false;
++
++	/* Extended capabilities do not change at runtime. */
++	if (hv_extended_cap_queried)
++		return hv_extended_cap & cap_query;
++
++	status = hv_do_hypercall(HV_EXT_CALL_QUERY_CAPABILITIES, NULL,
++				 &hv_extended_cap);
++
++	/*
++	 * The query extended capabilities hypercall should not fail under
++	 * any normal circumstances. Avoid repeatedly making the hypercall, on
++	 * error.
++	 */
++	hv_extended_cap_queried = true;
++	if (!hv_result_success(status)) {
++		pr_err("Hyper-V: Extended query capabilities hypercall failed 0x%llx\n",
++		       status);
++		return false;
++	}
++
++	return hv_extended_cap & cap_query;
++}
++EXPORT_SYMBOL_GPL(hv_query_ext_cap);
+-- 
+2.25.1
+

@@ -34,4 +34,22 @@ IUSE=""
 UNIPATCH_LIST="
 	${PATCH_DIR}/z0001-kbuild-derive-relative-path-for-srctree-from-CURDIR.patch \
 	${PATCH_DIR}/z0002-tools-objtool-Makefile-Don-t-fail-on-fallthrough-wit.patch \
+	${PATCH_DIR}/z0003-arm64-smccc-Add-support-for-SMCCCv1.2-extended-input.patch \
+	${PATCH_DIR}/z0003-Drivers-hv-Move-Hyper-V-extended-capability-check-to.patch \
+	${PATCH_DIR}/z0004-hyperv-Detect-Nested-virtualization-support-for-SVM.patch \
+	${PATCH_DIR}/z0005-kernel.h-split-out-panic-and-oops-helpers.patch \
+	${PATCH_DIR}/z0006-asm-generic-hyperv-Add-missing-include-of-nmi.h.patch \
+	${PATCH_DIR}/z0007-x86-hyperv-fix-for-unwanted-manipulation-of-sched_cl.patch \
+	${PATCH_DIR}/z0008-Drivers-hv-Make-portions-of-Hyper-V-init-code-be-arc.patch \
+	${PATCH_DIR}/z0009-Drivers-hv-Add-arch-independent-default-functions-fo.patch \
+	${PATCH_DIR}/z0010-Drivers-hv-Move-Hyper-V-misc-functionality-to-arch-n.patch \
+	${PATCH_DIR}/z0011-x86-hyperv-add-comment-describing-TSC_INVARIANT_CONT.patch \
+	${PATCH_DIR}/z0012-drivers-hv-Decouple-Hyper-V-clock-timer-code-from-VM.patch \
+	${PATCH_DIR}/z0013-hv-hyperv.h-Remove-unused-inline-functions.patch \
+	${PATCH_DIR}/z0014-x86-hyperv-fix-root-partition-faults-when-writing-to.patch \
+	${PATCH_DIR}/z0015-arm64-hyperv-Add-Hyper-V-hypercall-and-register-acce.patch \
+	${PATCH_DIR}/z0016-arm64-hyperv-Add-panic-handler.patch \
+	${PATCH_DIR}/z0017-arm64-hyperv-Initialize-hypervisor-on-boot.patch \
+	${PATCH_DIR}/z0018-arm64-efi-Export-screen_info.patch \
+	${PATCH_DIR}/z0019-Drivers-hv-Enable-Hyper-V-code-to-be-built-on-ARM64.patch \
 "
