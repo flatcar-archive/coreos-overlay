@@ -1,0 +1,73 @@
+From a6c776a952175e0fad22110e8d43019f3ac6f9af Mon Sep 17 00:00:00 2001
+From: Vineeth Pillai <viremana@linux.microsoft.com>
+Date: Thu, 3 Jun 2021 15:14:34 +0000
+Subject: [PATCH] hyperv: Detect Nested virtualization support for SVM
+
+Previously, to detect nested virtualization enlightenment support,
+we were using HV_X64_ENLIGHTENED_VMCS_RECOMMENDED feature bit of
+HYPERV_CPUID_ENLIGHTMENT_INFO.EAX CPUID as docuemented in TLFS:
+ "Bit 14: Recommend a nested hypervisor using the enlightened VMCS
+  interface. Also indicates that additional nested enlightenments
+  may be available (see leaf 0x4000000A)".
+
+Enlightened VMCS, however, is an Intel only feature so the above
+detection method doesn't work for AMD. So, use the
+HYPERV_CPUID_VENDOR_AND_MAX_FUNCTIONS.EAX CPUID information ("The
+maximum input value for hypervisor CPUID information.") and this
+works for both AMD and Intel.
+
+Signed-off-by: Vineeth Pillai <viremana@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Message-Id: <43b25ff21cd2d9a51582033c9bdd895afefac056.1622730232.git.viremana@linux.microsoft.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kernel/cpu/mshyperv.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index 22f13343b5da..c268c2730048 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -252,6 +252,7 @@ static void __init hv_smp_prepare_cpus(unsigned int max_cpus)
+ 
+ static void __init ms_hyperv_init_platform(void)
+ {
++	int hv_max_functions_eax;
+ 	int hv_host_info_eax;
+ 	int hv_host_info_ebx;
+ 	int hv_host_info_ecx;
+@@ -269,6 +270,8 @@ static void __init ms_hyperv_init_platform(void)
+ 	ms_hyperv.misc_features = cpuid_edx(HYPERV_CPUID_FEATURES);
+ 	ms_hyperv.hints    = cpuid_eax(HYPERV_CPUID_ENLIGHTMENT_INFO);
+ 
++	hv_max_functions_eax = cpuid_eax(HYPERV_CPUID_VENDOR_AND_MAX_FUNCTIONS);
++
+ 	pr_info("Hyper-V: privilege flags low 0x%x, high 0x%x, hints 0x%x, misc 0x%x\n",
+ 		ms_hyperv.features, ms_hyperv.priv_high, ms_hyperv.hints,
+ 		ms_hyperv.misc_features);
+@@ -298,8 +301,7 @@ static void __init ms_hyperv_init_platform(void)
+ 	/*
+ 	 * Extract host information.
+ 	 */
+-	if (cpuid_eax(HYPERV_CPUID_VENDOR_AND_MAX_FUNCTIONS) >=
+-	    HYPERV_CPUID_VERSION) {
++	if (hv_max_functions_eax >= HYPERV_CPUID_VERSION) {
+ 		hv_host_info_eax = cpuid_eax(HYPERV_CPUID_VERSION);
+ 		hv_host_info_ebx = cpuid_ebx(HYPERV_CPUID_VERSION);
+ 		hv_host_info_ecx = cpuid_ecx(HYPERV_CPUID_VERSION);
+@@ -325,9 +327,11 @@ static void __init ms_hyperv_init_platform(void)
+ 			ms_hyperv.isolation_config_a, ms_hyperv.isolation_config_b);
+ 	}
+ 
+-	if (ms_hyperv.hints & HV_X64_ENLIGHTENED_VMCS_RECOMMENDED) {
++	if (hv_max_functions_eax >= HYPERV_CPUID_NESTED_FEATURES) {
+ 		ms_hyperv.nested_features =
+ 			cpuid_eax(HYPERV_CPUID_NESTED_FEATURES);
++		pr_info("Hyper-V: Nested features: 0x%x\n",
++			ms_hyperv.nested_features);
+ 	}
+ 
+ 	/*
+-- 
+2.25.1
+

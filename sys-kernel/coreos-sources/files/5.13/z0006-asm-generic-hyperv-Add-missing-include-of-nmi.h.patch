@@ -1,0 +1,34 @@
+From ba3f5839fbeb3f9e65070d90aa4e66008bbea80f Mon Sep 17 00:00:00 2001
+From: Michael Kelley <mikelley@microsoft.com>
+Date: Sun, 11 Jul 2021 19:50:04 -0700
+Subject: [PATCH 01/14] asm-generic/hyperv: Add missing #include of nmi.h
+
+The recent move of hv_do_rep_hypercall() to this file adds
+a reference to touch_nmi_watchdog(). Its function definition
+is included indirectly when compiled on x86, but not when
+compiled on ARM64. So add the explicit #include.
+
+No functional change.
+
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/1626058204-2106-1-git-send-email-mikelley@microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+---
+ include/asm-generic/mshyperv.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
+index 9a000ba2bb75..2ccb40670552 100644
+--- a/include/asm-generic/mshyperv.h
++++ b/include/asm-generic/mshyperv.h
+@@ -22,6 +22,7 @@
+ #include <linux/atomic.h>
+ #include <linux/bitops.h>
+ #include <linux/cpumask.h>
++#include <linux/nmi.h>
+ #include <asm/ptrace.h>
+ #include <asm/hyperv-tlfs.h>
+ 
+-- 
+2.25.1
+
