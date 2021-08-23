@@ -1,7 +1,7 @@
-From 57d276bbbd322409bb6f7c6446187a29953f8ded Mon Sep 17 00:00:00 2001
+From 42187deea21fa0968d905d585e82f768e01bbb83 Mon Sep 17 00:00:00 2001
 From: Michael Kelley <mikelley@microsoft.com>
 Date: Wed, 4 Aug 2021 08:52:35 -0700
-Subject: [PATCH 10/14] arm64: hyperv: Add Hyper-V hypercall and register
+Subject: [PATCH 09/14] arm64: hyperv: Add Hyper-V hypercall and register
  access utilities
 
 hyperv-tlfs.h defines Hyper-V interfaces from the Hyper-V Top Level
@@ -42,10 +42,10 @@ Signed-off-by: Wei Liu <wei.liu@kernel.org>
  create mode 100644 arch/arm64/include/asm/mshyperv.h
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index a61f4f3b78a9..4f84a8616b87 100644
+index 0cce91cd5624..86646541f972 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -8594,6 +8594,9 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/hyperv/linux.git
+@@ -8445,6 +8445,9 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/hyperv/linux.git
  F:	Documentation/ABI/stable/sysfs-bus-vmbus
  F:	Documentation/ABI/testing/debugfs-hyperv
  F:	Documentation/networking/device_drivers/ethernet/microsoft/netvsc.rst
@@ -344,5 +344,5 @@ index 000000000000..20070a847304
 +
 +#endif
 -- 
-2.25.1
+2.32.0
 

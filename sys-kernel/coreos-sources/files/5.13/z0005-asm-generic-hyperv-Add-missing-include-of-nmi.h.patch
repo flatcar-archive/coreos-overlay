@@ -1,7 +1,7 @@
-From ba3f5839fbeb3f9e65070d90aa4e66008bbea80f Mon Sep 17 00:00:00 2001
+From 2cc0de5759c245290c78595d8ac69c40c50dae9b Mon Sep 17 00:00:00 2001
 From: Michael Kelley <mikelley@microsoft.com>
 Date: Sun, 11 Jul 2021 19:50:04 -0700
-Subject: [PATCH 01/14] asm-generic/hyperv: Add missing #include of nmi.h
+Subject: [PATCH 03/14] asm-generic/hyperv: Add missing #include of nmi.h
 
 The recent move of hv_do_rep_hypercall() to this file adds
 a reference to touch_nmi_watchdog(). Its function definition
@@ -30,5 +30,5 @@ index 9a000ba2bb75..2ccb40670552 100644
  #include <asm/hyperv-tlfs.h>
  
 -- 
-2.25.1
+2.32.0
 

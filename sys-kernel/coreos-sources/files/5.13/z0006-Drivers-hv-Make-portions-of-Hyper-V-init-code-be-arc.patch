@@ -1,7 +1,7 @@
-From afca4d95dd7d7936d46a0ff02169cc40f534a6a3 Mon Sep 17 00:00:00 2001
+From ca0c9619e57746bbaeb29f9498b592bffe5b1f26 Mon Sep 17 00:00:00 2001
 From: Michael Kelley <mikelley@microsoft.com>
 Date: Wed, 14 Jul 2021 11:34:45 -0700
-Subject: [PATCH 03/14] Drivers: hv: Make portions of Hyper-V init code be arch
+Subject: [PATCH 04/14] Drivers: hv: Make portions of Hyper-V init code be arch
  neutral
 
 The code to allocate and initialize the hv_vp_index array is
@@ -194,7 +194,7 @@ index 67ff0d637e55..adccbc209169 100644
  void hv_apic_init(void);
  void __init hv_init_spinlocks(void);
 diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index 8bd1c01c3310..40d3656d5461 100644
+index 6eefff0b1c0c..20ab202aec30 100644
 --- a/arch/x86/kernel/cpu/mshyperv.c
 +++ b/arch/x86/kernel/cpu/mshyperv.c
 @@ -36,10 +36,7 @@
@@ -209,7 +209,7 @@ index 8bd1c01c3310..40d3656d5461 100644
  #if IS_ENABLED(CONFIG_HYPERV)
  static void (*vmbus_handler)(void);
 diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
-index 7f42da98d377..e836002bc0ce 100644
+index f0053c786891..caba4f728987 100644
 --- a/drivers/hv/hv_common.c
 +++ b/drivers/hv/hv_common.c
 @@ -15,9 +15,147 @@
@@ -396,5 +396,5 @@ index 2ccb40670552..60cdff3e2252 100644
  void *hv_alloc_hyperv_zeroed_page(void);
  void hv_free_hyperv_page(unsigned long addr);
 -- 
-2.25.1
+2.32.0
 
