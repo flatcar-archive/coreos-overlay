@@ -1,7 +1,7 @@
-From 9bbb888824e38cc2e9118ed351fe3d22403a73e1 Mon Sep 17 00:00:00 2001
+From 59223b536055ffcc280bb2cef3a9f0a61c39e9c6 Mon Sep 17 00:00:00 2001
 From: Michael Kelley <mikelley@microsoft.com>
 Date: Wed, 4 Aug 2021 08:52:37 -0700
-Subject: [PATCH 12/14] arm64: hyperv: Initialize hypervisor on boot
+Subject: [PATCH 11/14] arm64: hyperv: Initialize hypervisor on boot
 
 Add ARM64-specific code to initialize the Hyper-V
 hypervisor when booting as a guest VM.
@@ -122,5 +122,5 @@ index 000000000000..bbbe351e9045
 +}
 +EXPORT_SYMBOL_GPL(hv_is_hyperv_initialized);
 -- 
-2.25.1
+2.32.0
 

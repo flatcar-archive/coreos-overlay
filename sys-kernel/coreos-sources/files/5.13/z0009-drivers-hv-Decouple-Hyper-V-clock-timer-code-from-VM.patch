@@ -1,4 +1,4 @@
-From 31e5e64694cf9879e63b2802007fa934f4131126 Mon Sep 17 00:00:00 2001
+From d368df373ea900c6781e7b10035efdb330566db4 Mon Sep 17 00:00:00 2001
 From: Michael Kelley <mikelley@microsoft.com>
 Date: Tue, 13 Jul 2021 17:01:46 -0700
 Subject: [PATCH 07/14] drivers: hv: Decouple Hyper-V clock/timer code from
@@ -44,7 +44,7 @@ index d6ece7bbce89..ff188ab68496 100644
  	struct ms_hyperv_tsc_page page;
  	u8 reserved[PAGE_SIZE];
 diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
-index 46658de78050..c0d9048a4112 100644
+index 4d7fcff39b8c..e589ca2d3f38 100644
 --- a/drivers/hv/hv_common.c
 +++ b/drivers/hv/hv_common.c
 @@ -222,6 +222,20 @@ bool hv_is_hibernation_supported(void)
@@ -141,5 +141,5 @@ index b6774aa5a4b8..b3f5d73ae1d6 100644
  
  #endif
 -- 
-2.25.1
+2.32.0
 

@@ -1,8 +1,8 @@
-From 3fdc0cb59d97f87e2cc708d424f1538e31744286 Mon Sep 17 00:00:00 2001
+From e934215f98fc88dac7599c54bcdea63f90a0a27f Mon Sep 17 00:00:00 2001
 From: Sudeep Holla <sudeep.holla@arm.com>
 Date: Tue, 18 May 2021 17:36:18 +0100
-Subject: [PATCH] arm64: smccc: Add support for SMCCCv1.2 extended input/output
- registers
+Subject: [PATCH 08/14] arm64: smccc: Add support for SMCCCv1.2 extended
+ input/output registers
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -27,6 +27,7 @@ Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Reviewed-by: Mark Brown <broonie@kernel.org>
 Link: https://lore.kernel.org/r/20210518163618.43950-1-sudeep.holla@arm.com
 Signed-off-by: Will Deacon <will@kernel.org>
+(cherry picked from commit 3fdc0cb59d97f87e2cc708d424f1538e31744286)
 ---
  arch/arm64/kernel/asm-offsets.c |  9 ++++++
  arch/arm64/kernel/smccc-call.S  | 57 +++++++++++++++++++++++++++++++++
@@ -185,5 +186,5 @@ index 6861489a1890..5cef2b8b0479 100644
   * struct arm_smccc_quirk - Contains quirk information
   * @id: quirk identification
 -- 
-2.25.1
+2.32.0
 

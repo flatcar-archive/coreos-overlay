@@ -1,7 +1,7 @@
-From 9b16c2132f34316bf0b59d24357a788cc1e9e352 Mon Sep 17 00:00:00 2001
+From 09c3d55b69b47b52a3077f43eea04694a064ffec Mon Sep 17 00:00:00 2001
 From: Michael Kelley <mikelley@microsoft.com>
 Date: Wed, 4 Aug 2021 08:52:38 -0700
-Subject: [PATCH 13/14] arm64: efi: Export screen_info
+Subject: [PATCH 12/14] arm64: efi: Export screen_info
 
 The Hyper-V frame buffer driver may be built as a module, and
 it needs access to screen_info. So export screen_info.
@@ -30,5 +30,5 @@ index fa02efb28e88..e1be6c429810 100644
  int __init efi_create_mapping(struct mm_struct *mm, efi_memory_desc_t *md)
  {
 -- 
-2.25.1
+2.32.0
 

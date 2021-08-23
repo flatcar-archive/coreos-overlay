@@ -1,7 +1,7 @@
-From f39650de687e35766572ac89dbcd16a5911e2f0a Mon Sep 17 00:00:00 2001
+From f8b1fb28cb0c86ef8ac01754a15afff0e3d4682d Mon Sep 17 00:00:00 2001
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Date: Wed, 30 Jun 2021 18:54:59 -0700
-Subject: [PATCH] kernel.h: split out panic and oops helpers
+Subject: [PATCH 01/14] kernel.h: split out panic and oops helpers
 
 kernel.h is being used as a dump for all kinds of stuff for a long time.
 Here is the attempt to start cleaning it up by splitting out panic and
@@ -38,6 +38,7 @@ Acked-by: Stephen Boyd <sboyd@kernel.org>
 Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Acked-by: Helge Deller <deller@gmx.de> # parisc
 Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+(cherry picked from commit f39650de687e35766572ac89dbcd16a5911e2f0a)
 ---
  arch/alpha/kernel/setup.c                     |  2 +-
  arch/arm64/kernel/setup.c                     |  1 +
@@ -99,7 +100,7 @@ Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
  create mode 100644 include/linux/panic_notifier.h
 
 diff --git a/arch/alpha/kernel/setup.c b/arch/alpha/kernel/setup.c
-index 5f6858e9dc28..7d56c217b235 100644
+index e5ec9b9b73a1..c757caad78c4 100644
 --- a/arch/alpha/kernel/setup.c
 +++ b/arch/alpha/kernel/setup.c
 @@ -28,6 +28,7 @@
@@ -119,7 +120,7 @@ index 5f6858e9dc28..7d56c217b235 100644
  static struct notifier_block alpha_panic_block = {
  	alpha_panic_event,
 diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-index 61845c0821d9..787bc0f601b3 100644
+index 68b30e8c22db..ca6aeef5c19a 100644
 --- a/arch/arm64/kernel/setup.c
 +++ b/arch/arm64/kernel/setup.c
 @@ -23,6 +23,7 @@
@@ -131,7 +132,7 @@ index 61845c0821d9..787bc0f601b3 100644
  #include <linux/memblock.h>
  #include <linux/of_fdt.h>
 diff --git a/arch/ia64/include/asm/pal.h b/arch/ia64/include/asm/pal.h
-index 5c51fceedaf9..e6b652f9e45e 100644
+index b1d87955e8cc..b196104a726f 100644
 --- a/arch/ia64/include/asm/pal.h
 +++ b/arch/ia64/include/asm/pal.h
 @@ -99,6 +99,7 @@
@@ -263,7 +264,7 @@ index 476082a83d1c..ceb12683b6d1 100644
  #include <linux/percpu.h>
  
 diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index 22f13343b5da..9e5c6f2b044d 100644
+index 4fa0a4280895..6eefff0b1c0c 100644
 --- a/arch/x86/kernel/cpu/mshyperv.c
 +++ b/arch/x86/kernel/cpu/mshyperv.c
 @@ -17,6 +17,7 @@
@@ -521,7 +522,7 @@ index d1495af30081..8688c8ba8894 100644
  #include <linux/gpio/consumer.h>
  #include <linux/reboot.h>
 diff --git a/drivers/remoteproc/remoteproc_core.c b/drivers/remoteproc/remoteproc_core.c
-index 626a6b90fba2..76dd8e2b1e7e 100644
+index 203e2bd8ebb4..956361ae511a 100644
 --- a/drivers/remoteproc/remoteproc_core.c
 +++ b/drivers/remoteproc/remoteproc_core.c
 @@ -20,6 +20,7 @@
@@ -581,7 +582,7 @@ index 9b852a47ccc1..cc01a7b8595d 100644
  #include <linux/jiffies.h>
  #include <linux/termios.h>
 diff --git a/drivers/s390/char/sclp_vt220.c b/drivers/s390/char/sclp_vt220.c
-index 7f4445b0f819..5b8a7b090a97 100644
+index 2f96c31e9b7b..829910f0c13d 100644
 --- a/drivers/s390/char/sclp_vt220.c
 +++ b/drivers/s390/char/sclp_vt220.c
 @@ -9,6 +9,7 @@
@@ -655,7 +656,7 @@ index b402494883b6..f152b9bb916f 100644
  #ifdef CONFIG_BUG
  
 diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-index bf950621febf..baea2eb763d0 100644
+index 15d8bad3d2f2..50f4a57cf50c 100644
 --- a/include/linux/kernel.h
 +++ b/include/linux/kernel.h
 @@ -14,6 +14,7 @@
@@ -689,7 +690,7 @@ index bf950621febf..baea2eb763d0 100644
  void do_exit(long error_code) __noreturn;
  void complete_and_exit(struct completion *, long) __noreturn;
  
-@@ -372,52 +364,8 @@ extern int __kernel_text_address(unsigned long addr);
+@@ -370,52 +362,8 @@ extern int __kernel_text_address(unsigned long addr);
  extern int kernel_text_address(unsigned long addr);
  extern int func_ptr_is_kernel_text(void *ptr);
  
@@ -742,7 +743,7 @@ index bf950621febf..baea2eb763d0 100644
  extern int root_mountflags;
  
  extern bool early_boot_irqs_disabled;
-@@ -436,36 +384,6 @@ extern enum system_states {
+@@ -434,36 +382,6 @@ extern enum system_states {
  	SYSTEM_SUSPEND,
  } system_state;
  
@@ -950,7 +951,7 @@ index 332736a72a58..edad89660a2b 100644
  #include <linux/sysrq.h>
  #include <linux/init.h>
 diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 8e78b2430c16..f12056beb916 100644
+index afbb0a337c32..59c355643f2f 100644
 --- a/kernel/rcu/tree.c
 +++ b/kernel/rcu/tree.c
 @@ -32,6 +32,8 @@
@@ -963,7 +964,7 @@ index 8e78b2430c16..f12056beb916 100644
  #include <linux/notifier.h>
  #include <linux/cpu.h>
 diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index bb37739f5731..70e286c83d6b 100644
+index d4a78e08f6d8..d2da77a186ea 100644
 --- a/kernel/sysctl.c
 +++ b/kernel/sysctl.c
 @@ -27,6 +27,7 @@
@@ -975,7 +976,7 @@ index bb37739f5731..70e286c83d6b 100644
  #include <linux/proc_fs.h>
  #include <linux/security.h>
 diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index d23a09d3eb37..3c1384bc5c5a 100644
+index 018067e379f2..80b7caeb3244 100644
 --- a/kernel/trace/trace.c
 +++ b/kernel/trace/trace.c
 @@ -39,6 +39,7 @@
@@ -987,5 +988,5 @@ index d23a09d3eb37..3c1384bc5c5a 100644
  #include <linux/nmi.h>
  #include <linux/fs.h>
 -- 
-2.25.1
+2.32.0
 

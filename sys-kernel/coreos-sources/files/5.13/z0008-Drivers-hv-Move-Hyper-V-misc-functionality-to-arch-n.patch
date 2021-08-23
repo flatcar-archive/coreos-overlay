@@ -1,7 +1,7 @@
-From 6dc77fa5ac2cf26f846a51492dbe42526e26d0f2 Mon Sep 17 00:00:00 2001
+From 66053a3bd54ba988e592d0ad2b78d9441e8cd836 Mon Sep 17 00:00:00 2001
 From: Michael Kelley <mikelley@microsoft.com>
 Date: Wed, 14 Jul 2021 11:34:47 -0700
-Subject: [PATCH 05/14] Drivers: hv: Move Hyper-V misc functionality to
+Subject: [PATCH 06/14] Drivers: hv: Move Hyper-V misc functionality to
  arch-neutral code
 
 The check for whether hibernation is possible, and the enabling of
@@ -16,9 +16,9 @@ Link: https://lore.kernel.org/r/1626287687-2045-4-git-send-email-mikelley@micros
 Signed-off-by: Wei Liu <wei.liu@kernel.org>
 ---
  arch/x86/hyperv/hv_init.c      |  8 +-------
- arch/x86/kernel/cpu/mshyperv.c | 11 -----------
+ arch/x86/kernel/cpu/mshyperv.c | 10 ----------
  drivers/hv/hv_common.c         | 18 ++++++++++++++++++
- 3 files changed, 19 insertions(+), 18 deletions(-)
+ 3 files changed, 19 insertions(+), 17 deletions(-)
 
 diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
 index e87a0293b705..6f247e7e07eb 100644
@@ -50,19 +50,11 @@ index e87a0293b705..6f247e7e07eb 100644
  {
  	if (!(ms_hyperv.priv_high & HV_ISOLATION))
 diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index 0b647965e039..30baae031481 100644
+index b2168046cbbe..6c704d5e56f9 100644
 --- a/arch/x86/kernel/cpu/mshyperv.c
 +++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -17,7 +17,6 @@
- #include <linux/irq.h>
- #include <linux/kexec.h>
- #include <linux/i8253.h>
--#include <linux/panic_notifier.h>
- #include <linux/random.h>
- #include <asm/processor.h>
- #include <asm/hypervisor.h>
-@@ -326,16 +325,6 @@ static void __init ms_hyperv_init_platform(void)
- 			ms_hyperv.nested_features);
+@@ -322,16 +322,6 @@ static void __init ms_hyperv_init_platform(void)
+ 			cpuid_eax(HYPERV_CPUID_NESTED_FEATURES);
  	}
  
 -	/*
@@ -79,7 +71,7 @@ index 0b647965e039..30baae031481 100644
  	if (ms_hyperv.features & HV_ACCESS_FREQUENCY_MSRS &&
  	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
 diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
-index fe333f410d1d..46658de78050 100644
+index cac9c6bfc653..4d7fcff39b8c 100644
 --- a/drivers/hv/hv_common.c
 +++ b/drivers/hv/hv_common.c
 @@ -13,9 +13,11 @@
@@ -125,5 +117,5 @@ index fe333f410d1d..46658de78050 100644
   * may be overridden by architecture specific versions. Architectures
   * for which the default "no-op" behavior is sufficient can leave
 -- 
-2.25.1
+2.32.0
 

@@ -1,7 +1,7 @@
-From 9d7cf2c9675838c12cd5cf5a4ebe2ba41bd78a44 Mon Sep 17 00:00:00 2001
+From a0aae383cc867af0adc165d9ff9631fcb66f5be2 Mon Sep 17 00:00:00 2001
 From: Michael Kelley <mikelley@microsoft.com>
 Date: Wed, 14 Jul 2021 11:34:46 -0700
-Subject: [PATCH 04/14] Drivers: hv: Add arch independent default functions for
+Subject: [PATCH 05/14] Drivers: hv: Add arch independent default functions for
  some Hyper-V handlers
 
 Architecture independent Hyper-V code calls various arch-specific handlers
@@ -40,7 +40,7 @@ index 5cc0c0f30e75..e87a0293b705 100644
  }
 -EXPORT_SYMBOL_GPL(hv_is_isolation_supported);
 diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index 40d3656d5461..0b647965e039 100644
+index 20ab202aec30..b2168046cbbe 100644
 --- a/arch/x86/kernel/cpu/mshyperv.c
 +++ b/arch/x86/kernel/cpu/mshyperv.c
 @@ -62,14 +62,12 @@ void hv_setup_vmbus_handler(void (*handler)(void))
@@ -85,7 +85,7 @@ index 40d3656d5461..0b647965e039 100644
  #ifdef CONFIG_KEXEC_CORE
  static void hv_machine_shutdown(void)
 diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
-index e836002bc0ce..fe333f410d1d 100644
+index caba4f728987..cac9c6bfc653 100644
 --- a/drivers/hv/hv_common.c
 +++ b/drivers/hv/hv_common.c
 @@ -16,6 +16,7 @@
@@ -149,5 +149,5 @@ index e836002bc0ce..fe333f410d1d 100644
 +}
 +EXPORT_SYMBOL_GPL(hyperv_cleanup);
 -- 
-2.25.1
+2.32.0
 

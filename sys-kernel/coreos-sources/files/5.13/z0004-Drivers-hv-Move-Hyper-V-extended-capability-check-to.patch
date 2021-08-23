@@ -1,8 +1,8 @@
-From a4d7e8ae4a541557d7a2c815835b786c18c3613c Mon Sep 17 00:00:00 2001
+From 361c7b49a6d479b55ac325e2b19712be3dfa20f5 Mon Sep 17 00:00:00 2001
 From: Michael Kelley <mikelley@microsoft.com>
 Date: Wed, 2 Jun 2021 14:36:44 -0700
-Subject: [PATCH] Drivers: hv: Move Hyper-V extended capability check to arch
- neutral code
+Subject: [PATCH 02/14] Drivers: hv: Move Hyper-V extended capability check to
+ arch neutral code
 
 The extended capability query code is currently under arch/x86, but it
 is architecture neutral, and is used by arch neutral code in the Hyper-V
@@ -182,5 +182,5 @@ index 000000000000..f0053c786891
 +}
 +EXPORT_SYMBOL_GPL(hv_query_ext_cap);
 -- 
-2.25.1
+2.32.0
 

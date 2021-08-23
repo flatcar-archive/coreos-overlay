@@ -1,7 +1,7 @@
-From 512c1117fb2eeb944df1b88bff6e0c002990b369 Mon Sep 17 00:00:00 2001
+From 56014f1c0d24b8d6a6650cb1f91b0368fb47036a Mon Sep 17 00:00:00 2001
 From: Michael Kelley <mikelley@microsoft.com>
 Date: Wed, 4 Aug 2021 08:52:36 -0700
-Subject: [PATCH 11/14] arm64: hyperv: Add panic handler
+Subject: [PATCH 10/14] arm64: hyperv: Add panic handler
 
 Add a function to inform Hyper-V about a guest panic.
 
@@ -80,5 +80,5 @@ index 4c5dc0f51b12..b54c34793701 100644
 +}
 +EXPORT_SYMBOL_GPL(hyperv_report_panic);
 -- 
-2.25.1
+2.32.0
 
