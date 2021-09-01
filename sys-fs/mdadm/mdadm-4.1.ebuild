@@ -78,8 +78,7 @@ src_install() {
 	insinto /etc/default
 	newins "${FILESDIR}"/etc-default-mdadm mdadm
 
-	exeinto /etc/cron.weekly
-	newexe "${FILESDIR}"/mdadm.weekly mdadm
+	systemd_dounit "${FILESDIR}"/mdadm.service
 }
 
 pkg_postinst() {
