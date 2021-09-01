@@ -79,6 +79,7 @@ src_install() {
 	newins "${FILESDIR}"/etc-default-mdadm mdadm
 
 	systemd_dounit "${FILESDIR}"/mdadm.service
+	systemd_dounit "${FILESDIR}"/mdadm.timer
 }
 
 pkg_postinst() {
