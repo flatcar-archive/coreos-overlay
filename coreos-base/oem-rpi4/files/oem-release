@@ -1,0 +1,4 @@
+ID=rpi4
+VERSION_ID=@@OEM_VERSION_ID@@
+NAME="RaspberryPi 4"
+BUG_REPORT_URL="https://issues.flatcar-linux.org"
