@@ -1,0 +1,5 @@
+[Unit]
+Description=Initiates a check run of an MD array's redundancy information.
+
+[Service]
+ExecStart=/usr/sbin/checkarray
