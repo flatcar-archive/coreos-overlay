@@ -16,3 +16,12 @@ fi
 
 
 # Put your fun stuff here.
+sysstat_debug_toolset=( sar iostat vmstat mpstat pidstat )
+bcc_debug_toolset = ( tcpretrans tcpconnect tcpaccept biolatency ext4slower ext4dist )
+
+for t in "${sysstat_debug_toolset[@]}"; do alias_tool "${t}"; done
+for t in "${bcc_debug_toolset[@]}"; do alias_tool "${t}"; done
+
+alias_tool() {
+    local tool="${1}"
+}
