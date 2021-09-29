@@ -72,7 +72,7 @@ src_prepare() {
 
 src_compile() {
 	for i in ${POLICY_TYPES}; do
-		emake NAME=$i SHAREDIR="${ROOT}"/usr/share/selinux -C "${S}"/${i}
+		emake NAME=$i -C "${S}"/${i}
 	done
 }
 

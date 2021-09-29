@@ -125,8 +125,8 @@ src_compile() {
 	for i in ${POLICY_TYPES}; do
 		cd "${S}/${i}" || die
 		# flatcar changes
-		emake base BINDIR="${ROOT}/usr/bin" NAME=$i SHAREDIR="${ROOT%/}"/usr/share/selinux \
-			LD_LIBRARY_PATH="${ROOT}/usr/lib64:${LD_LIBRARY_PATH}" -C "${S}"/${i}
+		emake base NAME=$i \
+			LD_LIBRARY_PATH="${SYSROOT}/usr/lib64:${LD_LIBRARY_PATH}" -C "${S}"/${i}
 		if use doc; then
 			emake html
 		fi
