@@ -106,3 +106,8 @@ fi
 if [[ -z "${CCACHE_BASEDIR}" ]] && [[ -d "${S}" ]]; then
     export CCACHE_BASEDIR="${S}"
 fi
+
+if [[ ${CATEGORY}/${PN} == sys-devel/gcc && ${EBUILD_PHASE} == prepare ]]; then
+    export GCC_MAKE_TARGET="all"
+    export EXTRA_ECONF="--disable-bootstrap"
+fi
