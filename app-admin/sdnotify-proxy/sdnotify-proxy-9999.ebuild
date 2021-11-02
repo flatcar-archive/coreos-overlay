@@ -4,7 +4,7 @@
 EAPI=7
 CROS_WORKON_PROJECT="kinvolk/sdnotify-proxy"
 CROS_WORKON_LOCALNAME="sdnotify-proxy"
-CROS_WORKON_REPO="git://github.com"
+CROS_WORKON_REPO="https://github.com"
 COREOS_GO_PACKAGE="github.com/coreos/sdnotify-proxy"
 inherit coreos-go cros-workon
 
