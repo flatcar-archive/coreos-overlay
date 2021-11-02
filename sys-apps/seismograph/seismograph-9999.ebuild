@@ -3,7 +3,7 @@
 
 EAPI=5
 CROS_WORKON_PROJECT="flatcar-linux/seismograph"
-CROS_WORKON_REPO="https://github.com"
+CROS_WORKON_REPO="git://github.com"
 AUTOTOOLS_AUTORECONF=1
 
 if [[ "${PV}" == 9999 ]]; then

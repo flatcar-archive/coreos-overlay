@@ -3,7 +3,7 @@
 
 EAPI=7
 CROS_WORKON_PROJECT="flatcar-linux/dev-util"
-CROS_WORKON_REPO="https://github.com"
+CROS_WORKON_REPO="git://github.com"
 CROS_WORKON_LOCALNAME="dev"
 CROS_WORKON_LOCALDIR="src/platform"
 
