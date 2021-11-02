@@ -5,7 +5,7 @@ EAPI=6
 
 CROS_WORKON_PROJECT="flatcar-linux/docker"
 CROS_WORKON_LOCALNAME="docker"
-CROS_WORKON_REPO="git://github.com"
+CROS_WORKON_REPO="https://github.com"
 COREOS_GO_VERSION="go1.7"
 
 if [[ ${PV} == *9999 ]]; then
