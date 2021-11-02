@@ -2,7 +2,7 @@ EAPI=7
 
 inherit coreos-go eutils git-r3 systemd
 COREOS_GO_PACKAGE="github.com/coreos/go-tspi"
-EGIT_REPO_URI="git://github.com/coreos/go-tspi.git"
+EGIT_REPO_URI="https://github.com/coreos/go-tspi.git"
 
 if [[ "${PV}" == 9999 ]]; then
         KEYWORDS="~amd64 ~arm64"
