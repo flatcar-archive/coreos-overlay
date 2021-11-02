@@ -4,7 +4,7 @@
 EAPI=7
 CROS_WORKON_PROJECT="flatcar-linux/updateservicectl"
 CROS_WORKON_LOCALNAME="updateservicectl"
-CROS_WORKON_REPO="https://github.com"
+CROS_WORKON_REPO="git://github.com"
 COREOS_GO_PACKAGE="github.com/coreos/updateservicectl"
 COREOS_GO_GO111MODULE="off"
 inherit cros-workon coreos-go
