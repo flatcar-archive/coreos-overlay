@@ -75,3 +75,10 @@ dev-util/checkbashisms
 
 # Keep iproute in sync with kernel version.
 =sys-apps/iproute2-5.15.0 ~amd64 ~arm64
+
+# Required to get some changes only in unstable
+=sec-policy/selinux-base-2.20210908-r1 ~amd64 ~arm64
+=sec-policy/selinux-base-policy-2.20210908-r1 ~amd64 ~arm64
+=sec-policy/selinux-virt-2.20210908-r1 ~amd64 ~arm64
+=sec-policy/selinux-unconfined-2.20210908-r1 ~amd64 ~arm64
+=sec-policy/selinux-dbus-2.20210908-r1 ~amd64 ~arm64
