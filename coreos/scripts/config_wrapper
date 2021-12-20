@@ -14,6 +14,9 @@
 
 wrap=${0##*/}
 
+echo "CALLING ${wrap} CONFIG WRAPPER, FAILING NOW!" >&2
+exit 1
+
 if [[ -z ${CHOST} ]] ; then
   # Let's figure out the answer from $0.  Do it piece by piece as
   # we cannot assume the number of components in the target tuple
