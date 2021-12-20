@@ -6,6 +6,16 @@
 # here so we can search the temp $D which has only this pkg rather than the
 # full ROOT which has everyone's files.
 cros_pre_pkg_preinst_wrap_old_config_scripts() {
+	echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >&2
+	echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >&2
+	echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >&2
+	echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >&2
+	echo 'CONFIG WRAPPER GENERATION CALLED, FAILING' >&2
+	echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >&2
+	echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >&2
+	echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >&2
+	echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >&2
+	exit 1
 	# Only wrap when installing into a board sysroot.
 	[[ $(cros_target) != "board_sysroot" ]] && return 0
 
