@@ -142,3 +142,7 @@ dev-libs/openssl fips
 
 # enables ELF support to e.g. allow tc to handle BPF filters.
 sys-apps/iproute2 elf
+
+# disable crypt functionality from glibc in favor of libxcrypt
+sys-libs/glibc -crypt
+sys-libs/libxcrypt system
