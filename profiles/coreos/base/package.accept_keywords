@@ -60,13 +60,13 @@ dev-util/checkbashisms
 =sys-libs/talloc-2.3.2 ~amd64 ~arm64
 
 # Keep headers in sync with kernel version.
-=sys-kernel/linux-headers-5.15 ~amd64 ~arm64
+=sys-kernel/linux-headers-5.16 ~amd64 ~arm64
 
 # Keep perf in sync with kernel version.
 =dev-util/perf-5.15-r1 ~amd64 ~arm64
 
 # Keep iproute in sync with kernel version.
-=sys-apps/iproute2-5.15.0 ~amd64 ~arm64
+=sys-apps/iproute2-5.16.0 ~amd64 ~arm64
 
 # Required for some CVEs
 =app-editors/vim-8.2.4328 ~amd64 ~arm64
