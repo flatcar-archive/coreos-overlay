@@ -1,3 +1,4 @@
 # Enable optimizations for common x86_64 CPUs
 CFLAGS="-O2 -pipe -mtune=generic -g"
 CXXFLAGS="${CFLAGS}"
+LDFLAGS="${LDFLAGS} -Wl,--build-id=sha1"
