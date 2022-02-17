@@ -603,7 +603,7 @@ setup_env() {
 	# Note: Passing CFLAGS via CPPFLAGS overrides glibc's arch-specific CFLAGS
 	# and breaks multiarch support. See 659030#c3 for an example.
 	# The glibc configure script doesn't properly use LDFLAGS all the time.
-	export CC="${__GLIBC_CC} ${__abi_CFLAGS} ${CFLAGS} ${LDFLAGS}"
+	export CC="${__GLIBC_CC} ${__abi_CFLAGS} ${CFLAGS}"
 
 	# Some of the tests are written in C++, so we need to force our multlib abis in, bug 623548
 	export CXX="${__GLIBC_CXX} ${__abi_CFLAGS} ${CFLAGS}"
