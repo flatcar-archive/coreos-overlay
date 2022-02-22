@@ -10,7 +10,7 @@ CROS_WORKON_REPO="https://github.com"
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 else
-	CROS_WORKON_COMMIT="506ea2d796ef9ec9e22402763c9d173d7324fe3d" # kai/ignition-v3
+	CROS_WORKON_COMMIT="a7aeb83831b16109402ae6c2e37b883bcba19be3" # kai/ignition-v3
 	KEYWORDS="amd64 arm arm64 x86"
 fi
 
@@ -34,6 +34,7 @@ src_install() {
 		"${D}"/usr/lib/dracut/modules.d/30disk-uuid/disk-uuid.sh \
 		"${D}"/usr/lib/dracut/modules.d/30ignition/ignition-generator \
 		"${D}"/usr/lib/dracut/modules.d/30ignition/ignition-setup.sh \
+		"${D}"/usr/lib/dracut/modules.d/30ignition/ignition-kargs-helper \
 		"${D}"/usr/lib/dracut/modules.d/30ignition/retry-umount.sh \
 		"${D}"/usr/lib/dracut/modules.d/35torcx/torcx-profile-populate-generator \
 		"${D}"/usr/lib/dracut/modules.d/99setup-root/initrd-setup-root \
