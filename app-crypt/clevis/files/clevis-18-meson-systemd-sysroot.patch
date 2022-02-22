@@ -1,0 +1,37 @@
+From b4ee9d94824c13513dc83e1a390cd346f10fbd82 Mon Sep 17 00:00:00 2001
+From: Jeremi Piotrowski <jpiotrowski@microsoft.com>
+Date: Tue, 8 Feb 2022 12:35:11 +0100
+Subject: [PATCH] luks/systemd/meson: search for binary in sysroot
+
+Signed-off-by: Jeremi Piotrowski <jpiotrowski@microsoft.com>
+---
+ src/luks/systemd/meson.build | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/src/luks/systemd/meson.build b/src/luks/systemd/meson.build
+index e3b3d91..c8dfefc 100644
+--- a/src/luks/systemd/meson.build
++++ b/src/luks/systemd/meson.build
+@@ -1,15 +1,16 @@
+ systemd = dependency('systemd', required: false)
+ 
++sys_root = meson.get_cross_property('sys_root', '/')
+ sd_reply_pass = find_program(
+   join_paths(get_option('prefix'), get_option('libdir'), 'systemd', 'systemd-reply-password'),
+   join_paths(get_option('prefix'), 'lib', 'systemd', 'systemd-reply-password'),
+-  join_paths('/', 'usr', get_option('libdir'), 'systemd', 'systemd-reply-password'),
+-  join_paths('/', 'usr', 'lib', 'systemd', 'systemd-reply-password'),
++  join_paths(sys_root, 'usr', get_option('libdir'), 'systemd', 'systemd-reply-password'),
++  join_paths(sys_root, 'usr', 'lib', 'systemd', 'systemd-reply-password'),
+   required: false
+ )
+ 
+ if systemd.found() and sd_reply_pass.found()
+-  data.set('SYSTEMD_REPLY_PASS', sd_reply_pass.path())
++  data.set('SYSTEMD_REPLY_PASS', sd_reply_pass.path().replace(sys_root, '/'))
+   subdir('dracut')
+ 
+   unitdir = systemd.get_pkgconfig_variable('systemdsystemunitdir')
+-- 
+2.30.2
+

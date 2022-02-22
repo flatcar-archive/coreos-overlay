@@ -1,0 +1,129 @@
+From e0828580fd2222df8277061623db6339667289d9 Mon Sep 17 00:00:00 2001
+From: Jeremi Piotrowski <jpiotrowski@microsoft.com>
+Date: Tue, 8 Feb 2022 16:00:07 +0100
+Subject: [PATCH] meson: add options to specify text file install paths
+
+Signed-off-by: Jeremi Piotrowski <jpiotrowski@microsoft.com>
+---
+ meson_options.txt                                   | 3 +++
+ src/bash/meson.build                                | 5 ++++-
+ src/luks/systemd/dracut/clevis-pin-sss/meson.build  | 6 +++++-
+ src/luks/systemd/dracut/clevis-pin-tang/meson.build | 6 +++++-
+ src/luks/systemd/dracut/clevis-pin-tpm2/meson.build | 6 +++++-
+ src/luks/systemd/dracut/clevis/meson.build          | 6 +++++-
+ src/luks/systemd/meson.build                        | 5 ++++-
+ 7 files changed, 31 insertions(+), 6 deletions(-)
+
+diff --git a/meson_options.txt b/meson_options.txt
+index cd17b4d..36d5a30 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -1,2 +1,5 @@
+ option('user', type: 'string', value: 'clevis', description: 'Unprivileged user for secure clevis operations')
+ option('group', type: 'string', value: 'clevis', description: 'Unprivileged group for secure clevis operations')
++option('completionsdir', type: 'string', description: 'Directory for systemd system unit files')
++option('dracutmodulesdir', type: 'string', description: 'Directory for systemd system unit files')
++option('systemdsystemunitdir', type: 'string', description: 'Directory for systemd system unit files')
+diff --git a/src/bash/meson.build b/src/bash/meson.build
+index 89ba746..e90f18f 100644
+--- a/src/bash/meson.build
++++ b/src/bash/meson.build
+@@ -1,7 +1,10 @@
+ bashcomp = dependency('bash-completion', required: false)
+ 
+ if bashcomp.found()
+-  bashcompdir = bashcomp.get_pkgconfig_variable('completionsdir')
++  bashcompdir = get_option('completionsdir')
++  if bashcompdir == ''
++    bashcompdir = bashcomp.get_pkgconfig_variable('completionsdir')
++  endif
+   install_data('clevis', install_dir: bashcompdir)
+ else
+   warning('Will not install bash completion due to missing dependencies!')
+diff --git a/src/luks/systemd/dracut/clevis-pin-sss/meson.build b/src/luks/systemd/dracut/clevis-pin-sss/meson.build
+index a416b81..d634978 100644
+--- a/src/luks/systemd/dracut/clevis-pin-sss/meson.build
++++ b/src/luks/systemd/dracut/clevis-pin-sss/meson.build
+@@ -1,7 +1,11 @@
+ dracut = dependency('dracut', required: false)
+ 
+ if dracut.found()
+-  dracutdir = dracut.get_pkgconfig_variable('dracutmodulesdir') + '/60' + meson.project_name() + '-pin-sss'
++  dracutdir = get_option('dracutmodulesdir')
++  if dracutdir == ''
++    dracutdir = dracut.get_pkgconfig_variable('dracutmodulesdir')
++  endif
++  dracutdir = dracutdir + '/60' + meson.project_name() + '-pin-sss'
+ 
+   configure_file(
+     input: 'module-setup.sh.in',
+diff --git a/src/luks/systemd/dracut/clevis-pin-tang/meson.build b/src/luks/systemd/dracut/clevis-pin-tang/meson.build
+index b50a966..06497bd 100644
+--- a/src/luks/systemd/dracut/clevis-pin-tang/meson.build
++++ b/src/luks/systemd/dracut/clevis-pin-tang/meson.build
+@@ -1,7 +1,11 @@
+ dracut = dependency('dracut', required: false)
+ 
+ if dracut.found()
+-  dracutdir = dracut.get_pkgconfig_variable('dracutmodulesdir') + '/60' + meson.project_name() + '-pin-tang'
++  dracutdir = get_option('dracutmodulesdir')
++  if dracutdir == ''
++    dracutdir = dracut.get_pkgconfig_variable('dracutmodulesdir')
++  endif
++  dracutdir = dracutdir + '/60' + meson.project_name() + '-pin-tang'
+ 
+   configure_file(
+     input: 'module-setup.sh.in',
+diff --git a/src/luks/systemd/dracut/clevis-pin-tpm2/meson.build b/src/luks/systemd/dracut/clevis-pin-tpm2/meson.build
+index 693e106..b37daad 100644
+--- a/src/luks/systemd/dracut/clevis-pin-tpm2/meson.build
++++ b/src/luks/systemd/dracut/clevis-pin-tpm2/meson.build
+@@ -1,7 +1,11 @@
+ dracut = dependency('dracut', required: false)
+ 
+ if dracut.found()
+-  dracutdir = dracut.get_pkgconfig_variable('dracutmodulesdir') + '/60' + meson.project_name() + '-pin-tpm2'
++  dracutdir = get_option('dracutmodulesdir')
++  if dracutdir == ''
++     dracutdir = dracut.get_pkgconfig_variable('dracutmodulesdir')
++   endif
++  dracutdir = dracutdir + '/60' + meson.project_name() + '-pin-tpm2'
+ 
+   configure_file(
+     input: 'module-setup.sh.in',
+diff --git a/src/luks/systemd/dracut/clevis/meson.build b/src/luks/systemd/dracut/clevis/meson.build
+index 167e708..50b0afc 100644
+--- a/src/luks/systemd/dracut/clevis/meson.build
++++ b/src/luks/systemd/dracut/clevis/meson.build
+@@ -1,7 +1,11 @@
+ dracut = dependency('dracut', required: false)
+ 
+ if dracut.found()
+-  dracutdir = dracut.get_pkgconfig_variable('dracutmodulesdir') + '/60' + meson.project_name()
++  dracutdir = get_option('dracutmodulesdir')
++  if dracutdir == ''
++    dracutdir = dracut.get_pkgconfig_variable('dracutmodulesdir')
++  endif
++  dracutdir = dracutdir + '/60' + meson.project_name()
+ 
+   configure_file(
+     input: 'module-setup.sh.in',
+diff --git a/src/luks/systemd/meson.build b/src/luks/systemd/meson.build
+index c8dfefc..5872eb6 100644
+--- a/src/luks/systemd/meson.build
++++ b/src/luks/systemd/meson.build
+@@ -13,7 +13,10 @@ if systemd.found() and sd_reply_pass.found()
+   data.set('SYSTEMD_REPLY_PASS', sd_reply_pass.path().replace(sys_root, '/'))
+   subdir('dracut')
+ 
+-  unitdir = systemd.get_pkgconfig_variable('systemdsystemunitdir')
++  unitdir = get_option('systemdsystemunitdir')
++  if unitdir == ''
++    unitdir = systemd.get_pkgconfig_variable('systemdsystemunitdir')
++  endif
+ 
+   configure_file(
+     input: 'clevis-luks-askpass.service.in',
+-- 
+2.30.2
+
