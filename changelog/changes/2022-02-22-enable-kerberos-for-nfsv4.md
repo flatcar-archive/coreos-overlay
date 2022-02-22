@@ -1,0 +1,6 @@
+- Bring in dependencies for NFS4 with Kerberos both in kernel and userspace. Tested against NFS4.1. [PR#1664](https://github.com/flatcar-linux/coreos-overlay/pull/1664)
+- In order to use kerberos with NFS you'll need the following steps
+    - Load the RPC kernel module with either ignition or with a script to modprobe e.g. by hand `modprobe rpcsec_gss_krb5` 
+    - Join the machine to the domain where the KDC lives e.g. `realm join example.com -U domain-admin-user
+    - Start the rpc-gssd systemd unit e.g. `systemctl start rpc-gssd.service` 
+    - Mount the share e.g. `mkdir /mnt/test && mount.nfs4 -v -o sec=krb5,vers=4.1 fileserver.domain.local:/test-share /mnt/test`
