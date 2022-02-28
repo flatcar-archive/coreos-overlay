@@ -71,3 +71,9 @@ dev-util/checkbashisms
 # Required for some CVEs
 =app-editors/vim-8.2.4328 ~amd64 ~arm64
 =app-editors/vim-core-8.2.4328 ~amd64 ~arm64
+
+# Duktape is not yet stable
+=dev-lang/duktape-2.7.0-r1 ~amd64 ~arm64
+
+# LibXML2 is not yet stable, required for CVE
+=dev-libs/libxml2-2.9.13-r1 ~amd64 ~arm64
