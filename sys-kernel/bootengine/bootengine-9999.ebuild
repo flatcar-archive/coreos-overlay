@@ -10,7 +10,7 @@ CROS_WORKON_REPO="https://github.com"
 if [[ "${PV}" == 9999 ]]; then
 	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 else
-	CROS_WORKON_COMMIT="682a6a585c58b71c7069fe9c9344f16559552b64" # kai/ignition-v3
+	CROS_WORKON_COMMIT="86ed9aaa9107a6fdeb90a7b14a3a43fd344394d9" # kai/ignition-v3
 	KEYWORDS="amd64 arm arm64 x86"
 fi
 
