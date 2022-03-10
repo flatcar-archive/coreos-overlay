@@ -560,6 +560,8 @@ multilib_src_install_all() {
 	if use gnuefi; then
 		builddir_systemd_enable_service sysinit.target systemd-boot-update.service
 	fi
+	# Flatcar: enable systemd-sysext.service
+	builddir_systemd_enable_service sysinit.target systemd-sysext.service
 	# Flatcar: enable reboot.target (not enabled - has no WantedBy
 	# entry)
 
