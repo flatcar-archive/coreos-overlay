@@ -57,11 +57,13 @@ DEPEND="
 	ssl? ( dev-libs/openssl:0= )
 	sssd? ( sys-auth/sssd[sudo] )
 "
+
+#Flatcar: Remove Perl runtime dependency
+#    ldap? ( dev-lang/perl )
 RDEPEND="
 	${DEPEND}
 	>=app-misc/editor-wrapper-3
 	virtual/editor
-	ldap? ( dev-lang/perl )
 	pam? ( sys-auth/pambase )
 	selinux? ( sec-policy/selinux-sudo )
 	sendmail? ( virtual/mta )
@@ -200,8 +202,7 @@ src_install() {
 		doins "${T}"/ldap.conf.sudo
 		fperms 0440 /etc/ldap.conf.sudo
 
-		insinto /etc/openldap/schema
-		newins doc/schema.OpenLDAP sudo.schema
+		#Flatcar: we don't ship OpenLDAP schemas
 	fi
 
 	if use pam; then
@@ -218,6 +219,9 @@ src_install() {
 	rm -rf "${ED}"/run || die
 
 	find "${ED}" -type f -name "*.la" -delete || die #697812
+
+	# Flatcar: Remove sudo.conf as it is shipped via baselayout
+	rm "${ED}/etc/sudo.conf"
 }
 
 pkg_postinst() {
