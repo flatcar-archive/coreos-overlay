@@ -1,0 +1,1 @@
+- amazon-ssm-agent ([3.1.1208.0](https://github.com/aws/amazon-ssm-agent/releases/tag/3.1.1208.0))
