@@ -63,3 +63,6 @@
 
 # FIPS support is still being tested
 =sys-fs/cryptsetup-2.4.3-r1 ~amd64 ~arm64
+
+# Overwrite portage-stable mask - use latest liburing -r2 for ARM64 and AMD64
+=sys-libs/liburing-2.1-r2 ~amd64 ~arm64
