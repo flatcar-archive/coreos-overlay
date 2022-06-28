@@ -1,0 +1,20 @@
+diff --git a/policy/modules/system/systemd.te b/policy/modules/system/systemd.te
+index 09874fcf0..a34208b8d 100644
+--- refpolicy/policy/modules/system/systemd.te
++++ refpolicy/policy/modules/system/systemd.te
+@@ -1456,6 +1456,7 @@ tunable_policy(`systemd_tmpfiles_manage_all',`
+ 	files_manage_non_security_files(systemd_tmpfiles_t)
+ 	files_relabel_non_security_dirs(systemd_tmpfiles_t)
+ 	files_relabel_non_security_files(systemd_tmpfiles_t)
++	files_relabel_all_non_policy_files(systemd_tmpfiles_t)
+ ')
+ 
+ optional_policy(`
+@@ -1628,3 +1629,7 @@ userdom_relabelto_user_runtime_dirs(systemd_user_runtime_dir_t)
+ optional_policy(`
+ 	dbus_system_bus_client(systemd_user_runtime_dir_t)
+ ')
++
++# (neverallow authlogin_typeattr_3 shadow_t (file (relabelto)))
++# neverallow check failed
++auth_relabelto_shadow(systemd_tmpfiles_t)

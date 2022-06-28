@@ -1,0 +1,13 @@
+diff --git a/policy/modules/system/logging.te b/policy/modules/system/logging.te
+index 61ae572e2..a117c258f 100644
+--- refpolicy/policy/modules/system/logging.te
++++ refpolicy/policy/modules/system/logging.te
+@@ -134,6 +134,8 @@ logging_send_syslog_msg(auditctl_t)
+ miscfiles_read_localization(auditctl_t)
+ 
+ ifdef(`init_systemd',`
++	require { type kernel_t; }
++	allow syslogd_t kernel_t:netlink_audit_socket getattr;
+ 	init_rw_stream_sockets(auditctl_t)
+ ')
+ 
