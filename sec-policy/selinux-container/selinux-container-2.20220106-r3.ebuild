@@ -8,6 +8,10 @@ MODS="container"
 
 inherit selinux-policy-2
 
+POLICY_PATCH=(
+	"${FILESDIR}/container.patch"
+)
+
 DESCRIPTION="SELinux policy for container"
 
 if [[ ${PV} != 9999* ]] ; then

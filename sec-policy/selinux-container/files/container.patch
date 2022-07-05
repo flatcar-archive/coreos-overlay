@@ -1,0 +1,27 @@
+diff --git a/policy/modules/services/container.fc b/policy/modules/services/container.fc
+index 63f1537df..be7a9a4f6 100644
+--- a/services/container.fc
++++ b/services/container.fc
+@@ -79,3 +79,8 @@ HOME_DIR/\.local/share/docker/volumes(/.*)?		gen_context(system_u:object_r:conta
+ 
+ /var/log/containers(/.*)?		gen_context(system_u:object_r:container_log_t,s0)
+ /var/log/pods(/.*)?		gen_context(system_u:object_r:container_log_t,s0)
++
++/run/torcx(/.*)? gen_context(system_u:object_r:container_config_t,s0)
++/run/torcx/unpack/docker/bin/runc	--	gen_context(system_u:object_r:container_engine_exec_t,s0)
++/run/systemd/system/docker.*	--	gen_context(system_u:object_r:container_unit_t,s0)
++/run/systemd/system/containerd.*	--	gen_context(system_u:object_r:container_unit_t,s0)
+diff --git a/policy/modules/services/container.te b/policy/modules/services/container.te
+index a243eb4a5..dfda9efbc 100644
+--- a/services/container.te
++++ b/services/container.te
+@@ -762,3 +762,6 @@ optional_policy(`
+        unconfined_domain_noaudit(spc_user_t)
+        domain_ptrace_all_domains(spc_user_t)
+ ')
++
++allow container_domain self:socket_class_set { accept ioctl read getattr lock write append getopt setopt };
++allow container_domain init_t:unix_stream_socket { accept ioctl read getattr lock write append getopt };
+-- 
+2.35.1
+
