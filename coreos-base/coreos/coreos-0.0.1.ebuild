@@ -76,6 +76,7 @@ RDEPEND="${RDEPEND}
 	amd64? (
 		app-emulation/xenserver-pv-version
 		app-emulation/xenstore
+		sys-boot/mokutil
 	)"
 
 RDEPEND="${RDEPEND}
