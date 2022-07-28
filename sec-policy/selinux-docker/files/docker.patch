@@ -1,0 +1,41 @@
+diff --git a/policy/modules/services/docker.fc b/policy/modules/services/docker.fc
+index a5d0868e4..b7dcb0309 100644
+--- a/services/docker.fc
++++ b/services/docker.fc
+@@ -1,4 +1,5 @@
+ /usr/bin/docker	--	gen_context(system_u:object_r:dockerc_exec_t,s0)
++/usr/bin/tini --	gen_context(system_u:object_r:dockerc_exec_t,s0)
+ /usr/bin/dockerd	--	gen_context(system_u:object_r:dockerd_exec_t,s0)
+ /usr/bin/docker-proxy	--	gen_context(system_u:object_r:dockerd_exec_t,s0)
+ /usr/bin/containerd	--	gen_context(system_u:object_r:dockerd_exec_t,s0)
+diff --git a/policy/modules/services/docker.te b/policy/modules/services/docker.te
+index ffaacff0b..d576e6c9a 100644
+--- a/services/docker.te
++++ b/services/docker.te
+@@ -168,3 +168,23 @@ userdom_search_user_runtime(dockerc_user_t)
+ xdg_search_data_dirs(dockerc_user_t)
+ 
+ container_stream_connect_user_containers(dockerc_user_t)
++
++optional_policy(`
++	gen_require(`
++		type proc_kcore_t;
++	')
++
++	allow dockerd_t proc_kcore_t:file mounton;
++')
++
++# required for socket activation
++allow dockerd_t initrc_t:unix_stream_socket { accept getattr getopt read shutdown write };
++
++# required for using Docker from Torcx ('unpack' is labelled as user_tmpfs_t)
++optional_policy(`
++	gen_require(`
++		type user_tmpfs_t;
++	')
++
++	allow dockerd_t user_tmpfs_t:dir { search };
++')
+-- 
+2.35.1
+
