@@ -59,6 +59,7 @@ PATCHES=(
 	"${FILESDIR}/0015-internal-exec-stages-disks-prevent-races-with-udev.patch"
 	"${FILESDIR}/0016-update-ign-converter-to-fix-link-translation.patch"
 	"${FILESDIR}/0017-mod-update-ign-converter.patch"
+	"${FILESDIR}/0018-mod-bump-ign-converter-to-pull-networkd-fix.patch"
 )
 
 src_compile() {
