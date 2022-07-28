@@ -8,6 +8,10 @@ MODS="docker"
 
 inherit selinux-policy-2
 
+POLICY_PATCH=(
+	"${FILESDIR}/docker.patch"
+)
+
 DESCRIPTION="SELinux policy for docker"
 
 if [[ ${PV} != 9999* ]] ; then
