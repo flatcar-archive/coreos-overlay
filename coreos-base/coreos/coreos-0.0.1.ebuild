@@ -78,6 +78,7 @@ RDEPEND="${RDEPEND}
 		app-emulation/xenstore
 	)"
 
+# sys-devel/gettext: it embeds 'envsubst' binary which is useful for simple file templating.
 RDEPEND="${RDEPEND}
 	app-admin/adcli
 	app-admin/etcd-wrapper
@@ -173,6 +174,7 @@ RDEPEND="${RDEPEND}
 	sys-block/open-iscsi
 	sys-block/parted
 	sys-cluster/ipvsadm
+	sys-devel/gettext
 	sys-fs/btrfs-progs
 	sys-fs/cryptsetup
 	sys-fs/dosfstools
