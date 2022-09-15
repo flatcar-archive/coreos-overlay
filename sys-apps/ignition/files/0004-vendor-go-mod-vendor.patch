@@ -23,8 +23,8 @@ Signed-off-by: Mathieu Tortuyaux <mathieu@kinvolk.io>
  .../flatcar-linux/ign-converter/LICENSE       |  202 +
  .../translate/v24tov31/v24tov31.go            |  639 ++
  .../flatcar-linux/ign-converter/util/util.go  |  166 +
- .../github.com/flatcar-linux/ignition/LICENSE |  202 +
- .../github.com/flatcar-linux/ignition/NOTICE  |    5 +
+ .../github.com/flatcar/ignition/LICENSE |  202 +
+ .../github.com/flatcar/ignition/NOTICE  |    5 +
  .../ignition/config/shared/errors/errors.go   |  109 +
  .../config/shared/validations/unit.go         |   54 +
  .../ignition/config/util/helpers.go           |   34 +
@@ -190,142 +190,142 @@ Signed-off-by: Mathieu Tortuyaux <mathieu@kinvolk.io>
  create mode 100644 vendor/github.com/coreos/go-systemd/unit/escape.go
  create mode 100644 vendor/github.com/coreos/go-systemd/unit/option.go
  create mode 100644 vendor/github.com/coreos/go-systemd/unit/serialize.go
- create mode 100644 vendor/github.com/flatcar-linux/ign-converter/LICENSE
- create mode 100644 vendor/github.com/flatcar-linux/ign-converter/translate/v24tov31/v24tov31.go
- create mode 100644 vendor/github.com/flatcar-linux/ign-converter/util/util.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/LICENSE
- create mode 100644 vendor/github.com/flatcar-linux/ignition/NOTICE
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/shared/errors/errors.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/shared/validations/unit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/util/helpers.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/util/parsingErrors.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/cloudinit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/config.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/config.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/disk.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/file.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/filesystem.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/group.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/networkd.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/partition.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/passwd.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/path.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/raid.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/storage.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/systemd.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/unit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v1/types/user.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/append.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/cloudinit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/config.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/translate.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/compression.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/config.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/disk.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/file.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/filesystem.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/group.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/hash.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/ignition.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/networkd.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/partition.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/passwd.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/path.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/raid.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/storage.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/systemd.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/unit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/url.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/user.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_0/types/verification.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/append.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/cloudinit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/config.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/translate.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/config.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/directory.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/disk.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/file.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/filesystem.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/ignition.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/mode.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/node.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/partition.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/passwd.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/path.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/raid.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/schema.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/unit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/url.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_1/types/verification.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/append.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/cloudinit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/config.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/translate.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/ca.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/config.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/directory.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/disk.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/file.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/filesystem.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/ignition.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/mode.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/node.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/partition.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/passwd.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/path.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/raid.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/schema.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/unit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/url.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_2/types/verification.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/append.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/cloudinit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/config.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/translate.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/ca.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/config.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/directory.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/disk.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/file.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/filesystem.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/ignition.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/mode.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/node.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/partition.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/passwd.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/path.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/raid.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/schema.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/unit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/url.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_3/types/verification.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/append.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/cloudinit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/config.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/translate.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/ca.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/config.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/directory.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/disk.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/file.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/filesystem.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/headers.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/ignition.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/mode.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/node.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/partition.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/passwd.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/path.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/raid.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/schema.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/unit.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/url.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/v2_4/types/verification.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/validate/astjson/node.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/validate/astnode/astnode.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/validate/report/report.go
- create mode 100644 vendor/github.com/flatcar-linux/ignition/config/validate/validate.go
+ create mode 100644 vendor/github.com/flatcar/ign-converter/LICENSE
+ create mode 100644 vendor/github.com/flatcar/ign-converter/translate/v24tov31/v24tov31.go
+ create mode 100644 vendor/github.com/flatcar/ign-converter/util/util.go
+ create mode 100644 vendor/github.com/flatcar/ignition/LICENSE
+ create mode 100644 vendor/github.com/flatcar/ignition/NOTICE
+ create mode 100644 vendor/github.com/flatcar/ignition/config/shared/errors/errors.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/shared/validations/unit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/util/helpers.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/util/parsingErrors.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/cloudinit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/config.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/config.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/disk.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/file.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/filesystem.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/group.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/networkd.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/partition.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/passwd.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/path.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/raid.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/storage.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/systemd.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/unit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v1/types/user.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/append.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/cloudinit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/config.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/translate.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/compression.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/config.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/disk.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/file.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/filesystem.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/group.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/hash.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/ignition.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/networkd.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/partition.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/passwd.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/path.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/raid.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/storage.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/systemd.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/unit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/url.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/user.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_0/types/verification.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/append.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/cloudinit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/config.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/translate.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/config.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/directory.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/disk.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/file.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/filesystem.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/ignition.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/mode.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/node.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/partition.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/passwd.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/path.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/raid.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/schema.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/unit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/url.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_1/types/verification.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/append.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/cloudinit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/config.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/translate.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/ca.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/config.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/directory.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/disk.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/file.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/filesystem.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/ignition.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/mode.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/node.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/partition.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/passwd.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/path.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/raid.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/schema.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/unit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/url.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_2/types/verification.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/append.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/cloudinit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/config.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/translate.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/ca.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/config.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/directory.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/disk.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/file.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/filesystem.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/ignition.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/mode.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/node.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/partition.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/passwd.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/path.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/raid.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/schema.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/unit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/url.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_3/types/verification.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/append.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/cloudinit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/config.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/translate.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/ca.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/config.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/directory.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/disk.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/file.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/filesystem.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/headers.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/ignition.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/mode.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/node.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/partition.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/passwd.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/path.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/raid.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/schema.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/unit.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/url.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/v2_4/types/verification.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/validate/astjson/node.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/validate/astnode/astnode.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/validate/report/report.go
+ create mode 100644 vendor/github.com/flatcar/ignition/config/validate/validate.go
  create mode 100644 vendor/go4.org/AUTHORS
  create mode 100644 vendor/go4.org/LICENSE
  create mode 100644 vendor/go4.org/errorutil/highlight.go
@@ -5029,11 +5029,11 @@ index 00000000..e07799ca
 +	buf.WriteRune('=')
 +	buf.WriteString(opt.Value)
 +}
-diff --git a/vendor/github.com/flatcar-linux/ign-converter/LICENSE b/vendor/github.com/flatcar-linux/ign-converter/LICENSE
+diff --git a/vendor/github.com/flatcar/ign-converter/LICENSE b/vendor/github.com/flatcar/ign-converter/LICENSE
 new file mode 100644
 index 00000000..e06d2081
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ign-converter/LICENSE
++++ b/vendor/github.com/flatcar/ign-converter/LICENSE
 @@ -0,0 +1,202 @@
 +Apache License
 +                           Version 2.0, January 2004
@@ -5237,11 +5237,11 @@ index 00000000..e06d2081
 +   See the License for the specific language governing permissions and
 +   limitations under the License.
 +
-diff --git a/vendor/github.com/flatcar-linux/ign-converter/translate/v24tov31/v24tov31.go b/vendor/github.com/flatcar-linux/ign-converter/translate/v24tov31/v24tov31.go
+diff --git a/vendor/github.com/flatcar/ign-converter/translate/v24tov31/v24tov31.go b/vendor/github.com/flatcar/ign-converter/translate/v24tov31/v24tov31.go
 new file mode 100644
 index 00000000..1e406ca2
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ign-converter/translate/v24tov31/v24tov31.go
++++ b/vendor/github.com/flatcar/ign-converter/translate/v24tov31/v24tov31.go
 @@ -0,0 +1,639 @@
 +// Copyright 2020 Red Hat, Inc.
 +//
@@ -5265,12 +5265,12 @@ index 00000000..1e406ca2
 +	"path"
 +	"reflect"
 +
-+	old "github.com/flatcar-linux/ignition/config/v2_4/types"
-+	oldValidate "github.com/flatcar-linux/ignition/config/validate"
-+	"github.com/flatcar-linux/ignition/v2/config/v3_1/types"
-+	"github.com/flatcar-linux/ignition/v2/config/validate"
++	old "github.com/flatcar/ignition/config/v2_4/types"
++	oldValidate "github.com/flatcar/ignition/config/validate"
++	"github.com/flatcar/ignition/v2/config/v3_1/types"
++	"github.com/flatcar/ignition/v2/config/validate"
 +
-+	"github.com/flatcar-linux/ign-converter/util"
++	"github.com/flatcar/ign-converter/util"
 +)
 +
 +// Check2_4 returns if the config is translatable but does not do any translation.
@@ -5566,7 +5566,7 @@ index 00000000..1e406ca2
 +		// It does so following the apparent intent of the upstream code [1]
 +		// which actually does the opposite for Enable=true Enabled=false
 +		// because the first matching line in a systemd preset wins.
-+		// [1] https://github.com/flatcar-linux/ignition/blob/b4d18ad3fcb278a890327f858c1c10256ab6ee9d/internal/exec/stages/files/units.go#L32
++		// [1] https://github.com/flatcar/ignition/blob/b4d18ad3fcb278a890327f858c1c10256ab6ee9d/internal/exec/stages/files/units.go#L32
 +		if (u.Enabled != nil && *u.Enabled) || u.Enable {
 +			enabled = util.BoolP(true)
 +		}
@@ -5882,11 +5882,11 @@ index 00000000..1e406ca2
 +
 +	return cfg, nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ign-converter/util/util.go b/vendor/github.com/flatcar-linux/ign-converter/util/util.go
+diff --git a/vendor/github.com/flatcar/ign-converter/util/util.go b/vendor/github.com/flatcar/ign-converter/util/util.go
 new file mode 100644
 index 00000000..40eb0971
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ign-converter/util/util.go
++++ b/vendor/github.com/flatcar/ign-converter/util/util.go
 @@ -0,0 +1,166 @@
 +// Copyright 2020 Red Hat, Inc.
 +//
@@ -6054,11 +6054,11 @@ index 00000000..40eb0971
 +	counterMutex.Unlock()
 +	return name, nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/LICENSE b/vendor/github.com/flatcar-linux/ignition/LICENSE
+diff --git a/vendor/github.com/flatcar/ignition/LICENSE b/vendor/github.com/flatcar/ignition/LICENSE
 new file mode 100644
 index 00000000..e06d2081
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/LICENSE
++++ b/vendor/github.com/flatcar/ignition/LICENSE
 @@ -0,0 +1,202 @@
 +Apache License
 +                           Version 2.0, January 2004
@@ -6262,22 +6262,22 @@ index 00000000..e06d2081
 +   See the License for the specific language governing permissions and
 +   limitations under the License.
 +
-diff --git a/vendor/github.com/flatcar-linux/ignition/NOTICE b/vendor/github.com/flatcar-linux/ignition/NOTICE
+diff --git a/vendor/github.com/flatcar/ignition/NOTICE b/vendor/github.com/flatcar/ignition/NOTICE
 new file mode 100644
 index 00000000..e520005c
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/NOTICE
++++ b/vendor/github.com/flatcar/ignition/NOTICE
 @@ -0,0 +1,5 @@
 +CoreOS Project
 +Copyright 2015 CoreOS, Inc
 +
 +This product includes software developed at CoreOS, Inc.
 +(http://www.coreos.com/).
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/shared/errors/errors.go b/vendor/github.com/flatcar-linux/ignition/config/shared/errors/errors.go
+diff --git a/vendor/github.com/flatcar/ignition/config/shared/errors/errors.go b/vendor/github.com/flatcar/ignition/config/shared/errors/errors.go
 new file mode 100644
 index 00000000..f2b47cf9
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/shared/errors/errors.go
++++ b/vendor/github.com/flatcar/ignition/config/shared/errors/errors.go
 @@ -0,0 +1,109 @@
 +// Copyright 2018 CoreOS, Inc.
 +//
@@ -6388,11 +6388,11 @@ index 00000000..f2b47cf9
 +func NewNoInstallSectionError(name string) error {
 +	return fmt.Errorf("unit %q is enabled, but has no install section so enable does nothing", name)
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/shared/validations/unit.go b/vendor/github.com/flatcar-linux/ignition/config/shared/validations/unit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/shared/validations/unit.go b/vendor/github.com/flatcar/ignition/config/shared/validations/unit.go
 new file mode 100644
 index 00000000..383a2c6b
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/shared/validations/unit.go
++++ b/vendor/github.com/flatcar/ignition/config/shared/validations/unit.go
 @@ -0,0 +1,54 @@
 +// Copyright 2018 CoreOS, Inc.
 +//
@@ -6414,8 +6414,8 @@ index 00000000..383a2c6b
 +
 +import (
 +	"github.com/coreos/go-systemd/unit"
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +// ValidateInstallSection is a helper to validate a given unit
@@ -6448,11 +6448,11 @@ index 00000000..383a2c6b
 +		}},
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/util/helpers.go b/vendor/github.com/flatcar-linux/ignition/config/util/helpers.go
+diff --git a/vendor/github.com/flatcar/ignition/config/util/helpers.go b/vendor/github.com/flatcar/ignition/config/util/helpers.go
 new file mode 100644
 index 00000000..7d55548f
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/util/helpers.go
++++ b/vendor/github.com/flatcar/ignition/config/util/helpers.go
 @@ -0,0 +1,34 @@
 +// Copyright 2018 CoreOS, Inc.
 +//
@@ -6488,11 +6488,11 @@ index 00000000..7d55548f
 +func BoolToPtr(b bool) *bool {
 +	return &b
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/util/parsingErrors.go b/vendor/github.com/flatcar-linux/ignition/config/util/parsingErrors.go
+diff --git a/vendor/github.com/flatcar/ignition/config/util/parsingErrors.go b/vendor/github.com/flatcar/ignition/config/util/parsingErrors.go
 new file mode 100644
 index 00000000..fbd712f3
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/util/parsingErrors.go
++++ b/vendor/github.com/flatcar/ignition/config/util/parsingErrors.go
 @@ -0,0 +1,74 @@
 +// Copyright 2018 CoreOS, Inc.
 +//
@@ -6514,9 +6514,9 @@ index 00000000..fbd712f3
 +	"bytes"
 +	"errors"
 +
-+	configErrors "github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/v2_4/types"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	configErrors "github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/v2_4/types"
++	"github.com/flatcar/ignition/config/validate/report"
 +
 +	json "github.com/ajeddeloh/go-json"
 +	"go4.org/errorutil"
@@ -6568,11 +6568,11 @@ index 00000000..fbd712f3
 +
 +	return report.ReportFromError(err, report.EntryError), err
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/cloudinit.go b/vendor/github.com/flatcar-linux/ignition/config/v1/cloudinit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/cloudinit.go b/vendor/github.com/flatcar/ignition/config/v1/cloudinit.go
 new file mode 100644
 index 00000000..7cfeb455
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/cloudinit.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/cloudinit.go
 @@ -0,0 +1,53 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -6627,11 +6627,11 @@ index 00000000..7cfeb455
 +		return data
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/config.go b/vendor/github.com/flatcar-linux/ignition/config/v1/config.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/config.go b/vendor/github.com/flatcar/ignition/config/v1/config.go
 new file mode 100644
 index 00000000..88c46e87
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/config.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/config.go
 @@ -0,0 +1,59 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -6650,11 +6650,11 @@ index 00000000..88c46e87
 +package v1
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/util"
-+	"github.com/flatcar-linux/ignition/config/v1/types"
-+	"github.com/flatcar-linux/ignition/config/validate"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/util"
++	"github.com/flatcar/ignition/config/v1/types"
++	"github.com/flatcar/ignition/config/validate"
++	"github.com/flatcar/ignition/config/validate/report"
 +
 +	json "github.com/ajeddeloh/go-json"
 +)
@@ -6692,11 +6692,11 @@ index 00000000..88c46e87
 +func isEmpty(userdata []byte) bool {
 +	return len(userdata) == 0
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/config.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/config.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/config.go b/vendor/github.com/flatcar/ignition/config/v1/types/config.go
 new file mode 100644
 index 00000000..3a369e4f
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/config.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/config.go
 @@ -0,0 +1,35 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -6733,11 +6733,11 @@ index 00000000..3a369e4f
 +	Networkd Networkd `json:"networkd,omitempty"`
 +	Passwd   Passwd   `json:"passwd,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/disk.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/disk.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/disk.go b/vendor/github.com/flatcar/ignition/config/v1/types/disk.go
 new file mode 100644
 index 00000000..81c41d6d
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/disk.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/disk.go
 @@ -0,0 +1,123 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -6756,8 +6756,8 @@ index 00000000..81c41d6d
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Disk struct {
@@ -6862,11 +6862,11 @@ index 00000000..81c41d6d
 +	}
 +	return false
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/file.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/file.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/file.go b/vendor/github.com/flatcar/ignition/config/v1/types/file.go
 new file mode 100644
 index 00000000..658affb9
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/file.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/file.go
 @@ -0,0 +1,39 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -6887,8 +6887,8 @@ index 00000000..658affb9
 +import (
 +	"os"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type FileMode os.FileMode
@@ -6907,11 +6907,11 @@ index 00000000..658affb9
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/filesystem.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/filesystem.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/filesystem.go b/vendor/github.com/flatcar/ignition/config/v1/types/filesystem.go
 new file mode 100644
 index 00000000..0aa40ae7
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/filesystem.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/filesystem.go
 @@ -0,0 +1,45 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -6930,8 +6930,8 @@ index 00000000..0aa40ae7
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Filesystem struct {
@@ -6958,11 +6958,11 @@ index 00000000..0aa40ae7
 +}
 +
 +type MkfsOptions []string
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/group.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/group.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/group.go b/vendor/github.com/flatcar/ignition/config/v1/types/group.go
 new file mode 100644
 index 00000000..27e51048
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/group.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/group.go
 @@ -0,0 +1,22 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -6986,11 +6986,11 @@ index 00000000..27e51048
 +	PasswordHash string `json:"passwordHash,omitempty"`
 +	System       bool   `json:"system,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/networkd.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/networkd.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/networkd.go b/vendor/github.com/flatcar/ignition/config/v1/types/networkd.go
 new file mode 100644
 index 00000000..470c7211
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/networkd.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/networkd.go
 @@ -0,0 +1,19 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -7011,11 +7011,11 @@ index 00000000..470c7211
 +type Networkd struct {
 +	Units []NetworkdUnit `json:"units,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/partition.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/partition.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/partition.go b/vendor/github.com/flatcar/ignition/config/v1/types/partition.go
 new file mode 100644
 index 00000000..86c3f810
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/partition.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/partition.go
 @@ -0,0 +1,60 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -7037,8 +7037,8 @@ index 00000000..86c3f810
 +	"fmt"
 +	"regexp"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Partition struct {
@@ -7077,11 +7077,11 @@ index 00000000..86c3f810
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/passwd.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/passwd.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/passwd.go b/vendor/github.com/flatcar/ignition/config/v1/types/passwd.go
 new file mode 100644
 index 00000000..0ffff43b
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/passwd.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/passwd.go
 @@ -0,0 +1,20 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -7103,11 +7103,11 @@ index 00000000..0ffff43b
 +	Users  []User  `json:"users,omitempty"`
 +	Groups []Group `json:"groups,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/path.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/path.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/path.go b/vendor/github.com/flatcar/ignition/config/v1/types/path.go
 new file mode 100644
 index 00000000..812318db
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/path.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/path.go
 @@ -0,0 +1,31 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -7128,8 +7128,8 @@ index 00000000..812318db
 +import (
 +	"path"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Path string
@@ -7140,11 +7140,11 @@ index 00000000..812318db
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/raid.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/raid.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/raid.go b/vendor/github.com/flatcar/ignition/config/v1/types/raid.go
 new file mode 100644
 index 00000000..cad9a1d2
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/raid.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/raid.go
 @@ -0,0 +1,44 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -7163,8 +7163,8 @@ index 00000000..cad9a1d2
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Raid struct {
@@ -7190,11 +7190,11 @@ index 00000000..cad9a1d2
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/storage.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/storage.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/storage.go b/vendor/github.com/flatcar/ignition/config/v1/types/storage.go
 new file mode 100644
 index 00000000..2649751a
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/storage.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/storage.go
 @@ -0,0 +1,21 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -7217,11 +7217,11 @@ index 00000000..2649751a
 +	Arrays      []Raid       `json:"raid,omitempty"`
 +	Filesystems []Filesystem `json:"filesystems,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/systemd.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/systemd.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/systemd.go b/vendor/github.com/flatcar/ignition/config/v1/types/systemd.go
 new file mode 100644
 index 00000000..97194b91
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/systemd.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/systemd.go
 @@ -0,0 +1,19 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -7242,11 +7242,11 @@ index 00000000..97194b91
 +type Systemd struct {
 +	Units []SystemdUnit `json:"units,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/unit.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/unit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/unit.go b/vendor/github.com/flatcar/ignition/config/v1/types/unit.go
 new file mode 100644
 index 00000000..52d45872
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/unit.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/unit.go
 @@ -0,0 +1,73 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -7267,8 +7267,8 @@ index 00000000..52d45872
 +import (
 +	"path"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type SystemdUnit struct {
@@ -7321,11 +7321,11 @@ index 00000000..52d45872
 +		return report.ReportFromError(errors.ErrInvalidNetworkdExt, report.EntryError)
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v1/types/user.go b/vendor/github.com/flatcar-linux/ignition/config/v1/types/user.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v1/types/user.go b/vendor/github.com/flatcar/ignition/config/v1/types/user.go
 new file mode 100644
 index 00000000..f6653e27
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v1/types/user.go
++++ b/vendor/github.com/flatcar/ignition/config/v1/types/user.go
 @@ -0,0 +1,35 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -7362,11 +7362,11 @@ index 00000000..f6653e27
 +	NoLogInit    bool     `json:"noLogInit,omitempty"`
 +	Shell        string   `json:"shell,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/append.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/append.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/append.go b/vendor/github.com/flatcar/ignition/config/v2_0/append.go
 new file mode 100644
 index 00000000..e274e1ab
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/append.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/append.go
 @@ -0,0 +1,76 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -7387,7 +7387,7 @@ index 00000000..e274e1ab
 +import (
 +	"reflect"
 +
-+	"github.com/flatcar-linux/ignition/config/v2_0/types"
++	"github.com/flatcar/ignition/config/v2_0/types"
 +)
 +
 +// Append appends newConfig to oldConfig and returns the result. Appending one
@@ -7444,11 +7444,11 @@ index 00000000..e274e1ab
 +
 +	return vRes.Elem()
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/cloudinit.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/cloudinit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/cloudinit.go b/vendor/github.com/flatcar/ignition/config/v2_0/cloudinit.go
 new file mode 100644
 index 00000000..9e1f2ad0
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/cloudinit.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/cloudinit.go
 @@ -0,0 +1,53 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -7503,11 +7503,11 @@ index 00000000..9e1f2ad0
 +		return data
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/config.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/config.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/config.go b/vendor/github.com/flatcar/ignition/config/v2_0/config.go
 new file mode 100644
 index 00000000..b345a553
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/config.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/config.go
 @@ -0,0 +1,70 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -7526,11 +7526,11 @@ index 00000000..b345a553
 +package v2_0
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/v1"
-+	"github.com/flatcar-linux/ignition/config/v2_0/types"
-+	"github.com/flatcar-linux/ignition/config/validate"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/v1"
++	"github.com/flatcar/ignition/config/v2_0/types"
++	"github.com/flatcar/ignition/config/validate"
++	"github.com/flatcar/ignition/config/validate/report"
 +
 +	json "github.com/ajeddeloh/go-json"
 +	"github.com/coreos/go-semver/semver"
@@ -7579,11 +7579,11 @@ index 00000000..b345a553
 +func isEmpty(userdata []byte) bool {
 +	return len(userdata) == 0
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/translate.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/translate.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/translate.go b/vendor/github.com/flatcar/ignition/config/v2_0/translate.go
 new file mode 100644
 index 00000000..ee05d4b1
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/translate.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/translate.go
 @@ -0,0 +1,173 @@
 +// Copyright 2018 CoreOS, Inc.
 +//
@@ -7604,8 +7604,8 @@ index 00000000..ee05d4b1
 +import (
 +	"fmt"
 +
-+	v1 "github.com/flatcar-linux/ignition/config/v1/types"
-+	"github.com/flatcar-linux/ignition/config/v2_0/types"
++	v1 "github.com/flatcar/ignition/config/v1/types"
++	"github.com/flatcar/ignition/config/v2_0/types"
 +	"github.com/vincent-petithory/dataurl"
 +)
 +
@@ -7758,11 +7758,11 @@ index 00000000..ee05d4b1
 +
 +	return config
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/compression.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/compression.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/compression.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/compression.go
 new file mode 100644
 index 00000000..a6b65a5a
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/compression.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/compression.go
 @@ -0,0 +1,31 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -7781,8 +7781,8 @@ index 00000000..a6b65a5a
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Compression string
@@ -7795,11 +7795,11 @@ index 00000000..a6b65a5a
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/config.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/config.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/config.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/config.go
 new file mode 100644
 index 00000000..996f6740
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/config.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/config.go
 @@ -0,0 +1,87 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -7822,7 +7822,7 @@ index 00000000..996f6740
 +
 +	"github.com/coreos/go-semver/semver"
 +
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +var (
@@ -7888,11 +7888,11 @@ index 00000000..996f6740
 +		filesystems[filesystem.Name] = struct{}{}
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/disk.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/disk.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/disk.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/disk.go
 new file mode 100644
 index 00000000..21334989
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/disk.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/disk.go
 @@ -0,0 +1,126 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -7911,8 +7911,8 @@ index 00000000..21334989
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Disk struct {
@@ -8020,11 +8020,11 @@ index 00000000..21334989
 +	}
 +	return false
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/file.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/file.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/file.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/file.go
 new file mode 100644
 index 00000000..517ed770
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/file.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/file.go
 @@ -0,0 +1,61 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8045,8 +8045,8 @@ index 00000000..517ed770
 +import (
 +	"os"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type File struct {
@@ -8087,11 +8087,11 @@ index 00000000..517ed770
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/filesystem.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/filesystem.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/filesystem.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/filesystem.go
 new file mode 100644
 index 00000000..0582dd5a
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/filesystem.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/filesystem.go
 @@ -0,0 +1,60 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8110,8 +8110,8 @@ index 00000000..0582dd5a
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Filesystem struct {
@@ -8153,11 +8153,11 @@ index 00000000..0582dd5a
 +}
 +
 +type MkfsOptions []string
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/group.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/group.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/group.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/group.go
 new file mode 100644
 index 00000000..27e51048
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/group.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/group.go
 @@ -0,0 +1,22 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8181,11 +8181,11 @@ index 00000000..27e51048
 +	PasswordHash string `json:"passwordHash,omitempty"`
 +	System       bool   `json:"system,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/hash.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/hash.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/hash.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/hash.go
 new file mode 100644
 index 00000000..530a07c6
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/hash.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/hash.go
 @@ -0,0 +1,72 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8209,8 +8209,8 @@ index 00000000..530a07c6
 +	"encoding/json"
 +	"strings"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Hash struct {
@@ -8259,11 +8259,11 @@ index 00000000..530a07c6
 +
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/ignition.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/ignition.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/ignition.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/ignition.go
 new file mode 100644
 index 00000000..f16e9321
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/ignition.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/ignition.go
 @@ -0,0 +1,64 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -8286,8 +8286,8 @@ index 00000000..f16e9321
 +
 +	"github.com/coreos/go-semver/semver"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Ignition struct {
@@ -8329,11 +8329,11 @@ index 00000000..f16e9321
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/networkd.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/networkd.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/networkd.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/networkd.go
 new file mode 100644
 index 00000000..470c7211
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/networkd.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/networkd.go
 @@ -0,0 +1,19 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8354,11 +8354,11 @@ index 00000000..470c7211
 +type Networkd struct {
 +	Units []NetworkdUnit `json:"units,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/partition.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/partition.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/partition.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/partition.go
 new file mode 100644
 index 00000000..c6cb0f0c
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/partition.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/partition.go
 @@ -0,0 +1,64 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8381,8 +8381,8 @@ index 00000000..c6cb0f0c
 +	"regexp"
 +	"strings"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Partition struct {
@@ -8424,11 +8424,11 @@ index 00000000..c6cb0f0c
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/passwd.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/passwd.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/passwd.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/passwd.go
 new file mode 100644
 index 00000000..0ffff43b
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/passwd.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/passwd.go
 @@ -0,0 +1,20 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8450,11 +8450,11 @@ index 00000000..0ffff43b
 +	Users  []User  `json:"users,omitempty"`
 +	Groups []Group `json:"groups,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/path.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/path.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/path.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/path.go
 new file mode 100644
 index 00000000..b60f6ef1
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/path.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/path.go
 @@ -0,0 +1,35 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8475,8 +8475,8 @@ index 00000000..b60f6ef1
 +import (
 +	"path"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Path string
@@ -8491,11 +8491,11 @@ index 00000000..b60f6ef1
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/raid.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/raid.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/raid.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/raid.go
 new file mode 100644
 index 00000000..cad9a1d2
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/raid.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/raid.go
 @@ -0,0 +1,44 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8514,8 +8514,8 @@ index 00000000..cad9a1d2
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Raid struct {
@@ -8541,11 +8541,11 @@ index 00000000..cad9a1d2
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/storage.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/storage.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/storage.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/storage.go
 new file mode 100644
 index 00000000..bd734377
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/storage.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/storage.go
 @@ -0,0 +1,22 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8569,11 +8569,11 @@ index 00000000..bd734377
 +	Filesystems []Filesystem `json:"filesystems,omitempty"`
 +	Files       []File       `json:"files,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/systemd.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/systemd.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/systemd.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/systemd.go
 new file mode 100644
 index 00000000..97194b91
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/systemd.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/systemd.go
 @@ -0,0 +1,19 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8594,11 +8594,11 @@ index 00000000..97194b91
 +type Systemd struct {
 +	Units []SystemdUnit `json:"units,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/unit.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/unit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/unit.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/unit.go
 new file mode 100644
 index 00000000..a47cb2ed
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/unit.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/unit.go
 @@ -0,0 +1,115 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8623,9 +8623,9 @@ index 00000000..a47cb2ed
 +
 +	"github.com/coreos/go-systemd/unit"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/shared/validations"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/validations"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type SystemdUnit struct {
@@ -8715,11 +8715,11 @@ index 00000000..a47cb2ed
 +	}
 +	return opts, nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/url.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/url.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/url.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/url.go
 new file mode 100644
 index 00000000..58cf3f66
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/url.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/url.go
 @@ -0,0 +1,69 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8743,8 +8743,8 @@ index 00000000..58cf3f66
 +
 +	"github.com/vincent-petithory/dataurl"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type Url url.URL
@@ -8790,11 +8790,11 @@ index 00000000..58cf3f66
 +		return report.ReportFromError(errors.ErrInvalidScheme, report.EntryError)
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/user.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/user.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/user.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/user.go
 new file mode 100644
 index 00000000..f6653e27
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/user.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/user.go
 @@ -0,0 +1,35 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8831,11 +8831,11 @@ index 00000000..f6653e27
 +	NoLogInit    bool     `json:"noLogInit,omitempty"`
 +	Shell        string   `json:"shell,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/verification.go b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/verification.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_0/types/verification.go b/vendor/github.com/flatcar/ignition/config/v2_0/types/verification.go
 new file mode 100644
 index 00000000..b7cef403
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_0/types/verification.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_0/types/verification.go
 @@ -0,0 +1,19 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8856,11 +8856,11 @@ index 00000000..b7cef403
 +type Verification struct {
 +	Hash *Hash `json:"hash,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/append.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/append.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/append.go b/vendor/github.com/flatcar/ignition/config/v2_1/append.go
 new file mode 100644
 index 00000000..6bbac2eb
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/append.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/append.go
 @@ -0,0 +1,76 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -8881,7 +8881,7 @@ index 00000000..6bbac2eb
 +import (
 +	"reflect"
 +
-+	"github.com/flatcar-linux/ignition/config/v2_1/types"
++	"github.com/flatcar/ignition/config/v2_1/types"
 +)
 +
 +// Append appends newConfig to oldConfig and returns the result. Appending one
@@ -8938,11 +8938,11 @@ index 00000000..6bbac2eb
 +
 +	return vRes.Elem()
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/cloudinit.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/cloudinit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/cloudinit.go b/vendor/github.com/flatcar/ignition/config/v2_1/cloudinit.go
 new file mode 100644
 index 00000000..a019320f
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/cloudinit.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/cloudinit.go
 @@ -0,0 +1,53 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -8997,11 +8997,11 @@ index 00000000..a019320f
 +		return data
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/config.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/config.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/config.go b/vendor/github.com/flatcar/ignition/config/v2_1/config.go
 new file mode 100644
 index 00000000..b0e31f6e
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/config.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/config.go
 @@ -0,0 +1,68 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -9021,11 +9021,11 @@ index 00000000..b0e31f6e
 +
 +import (
 +	"github.com/coreos/go-semver/semver"
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/v2_0"
-+	"github.com/flatcar-linux/ignition/config/v2_1/types"
-+	"github.com/flatcar-linux/ignition/config/validate"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/v2_0"
++	"github.com/flatcar/ignition/config/v2_1/types"
++	"github.com/flatcar/ignition/config/validate"
++	"github.com/flatcar/ignition/config/validate/report"
 +
 +	json "github.com/ajeddeloh/go-json"
 +)
@@ -9071,11 +9071,11 @@ index 00000000..b0e31f6e
 +func isEmpty(userdata []byte) bool {
 +	return len(userdata) == 0
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/translate.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/translate.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/translate.go b/vendor/github.com/flatcar/ignition/config/v2_1/translate.go
 new file mode 100644
 index 00000000..97fe2260
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/translate.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/translate.go
 @@ -0,0 +1,236 @@
 +// Copyright 2018 CoreOS, Inc.
 +//
@@ -9096,9 +9096,9 @@ index 00000000..97fe2260
 +import (
 +	"strings"
 +
-+	"github.com/flatcar-linux/ignition/config/util"
-+	v2_0 "github.com/flatcar-linux/ignition/config/v2_0/types"
-+	"github.com/flatcar-linux/ignition/config/v2_1/types"
++	"github.com/flatcar/ignition/config/util"
++	v2_0 "github.com/flatcar/ignition/config/v2_0/types"
++	"github.com/flatcar/ignition/config/v2_1/types"
 +)
 +
 +// golang--
@@ -9313,11 +9313,11 @@ index 00000000..97fe2260
 +
 +	return config
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/config.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/config.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/config.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/config.go
 new file mode 100644
 index 00000000..ebcb03ab
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/config.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/config.go
 @@ -0,0 +1,91 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -9340,7 +9340,7 @@ index 00000000..ebcb03ab
 +
 +	"github.com/coreos/go-semver/semver"
 +
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +var (
@@ -9410,11 +9410,11 @@ index 00000000..ebcb03ab
 +		filesystems[filesystem.Name] = struct{}{}
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/directory.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/directory.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/directory.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/directory.go
 new file mode 100644
 index 00000000..5bc08f9d
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/directory.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/directory.go
 @@ -0,0 +1,30 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -9433,7 +9433,7 @@ index 00000000..5bc08f9d
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (d Directory) ValidateMode() report.Report {
@@ -9446,11 +9446,11 @@ index 00000000..5bc08f9d
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/disk.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/disk.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/disk.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/disk.go
 new file mode 100644
 index 00000000..73c1404e
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/disk.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/disk.go
 @@ -0,0 +1,128 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -9469,8 +9469,8 @@ index 00000000..73c1404e
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (n Disk) Validate() report.Report {
@@ -9580,11 +9580,11 @@ index 00000000..73c1404e
 +	}
 +	return false
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/file.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/file.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/file.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/file.go
 new file mode 100644
 index 00000000..266f8342
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/file.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/file.go
 @@ -0,0 +1,56 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -9603,8 +9603,8 @@ index 00000000..266f8342
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (f File) ValidateMode() report.Report {
@@ -9642,11 +9642,11 @@ index 00000000..266f8342
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/filesystem.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/filesystem.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/filesystem.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/filesystem.go
 new file mode 100644
 index 00000000..171c7572
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/filesystem.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/filesystem.go
 @@ -0,0 +1,144 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -9665,8 +9665,8 @@ index 00000000..171c7572
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (f Filesystem) Validate() report.Report {
@@ -9792,11 +9792,11 @@ index 00000000..171c7572
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/ignition.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/ignition.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/ignition.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/ignition.go
 new file mode 100644
 index 00000000..513012e1
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/ignition.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/ignition.go
 @@ -0,0 +1,52 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -9817,8 +9817,8 @@ index 00000000..513012e1
 +import (
 +	"github.com/coreos/go-semver/semver"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (c ConfigReference) ValidateSource() report.Report {
@@ -9850,11 +9850,11 @@ index 00000000..513012e1
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/mode.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/mode.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/mode.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/mode.go
 new file mode 100644
 index 00000000..d452c64d
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/mode.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/mode.go
 @@ -0,0 +1,26 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -9873,7 +9873,7 @@ index 00000000..d452c64d
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/errors"
 +)
 +
 +func validateMode(m int) error {
@@ -9882,11 +9882,11 @@ index 00000000..d452c64d
 +	}
 +	return nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/node.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/node.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/node.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/node.go
 new file mode 100644
 index 00000000..e6071e99
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/node.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/node.go
 @@ -0,0 +1,73 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -9907,8 +9907,8 @@ index 00000000..e6071e99
 +import (
 +	"path/filepath"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (n Node) ValidateFilesystem() report.Report {
@@ -9961,11 +9961,11 @@ index 00000000..e6071e99
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/partition.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/partition.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/partition.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/partition.go
 new file mode 100644
 index 00000000..23c3594d
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/partition.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/partition.go
 @@ -0,0 +1,77 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -9988,8 +9988,8 @@ index 00000000..23c3594d
 +	"regexp"
 +	"strings"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +const (
@@ -10044,11 +10044,11 @@ index 00000000..23c3594d
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/passwd.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/passwd.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/passwd.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/passwd.go
 new file mode 100644
 index 00000000..5ca03186
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/passwd.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/passwd.go
 @@ -0,0 +1,67 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -10067,8 +10067,8 @@ index 00000000..5ca03186
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (p PasswdUser) Validate() report.Report {
@@ -10117,11 +10117,11 @@ index 00000000..5ca03186
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/path.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/path.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/path.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/path.go
 new file mode 100644
 index 00000000..a478fd3b
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/path.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/path.go
 @@ -0,0 +1,28 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -10142,7 +10142,7 @@ index 00000000..a478fd3b
 +import (
 +	"path"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/errors"
 +)
 +
 +func validatePath(p string) error {
@@ -10151,11 +10151,11 @@ index 00000000..a478fd3b
 +	}
 +	return nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/raid.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/raid.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/raid.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/raid.go
 new file mode 100644
 index 00000000..d2b49fc1
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/raid.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/raid.go
 @@ -0,0 +1,57 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -10174,8 +10174,8 @@ index 00000000..d2b49fc1
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (n Raid) ValidateLevel() report.Report {
@@ -10214,11 +10214,11 @@ index 00000000..d2b49fc1
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/schema.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/schema.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/schema.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/schema.go
 new file mode 100644
 index 00000000..e0caed5e
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/schema.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/schema.go
 @@ -0,0 +1,221 @@
 +package types
 +
@@ -10441,11 +10441,11 @@ index 00000000..e0caed5e
 +type Verification struct {
 +	Hash *string `json:"hash,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/unit.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/unit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/unit.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/unit.go
 new file mode 100644
 index 00000000..f5cd1142
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/unit.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/unit.go
 @@ -0,0 +1,109 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -10470,9 +10470,9 @@ index 00000000..f5cd1142
 +
 +	"github.com/coreos/go-systemd/unit"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/shared/validations"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/validations"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (u Unit) ValidateContents() report.Report {
@@ -10556,11 +10556,11 @@ index 00000000..f5cd1142
 +	}
 +	return opts, nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/url.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/url.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/url.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/url.go
 new file mode 100644
 index 00000000..f6ff3606
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/url.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/url.go
 @@ -0,0 +1,52 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -10581,7 +10581,7 @@ index 00000000..f6ff3606
 +import (
 +	"net/url"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/errors"
 +	"github.com/vincent-petithory/dataurl"
 +)
 +
@@ -10614,11 +10614,11 @@ index 00000000..f6ff3606
 +		return errors.ErrInvalidScheme
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/verification.go b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/verification.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_1/types/verification.go b/vendor/github.com/flatcar/ignition/config/v2_1/types/verification.go
 new file mode 100644
 index 00000000..6f77de23
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_1/types/verification.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_1/types/verification.go
 @@ -0,0 +1,77 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -10641,8 +10641,8 @@ index 00000000..6f77de23
 +	"encoding/hex"
 +	"strings"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +// HashParts will return the sum and function (in that order) of the hash stored
@@ -10697,11 +10697,11 @@ index 00000000..6f77de23
 +
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/append.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/append.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/append.go b/vendor/github.com/flatcar/ignition/config/v2_2/append.go
 new file mode 100644
 index 00000000..d9c75dcc
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/append.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/append.go
 @@ -0,0 +1,76 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -10722,7 +10722,7 @@ index 00000000..d9c75dcc
 +import (
 +	"reflect"
 +
-+	"github.com/flatcar-linux/ignition/config/v2_2/types"
++	"github.com/flatcar/ignition/config/v2_2/types"
 +)
 +
 +// Append appends newConfig to oldConfig and returns the result. Appending one
@@ -10779,11 +10779,11 @@ index 00000000..d9c75dcc
 +
 +	return vRes.Elem()
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/cloudinit.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/cloudinit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/cloudinit.go b/vendor/github.com/flatcar/ignition/config/v2_2/cloudinit.go
 new file mode 100644
 index 00000000..36a54393
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/cloudinit.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/cloudinit.go
 @@ -0,0 +1,53 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -10838,11 +10838,11 @@ index 00000000..36a54393
 +		return data
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/config.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/config.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/config.go b/vendor/github.com/flatcar/ignition/config/v2_2/config.go
 new file mode 100644
 index 00000000..def3dba4
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/config.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/config.go
 @@ -0,0 +1,71 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -10861,11 +10861,11 @@ index 00000000..def3dba4
 +package v2_2
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/v2_1"
-+	"github.com/flatcar-linux/ignition/config/v2_2/types"
-+	"github.com/flatcar-linux/ignition/config/validate"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/v2_1"
++	"github.com/flatcar/ignition/config/v2_2/types"
++	"github.com/flatcar/ignition/config/validate"
++	"github.com/flatcar/ignition/config/validate/report"
 +
 +	json "github.com/ajeddeloh/go-json"
 +	"github.com/coreos/go-semver/semver"
@@ -10915,11 +10915,11 @@ index 00000000..def3dba4
 +func isEmpty(userdata []byte) bool {
 +	return len(userdata) == 0
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/translate.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/translate.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/translate.go b/vendor/github.com/flatcar/ignition/config/v2_2/translate.go
 new file mode 100644
 index 00000000..94c70a19
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/translate.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/translate.go
 @@ -0,0 +1,354 @@
 +// Copyright 2018 CoreOS, Inc.
 +//
@@ -10938,9 +10938,9 @@ index 00000000..94c70a19
 +package v2_2
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/util"
-+	v2_1 "github.com/flatcar-linux/ignition/config/v2_1/types"
-+	"github.com/flatcar-linux/ignition/config/v2_2/types"
++	"github.com/flatcar/ignition/config/util"
++	v2_1 "github.com/flatcar/ignition/config/v2_1/types"
++	"github.com/flatcar/ignition/config/v2_2/types"
 +)
 +
 +// golang--
@@ -11275,11 +11275,11 @@ index 00000000..94c70a19
 +	}
 +	return config
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/ca.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/ca.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/ca.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/ca.go
 new file mode 100644
 index 00000000..d5045ff4
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/ca.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/ca.go
 @@ -0,0 +1,27 @@
 +// Copyright 2018 CoreOS, Inc.
 +//
@@ -11298,7 +11298,7 @@ index 00000000..d5045ff4
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (c CaReference) ValidateSource() report.Report {
@@ -11308,11 +11308,11 @@ index 00000000..d5045ff4
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/config.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/config.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/config.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/config.go
 new file mode 100644
 index 00000000..0f98970c
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/config.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/config.go
 @@ -0,0 +1,91 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -11335,7 +11335,7 @@ index 00000000..0f98970c
 +
 +	"github.com/coreos/go-semver/semver"
 +
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +var (
@@ -11405,11 +11405,11 @@ index 00000000..0f98970c
 +		filesystems[filesystem.Name] = struct{}{}
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/directory.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/directory.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/directory.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/directory.go
 new file mode 100644
 index 00000000..a86fefcb
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/directory.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/directory.go
 @@ -0,0 +1,37 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -11428,8 +11428,8 @@ index 00000000..a86fefcb
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (d Directory) ValidateMode() report.Report {
@@ -11448,11 +11448,11 @@ index 00000000..a86fefcb
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/disk.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/disk.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/disk.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/disk.go
 new file mode 100644
 index 00000000..73c1404e
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/disk.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/disk.go
 @@ -0,0 +1,128 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -11471,8 +11471,8 @@ index 00000000..73c1404e
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (n Disk) Validate() report.Report {
@@ -11582,11 +11582,11 @@ index 00000000..73c1404e
 +	}
 +	return false
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/file.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/file.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/file.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/file.go
 new file mode 100644
 index 00000000..96236f37
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/file.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/file.go
 @@ -0,0 +1,69 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -11605,8 +11605,8 @@ index 00000000..96236f37
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (f File) Validate() report.Report {
@@ -11657,11 +11657,11 @@ index 00000000..96236f37
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/filesystem.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/filesystem.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/filesystem.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/filesystem.go
 new file mode 100644
 index 00000000..171c7572
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/filesystem.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/filesystem.go
 @@ -0,0 +1,144 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -11680,8 +11680,8 @@ index 00000000..171c7572
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (f Filesystem) Validate() report.Report {
@@ -11807,11 +11807,11 @@ index 00000000..171c7572
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/ignition.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/ignition.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/ignition.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/ignition.go
 new file mode 100644
 index 00000000..513012e1
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/ignition.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/ignition.go
 @@ -0,0 +1,52 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -11832,8 +11832,8 @@ index 00000000..513012e1
 +import (
 +	"github.com/coreos/go-semver/semver"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (c ConfigReference) ValidateSource() report.Report {
@@ -11865,11 +11865,11 @@ index 00000000..513012e1
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/mode.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/mode.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/mode.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/mode.go
 new file mode 100644
 index 00000000..e0a04917
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/mode.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/mode.go
 @@ -0,0 +1,26 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -11888,7 +11888,7 @@ index 00000000..e0a04917
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/errors"
 +)
 +
 +func validateMode(m *int) error {
@@ -11897,11 +11897,11 @@ index 00000000..e0a04917
 +	}
 +	return nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/node.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/node.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/node.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/node.go
 new file mode 100644
 index 00000000..e6071e99
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/node.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/node.go
 @@ -0,0 +1,73 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -11922,8 +11922,8 @@ index 00000000..e6071e99
 +import (
 +	"path/filepath"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (n Node) ValidateFilesystem() report.Report {
@@ -11976,11 +11976,11 @@ index 00000000..e6071e99
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/partition.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/partition.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/partition.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/partition.go
 new file mode 100644
 index 00000000..23c3594d
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/partition.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/partition.go
 @@ -0,0 +1,77 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -12003,8 +12003,8 @@ index 00000000..23c3594d
 +	"regexp"
 +	"strings"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +const (
@@ -12059,11 +12059,11 @@ index 00000000..23c3594d
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/passwd.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/passwd.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/passwd.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/passwd.go
 new file mode 100644
 index 00000000..5ca03186
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/passwd.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/passwd.go
 @@ -0,0 +1,67 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -12082,8 +12082,8 @@ index 00000000..5ca03186
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (p PasswdUser) Validate() report.Report {
@@ -12132,11 +12132,11 @@ index 00000000..5ca03186
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/path.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/path.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/path.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/path.go
 new file mode 100644
 index 00000000..a478fd3b
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/path.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/path.go
 @@ -0,0 +1,28 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -12157,7 +12157,7 @@ index 00000000..a478fd3b
 +import (
 +	"path"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/errors"
 +)
 +
 +func validatePath(p string) error {
@@ -12166,11 +12166,11 @@ index 00000000..a478fd3b
 +	}
 +	return nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/raid.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/raid.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/raid.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/raid.go
 new file mode 100644
 index 00000000..d2b49fc1
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/raid.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/raid.go
 @@ -0,0 +1,57 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -12189,8 +12189,8 @@ index 00000000..d2b49fc1
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (n Raid) ValidateLevel() report.Report {
@@ -12229,11 +12229,11 @@ index 00000000..d2b49fc1
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/schema.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/schema.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/schema.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/schema.go
 new file mode 100644
 index 00000000..4b32b337
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/schema.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/schema.go
 @@ -0,0 +1,246 @@
 +package types
 +
@@ -12481,11 +12481,11 @@ index 00000000..4b32b337
 +type Verification struct {
 +	Hash *string `json:"hash,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/unit.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/unit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/unit.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/unit.go
 new file mode 100644
 index 00000000..7911c92f
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/unit.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/unit.go
 @@ -0,0 +1,131 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -12510,9 +12510,9 @@ index 00000000..7911c92f
 +
 +	"github.com/coreos/go-systemd/unit"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/shared/validations"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/validations"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (u Unit) ValidateContents() report.Report {
@@ -12618,11 +12618,11 @@ index 00000000..7911c92f
 +	}
 +	return opts, nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/url.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/url.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/url.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/url.go
 new file mode 100644
 index 00000000..6d25e801
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/url.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/url.go
 @@ -0,0 +1,53 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -12645,7 +12645,7 @@ index 00000000..6d25e801
 +
 +	"github.com/vincent-petithory/dataurl"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/errors"
 +)
 +
 +func validateURL(s string) error {
@@ -12677,11 +12677,11 @@ index 00000000..6d25e801
 +		return errors.ErrInvalidScheme
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/verification.go b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/verification.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_2/types/verification.go b/vendor/github.com/flatcar/ignition/config/v2_2/types/verification.go
 new file mode 100644
 index 00000000..6f77de23
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_2/types/verification.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_2/types/verification.go
 @@ -0,0 +1,77 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -12704,8 +12704,8 @@ index 00000000..6f77de23
 +	"encoding/hex"
 +	"strings"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +// HashParts will return the sum and function (in that order) of the hash stored
@@ -12760,11 +12760,11 @@ index 00000000..6f77de23
 +
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/append.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/append.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/append.go b/vendor/github.com/flatcar/ignition/config/v2_3/append.go
 new file mode 100644
 index 00000000..12e2993e
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/append.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/append.go
 @@ -0,0 +1,76 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -12785,7 +12785,7 @@ index 00000000..12e2993e
 +import (
 +	"reflect"
 +
-+	"github.com/flatcar-linux/ignition/config/v2_3/types"
++	"github.com/flatcar/ignition/config/v2_3/types"
 +)
 +
 +// Append appends newConfig to oldConfig and returns the result. Appending one
@@ -12842,11 +12842,11 @@ index 00000000..12e2993e
 +
 +	return vRes.Elem()
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/cloudinit.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/cloudinit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/cloudinit.go b/vendor/github.com/flatcar/ignition/config/v2_3/cloudinit.go
 new file mode 100644
 index 00000000..3b83fbd9
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/cloudinit.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/cloudinit.go
 @@ -0,0 +1,53 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -12901,11 +12901,11 @@ index 00000000..3b83fbd9
 +		return data
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/config.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/config.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/config.go b/vendor/github.com/flatcar/ignition/config/v2_3/config.go
 new file mode 100644
 index 00000000..e3a042c2
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/config.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/config.go
 @@ -0,0 +1,70 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -12924,11 +12924,11 @@ index 00000000..e3a042c2
 +package v2_3
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/v2_2"
-+	"github.com/flatcar-linux/ignition/config/v2_3/types"
-+	"github.com/flatcar-linux/ignition/config/validate"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/v2_2"
++	"github.com/flatcar/ignition/config/v2_3/types"
++	"github.com/flatcar/ignition/config/validate"
++	"github.com/flatcar/ignition/config/validate/report"
 +
 +	json "github.com/ajeddeloh/go-json"
 +	"github.com/coreos/go-semver/semver"
@@ -12977,11 +12977,11 @@ index 00000000..e3a042c2
 +func isEmpty(userdata []byte) bool {
 +	return len(userdata) == 0
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/translate.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/translate.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/translate.go b/vendor/github.com/flatcar/ignition/config/v2_3/translate.go
 new file mode 100644
 index 00000000..e14dda0a
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/translate.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/translate.go
 @@ -0,0 +1,380 @@
 +// Copyright 2018 CoreOS, Inc.
 +//
@@ -13000,9 +13000,9 @@ index 00000000..e14dda0a
 +package v2_3
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/util"
-+	v2_2 "github.com/flatcar-linux/ignition/config/v2_2/types"
-+	"github.com/flatcar-linux/ignition/config/v2_3/types"
++	"github.com/flatcar/ignition/config/util"
++	v2_2 "github.com/flatcar/ignition/config/v2_2/types"
++	"github.com/flatcar/ignition/config/v2_3/types"
 +)
 +
 +func Translate(old v2_2.Config) types.Config {
@@ -13363,11 +13363,11 @@ index 00000000..e14dda0a
 +	}
 +	return config
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/ca.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/ca.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/ca.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/ca.go
 new file mode 100644
 index 00000000..d5045ff4
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/ca.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/ca.go
 @@ -0,0 +1,27 @@
 +// Copyright 2018 CoreOS, Inc.
 +//
@@ -13386,7 +13386,7 @@ index 00000000..d5045ff4
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (c CaReference) ValidateSource() report.Report {
@@ -13396,11 +13396,11 @@ index 00000000..d5045ff4
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/config.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/config.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/config.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/config.go
 new file mode 100644
 index 00000000..8067cc04
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/config.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/config.go
 @@ -0,0 +1,91 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -13423,7 +13423,7 @@ index 00000000..8067cc04
 +
 +	"github.com/coreos/go-semver/semver"
 +
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +var (
@@ -13493,11 +13493,11 @@ index 00000000..8067cc04
 +		filesystems[filesystem.Name] = struct{}{}
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/directory.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/directory.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/directory.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/directory.go
 new file mode 100644
 index 00000000..a86fefcb
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/directory.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/directory.go
 @@ -0,0 +1,37 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -13516,8 +13516,8 @@ index 00000000..a86fefcb
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (d Directory) ValidateMode() report.Report {
@@ -13536,11 +13536,11 @@ index 00000000..a86fefcb
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/disk.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/disk.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/disk.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/disk.go
 new file mode 100644
 index 00000000..67cab984
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/disk.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/disk.go
 @@ -0,0 +1,164 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -13559,8 +13559,8 @@ index 00000000..67cab984
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (n Disk) Validate() report.Report {
@@ -13706,11 +13706,11 @@ index 00000000..67cab984
 +	}
 +	return partsInMb && partsNotInMb
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/file.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/file.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/file.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/file.go
 new file mode 100644
 index 00000000..6e2a0c7a
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/file.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/file.go
 @@ -0,0 +1,71 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -13731,8 +13731,8 @@ index 00000000..6e2a0c7a
 +import (
 +	"fmt"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (f File) Validate() report.Report {
@@ -13783,11 +13783,11 @@ index 00000000..6e2a0c7a
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/filesystem.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/filesystem.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/filesystem.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/filesystem.go
 new file mode 100644
 index 00000000..ccc71660
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/filesystem.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/filesystem.go
 @@ -0,0 +1,146 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -13808,8 +13808,8 @@ index 00000000..ccc71660
 +import (
 +	"fmt"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (f Filesystem) Validate() report.Report {
@@ -13935,11 +13935,11 @@ index 00000000..ccc71660
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/ignition.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/ignition.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/ignition.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/ignition.go
 new file mode 100644
 index 00000000..513012e1
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/ignition.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/ignition.go
 @@ -0,0 +1,52 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -13960,8 +13960,8 @@ index 00000000..513012e1
 +import (
 +	"github.com/coreos/go-semver/semver"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (c ConfigReference) ValidateSource() report.Report {
@@ -13993,11 +13993,11 @@ index 00000000..513012e1
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/mode.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/mode.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/mode.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/mode.go
 new file mode 100644
 index 00000000..e0a04917
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/mode.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/mode.go
 @@ -0,0 +1,26 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -14016,7 +14016,7 @@ index 00000000..e0a04917
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/errors"
 +)
 +
 +func validateMode(m *int) error {
@@ -14025,11 +14025,11 @@ index 00000000..e0a04917
 +	}
 +	return nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/node.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/node.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/node.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/node.go
 new file mode 100644
 index 00000000..e6071e99
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/node.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/node.go
 @@ -0,0 +1,73 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -14050,8 +14050,8 @@ index 00000000..e6071e99
 +import (
 +	"path/filepath"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (n Node) ValidateFilesystem() report.Report {
@@ -14104,11 +14104,11 @@ index 00000000..e6071e99
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/partition.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/partition.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/partition.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/partition.go
 new file mode 100644
 index 00000000..e2b0736e
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/partition.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/partition.go
 @@ -0,0 +1,112 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -14131,8 +14131,8 @@ index 00000000..e2b0736e
 +	"regexp"
 +	"strings"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +const (
@@ -14222,11 +14222,11 @@ index 00000000..e2b0736e
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/passwd.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/passwd.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/passwd.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/passwd.go
 new file mode 100644
 index 00000000..5ca03186
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/passwd.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/passwd.go
 @@ -0,0 +1,67 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -14245,8 +14245,8 @@ index 00000000..5ca03186
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (p PasswdUser) Validate() report.Report {
@@ -14295,11 +14295,11 @@ index 00000000..5ca03186
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/path.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/path.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/path.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/path.go
 new file mode 100644
 index 00000000..a478fd3b
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/path.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/path.go
 @@ -0,0 +1,28 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -14320,7 +14320,7 @@ index 00000000..a478fd3b
 +import (
 +	"path"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/errors"
 +)
 +
 +func validatePath(p string) error {
@@ -14329,11 +14329,11 @@ index 00000000..a478fd3b
 +	}
 +	return nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/raid.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/raid.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/raid.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/raid.go
 new file mode 100644
 index 00000000..d2b49fc1
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/raid.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/raid.go
 @@ -0,0 +1,57 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -14352,8 +14352,8 @@ index 00000000..d2b49fc1
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (n Raid) ValidateLevel() report.Report {
@@ -14392,11 +14392,11 @@ index 00000000..d2b49fc1
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/schema.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/schema.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/schema.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/schema.go
 new file mode 100644
 index 00000000..5f91b71e
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/schema.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/schema.go
 @@ -0,0 +1,250 @@
 +package types
 +
@@ -14648,11 +14648,11 @@ index 00000000..5f91b71e
 +type Verification struct {
 +	Hash *string `json:"hash,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/unit.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/unit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/unit.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/unit.go
 new file mode 100644
 index 00000000..7911c92f
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/unit.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/unit.go
 @@ -0,0 +1,131 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -14677,9 +14677,9 @@ index 00000000..7911c92f
 +
 +	"github.com/coreos/go-systemd/unit"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/shared/validations"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/validations"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (u Unit) ValidateContents() report.Report {
@@ -14785,11 +14785,11 @@ index 00000000..7911c92f
 +	}
 +	return opts, nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/url.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/url.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/url.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/url.go
 new file mode 100644
 index 00000000..6d25e801
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/url.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/url.go
 @@ -0,0 +1,53 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -14812,7 +14812,7 @@ index 00000000..6d25e801
 +
 +	"github.com/vincent-petithory/dataurl"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/errors"
 +)
 +
 +func validateURL(s string) error {
@@ -14844,11 +14844,11 @@ index 00000000..6d25e801
 +		return errors.ErrInvalidScheme
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/verification.go b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/verification.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_3/types/verification.go b/vendor/github.com/flatcar/ignition/config/v2_3/types/verification.go
 new file mode 100644
 index 00000000..6f77de23
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_3/types/verification.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_3/types/verification.go
 @@ -0,0 +1,77 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -14871,8 +14871,8 @@ index 00000000..6f77de23
 +	"encoding/hex"
 +	"strings"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +// HashParts will return the sum and function (in that order) of the hash stored
@@ -14927,11 +14927,11 @@ index 00000000..6f77de23
 +
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/append.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/append.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/append.go b/vendor/github.com/flatcar/ignition/config/v2_4/append.go
 new file mode 100644
 index 00000000..5246f7dd
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/append.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/append.go
 @@ -0,0 +1,76 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -14952,7 +14952,7 @@ index 00000000..5246f7dd
 +import (
 +	"reflect"
 +
-+	"github.com/flatcar-linux/ignition/config/v2_4/types"
++	"github.com/flatcar/ignition/config/v2_4/types"
 +)
 +
 +// Append appends newConfig to oldConfig and returns the result. Appending one
@@ -15009,11 +15009,11 @@ index 00000000..5246f7dd
 +
 +	return vRes.Elem()
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/cloudinit.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/cloudinit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/cloudinit.go b/vendor/github.com/flatcar/ignition/config/v2_4/cloudinit.go
 new file mode 100644
 index 00000000..0c428e62
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/cloudinit.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/cloudinit.go
 @@ -0,0 +1,53 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -15068,11 +15068,11 @@ index 00000000..0c428e62
 +		return data
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/config.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/config.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/config.go b/vendor/github.com/flatcar/ignition/config/v2_4/config.go
 new file mode 100644
 index 00000000..27d3c0c9
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/config.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/config.go
 @@ -0,0 +1,70 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -15091,11 +15091,11 @@ index 00000000..27d3c0c9
 +package v2_4
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/v2_3"
-+	"github.com/flatcar-linux/ignition/config/v2_4/types"
-+	"github.com/flatcar-linux/ignition/config/validate"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/v2_3"
++	"github.com/flatcar/ignition/config/v2_4/types"
++	"github.com/flatcar/ignition/config/validate"
++	"github.com/flatcar/ignition/config/validate/report"
 +
 +	json "github.com/ajeddeloh/go-json"
 +	"github.com/coreos/go-semver/semver"
@@ -15144,11 +15144,11 @@ index 00000000..27d3c0c9
 +func isEmpty(userdata []byte) bool {
 +	return len(userdata) == 0
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/translate.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/translate.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/translate.go b/vendor/github.com/flatcar/ignition/config/v2_4/translate.go
 new file mode 100644
 index 00000000..770eee61
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/translate.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/translate.go
 @@ -0,0 +1,398 @@
 +// Copyright 2018 CoreOS, Inc.
 +//
@@ -15167,8 +15167,8 @@ index 00000000..770eee61
 +package v2_4
 +
 +import (
-+	from "github.com/flatcar-linux/ignition/config/v2_3/types"
-+	"github.com/flatcar-linux/ignition/config/v2_4/types"
++	from "github.com/flatcar/ignition/config/v2_3/types"
++	"github.com/flatcar/ignition/config/v2_4/types"
 +)
 +
 +func intToPtr(x int) *int {
@@ -15548,11 +15548,11 @@ index 00000000..770eee61
 +	}
 +	return config
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/ca.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/ca.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/ca.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/ca.go
 new file mode 100644
 index 00000000..3955fd22
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/ca.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/ca.go
 @@ -0,0 +1,58 @@
 +// Copyright 2018 CoreOS, Inc.
 +//
@@ -15573,8 +15573,8 @@ index 00000000..3955fd22
 +import (
 +	"net/url"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (c CaReference) ValidateSource() report.Report {
@@ -15612,11 +15612,11 @@ index 00000000..3955fd22
 +
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/config.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/config.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/config.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/config.go
 new file mode 100644
 index 00000000..ceb79e9e
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/config.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/config.go
 @@ -0,0 +1,91 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -15639,7 +15639,7 @@ index 00000000..ceb79e9e
 +
 +	"github.com/coreos/go-semver/semver"
 +
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +var (
@@ -15709,11 +15709,11 @@ index 00000000..ceb79e9e
 +		filesystems[filesystem.Name] = struct{}{}
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/directory.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/directory.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/directory.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/directory.go
 new file mode 100644
 index 00000000..a86fefcb
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/directory.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/directory.go
 @@ -0,0 +1,37 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -15732,8 +15732,8 @@ index 00000000..a86fefcb
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (d Directory) ValidateMode() report.Report {
@@ -15752,11 +15752,11 @@ index 00000000..a86fefcb
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/disk.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/disk.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/disk.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/disk.go
 new file mode 100644
 index 00000000..67cab984
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/disk.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/disk.go
 @@ -0,0 +1,164 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -15775,8 +15775,8 @@ index 00000000..67cab984
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (n Disk) Validate() report.Report {
@@ -15922,11 +15922,11 @@ index 00000000..67cab984
 +	}
 +	return partsInMb && partsNotInMb
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/file.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/file.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/file.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/file.go
 new file mode 100644
 index 00000000..6bc717fe
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/file.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/file.go
 @@ -0,0 +1,100 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -15948,8 +15948,8 @@ index 00000000..6bc717fe
 +	"fmt"
 +	"net/url"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (f File) Validate() report.Report {
@@ -16028,11 +16028,11 @@ index 00000000..6bc717fe
 +
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/filesystem.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/filesystem.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/filesystem.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/filesystem.go
 new file mode 100644
 index 00000000..ccc71660
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/filesystem.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/filesystem.go
 @@ -0,0 +1,146 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -16053,8 +16053,8 @@ index 00000000..ccc71660
 +import (
 +	"fmt"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (f Filesystem) Validate() report.Report {
@@ -16180,11 +16180,11 @@ index 00000000..ccc71660
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/headers.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/headers.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/headers.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/headers.go
 new file mode 100644
 index 00000000..3d34587a
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/headers.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/headers.go
 @@ -0,0 +1,47 @@
 +// Copyright 2020 Red Hat, Inc.
 +//
@@ -16203,8 +16203,8 @@ index 00000000..3d34587a
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +
 +	"fmt"
 +)
@@ -16233,11 +16233,11 @@ index 00000000..3d34587a
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/ignition.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/ignition.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/ignition.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/ignition.go
 new file mode 100644
 index 00000000..a6e2bc6e
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/ignition.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/ignition.go
 @@ -0,0 +1,82 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -16260,8 +16260,8 @@ index 00000000..a6e2bc6e
 +
 +	"github.com/coreos/go-semver/semver"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (c ConfigReference) ValidateSource() report.Report {
@@ -16321,11 +16321,11 @@ index 00000000..a6e2bc6e
 +	}
 +	return report.Report{}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/mode.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/mode.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/mode.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/mode.go
 new file mode 100644
 index 00000000..e0a04917
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/mode.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/mode.go
 @@ -0,0 +1,26 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -16344,7 +16344,7 @@ index 00000000..e0a04917
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/errors"
 +)
 +
 +func validateMode(m *int) error {
@@ -16353,11 +16353,11 @@ index 00000000..e0a04917
 +	}
 +	return nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/node.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/node.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/node.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/node.go
 new file mode 100644
 index 00000000..e6071e99
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/node.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/node.go
 @@ -0,0 +1,73 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -16378,8 +16378,8 @@ index 00000000..e6071e99
 +import (
 +	"path/filepath"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (n Node) ValidateFilesystem() report.Report {
@@ -16432,11 +16432,11 @@ index 00000000..e6071e99
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/partition.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/partition.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/partition.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/partition.go
 new file mode 100644
 index 00000000..e2b0736e
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/partition.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/partition.go
 @@ -0,0 +1,112 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -16459,8 +16459,8 @@ index 00000000..e2b0736e
 +	"regexp"
 +	"strings"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +const (
@@ -16550,11 +16550,11 @@ index 00000000..e2b0736e
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/passwd.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/passwd.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/passwd.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/passwd.go
 new file mode 100644
 index 00000000..5ca03186
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/passwd.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/passwd.go
 @@ -0,0 +1,67 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -16573,8 +16573,8 @@ index 00000000..5ca03186
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (p PasswdUser) Validate() report.Report {
@@ -16623,11 +16623,11 @@ index 00000000..5ca03186
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/path.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/path.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/path.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/path.go
 new file mode 100644
 index 00000000..a478fd3b
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/path.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/path.go
 @@ -0,0 +1,28 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -16648,7 +16648,7 @@ index 00000000..a478fd3b
 +import (
 +	"path"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/errors"
 +)
 +
 +func validatePath(p string) error {
@@ -16657,11 +16657,11 @@ index 00000000..a478fd3b
 +	}
 +	return nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/raid.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/raid.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/raid.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/raid.go
 new file mode 100644
 index 00000000..d2b49fc1
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/raid.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/raid.go
 @@ -0,0 +1,57 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -16680,8 +16680,8 @@ index 00000000..d2b49fc1
 +package types
 +
 +import (
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (n Raid) ValidateLevel() report.Report {
@@ -16720,11 +16720,11 @@ index 00000000..d2b49fc1
 +	}
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/schema.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/schema.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/schema.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/schema.go
 new file mode 100644
 index 00000000..4bf7ec84
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/schema.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/schema.go
 @@ -0,0 +1,269 @@
 +package types
 +
@@ -16995,11 +16995,11 @@ index 00000000..4bf7ec84
 +type Verification struct {
 +	Hash *string `json:"hash,omitempty"`
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/unit.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/unit.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/unit.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/unit.go
 new file mode 100644
 index 00000000..7911c92f
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/unit.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/unit.go
 @@ -0,0 +1,131 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -17024,9 +17024,9 @@ index 00000000..7911c92f
 +
 +	"github.com/coreos/go-systemd/unit"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/shared/validations"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/validations"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +func (u Unit) ValidateContents() report.Report {
@@ -17132,11 +17132,11 @@ index 00000000..7911c92f
 +	}
 +	return opts, nil
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/url.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/url.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/url.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/url.go
 new file mode 100644
 index 00000000..6d25e801
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/url.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/url.go
 @@ -0,0 +1,53 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -17159,7 +17159,7 @@ index 00000000..6d25e801
 +
 +	"github.com/vincent-petithory/dataurl"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/shared/errors"
 +)
 +
 +func validateURL(s string) error {
@@ -17191,11 +17191,11 @@ index 00000000..6d25e801
 +		return errors.ErrInvalidScheme
 +	}
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/verification.go b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/verification.go
+diff --git a/vendor/github.com/flatcar/ignition/config/v2_4/types/verification.go b/vendor/github.com/flatcar/ignition/config/v2_4/types/verification.go
 new file mode 100644
 index 00000000..6f77de23
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/v2_4/types/verification.go
++++ b/vendor/github.com/flatcar/ignition/config/v2_4/types/verification.go
 @@ -0,0 +1,77 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -17218,8 +17218,8 @@ index 00000000..6f77de23
 +	"encoding/hex"
 +	"strings"
 +
-+	"github.com/flatcar-linux/ignition/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/shared/errors"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +// HashParts will return the sum and function (in that order) of the hash stored
@@ -17274,11 +17274,11 @@ index 00000000..6f77de23
 +
 +	return r
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/validate/astjson/node.go b/vendor/github.com/flatcar-linux/ignition/config/validate/astjson/node.go
+diff --git a/vendor/github.com/flatcar/ignition/config/validate/astjson/node.go b/vendor/github.com/flatcar/ignition/config/validate/astjson/node.go
 new file mode 100644
 index 00000000..40f24a74
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/validate/astjson/node.go
++++ b/vendor/github.com/flatcar/ignition/config/validate/astjson/node.go
 @@ -0,0 +1,73 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -17300,7 +17300,7 @@ index 00000000..40f24a74
 +	"io"
 +
 +	json "github.com/ajeddeloh/go-json"
-+	"github.com/flatcar-linux/ignition/config/validate/astnode"
++	"github.com/flatcar/ignition/config/validate/astnode"
 +	"go4.org/errorutil"
 +)
 +
@@ -17353,11 +17353,11 @@ index 00000000..40f24a74
 +	source.Seek(0, 0) // Reset the reader to the start so the next call isn't relative to this position
 +	return line, col, highlight
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/validate/astnode/astnode.go b/vendor/github.com/flatcar-linux/ignition/config/validate/astnode/astnode.go
+diff --git a/vendor/github.com/flatcar/ignition/config/validate/astnode/astnode.go b/vendor/github.com/flatcar/ignition/config/validate/astnode/astnode.go
 new file mode 100644
 index 00000000..d1c1d9c2
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/validate/astnode/astnode.go
++++ b/vendor/github.com/flatcar/ignition/config/validate/astnode/astnode.go
 @@ -0,0 +1,45 @@
 +// Copyright 2017 CoreOS, Inc.
 +//
@@ -17404,11 +17404,11 @@ index 00000000..d1c1d9c2
 +	// Tag returns the struct tag used in the config structure used to unmarshal.
 +	Tag() string
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/validate/report/report.go b/vendor/github.com/flatcar-linux/ignition/config/validate/report/report.go
+diff --git a/vendor/github.com/flatcar/ignition/config/validate/report/report.go b/vendor/github.com/flatcar/ignition/config/validate/report/report.go
 new file mode 100644
 index 00000000..e0d4fed8
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/validate/report/report.go
++++ b/vendor/github.com/flatcar/ignition/config/validate/report/report.go
 @@ -0,0 +1,158 @@
 +// Copyright 2016 CoreOS, Inc.
 +//
@@ -17568,11 +17568,11 @@ index 00000000..e0d4fed8
 +func (e entryKind) MarshalJSON() ([]byte, error) {
 +	return json.Marshal(e.String())
 +}
-diff --git a/vendor/github.com/flatcar-linux/ignition/config/validate/validate.go b/vendor/github.com/flatcar-linux/ignition/config/validate/validate.go
+diff --git a/vendor/github.com/flatcar/ignition/config/validate/validate.go b/vendor/github.com/flatcar/ignition/config/validate/validate.go
 new file mode 100644
 index 00000000..54c036e4
 --- /dev/null
-+++ b/vendor/github.com/flatcar-linux/ignition/config/validate/validate.go
++++ b/vendor/github.com/flatcar/ignition/config/validate/validate.go
 @@ -0,0 +1,242 @@
 +// Copyright 2015 CoreOS, Inc.
 +//
@@ -17598,9 +17598,9 @@ index 00000000..54c036e4
 +	"strings"
 +
 +	json "github.com/ajeddeloh/go-json"
-+	"github.com/flatcar-linux/ignition/config/validate/astjson"
-+	"github.com/flatcar-linux/ignition/config/validate/astnode"
-+	"github.com/flatcar-linux/ignition/config/validate/report"
++	"github.com/flatcar/ignition/config/validate/astjson"
++	"github.com/flatcar/ignition/config/validate/astnode"
++	"github.com/flatcar/ignition/config/validate/report"
 +)
 +
 +type validator interface {
@@ -28450,31 +28450,31 @@ index 7a9a7d8b..8a5d8ec6 100644
  github.com/coreos/vcontext/validate
  # github.com/davecgh/go-spew v1.1.0
  github.com/davecgh/go-spew/spew
-+# github.com/flatcar-linux/ign-converter v0.1.0
++# github.com/flatcar/ign-converter v0.1.0
 +## explicit
-+github.com/flatcar-linux/ign-converter/translate/v24tov31
-+github.com/flatcar-linux/ign-converter/util
-+# github.com/flatcar-linux/ignition v0.36.2-0.20220221101037-de4e6cc9bbba
++github.com/flatcar/ign-converter/translate/v24tov31
++github.com/flatcar/ign-converter/util
++# github.com/flatcar/ignition v0.36.2-0.20220221101037-de4e6cc9bbba
 +## explicit
-+github.com/flatcar-linux/ignition/config/shared/errors
-+github.com/flatcar-linux/ignition/config/shared/validations
-+github.com/flatcar-linux/ignition/config/util
-+github.com/flatcar-linux/ignition/config/v1
-+github.com/flatcar-linux/ignition/config/v1/types
-+github.com/flatcar-linux/ignition/config/v2_0
-+github.com/flatcar-linux/ignition/config/v2_0/types
-+github.com/flatcar-linux/ignition/config/v2_1
-+github.com/flatcar-linux/ignition/config/v2_1/types
-+github.com/flatcar-linux/ignition/config/v2_2
-+github.com/flatcar-linux/ignition/config/v2_2/types
-+github.com/flatcar-linux/ignition/config/v2_3
-+github.com/flatcar-linux/ignition/config/v2_3/types
-+github.com/flatcar-linux/ignition/config/v2_4
-+github.com/flatcar-linux/ignition/config/v2_4/types
-+github.com/flatcar-linux/ignition/config/validate
-+github.com/flatcar-linux/ignition/config/validate/astjson
-+github.com/flatcar-linux/ignition/config/validate/astnode
-+github.com/flatcar-linux/ignition/config/validate/report
++github.com/flatcar/ignition/config/shared/errors
++github.com/flatcar/ignition/config/shared/validations
++github.com/flatcar/ignition/config/util
++github.com/flatcar/ignition/config/v1
++github.com/flatcar/ignition/config/v1/types
++github.com/flatcar/ignition/config/v2_0
++github.com/flatcar/ignition/config/v2_0/types
++github.com/flatcar/ignition/config/v2_1
++github.com/flatcar/ignition/config/v2_1/types
++github.com/flatcar/ignition/config/v2_2
++github.com/flatcar/ignition/config/v2_2/types
++github.com/flatcar/ignition/config/v2_3
++github.com/flatcar/ignition/config/v2_3/types
++github.com/flatcar/ignition/config/v2_4
++github.com/flatcar/ignition/config/v2_4/types
++github.com/flatcar/ignition/config/validate
++github.com/flatcar/ignition/config/validate/astjson
++github.com/flatcar/ignition/config/validate/astnode
++github.com/flatcar/ignition/config/validate/report
  # github.com/godbus/dbus/v5 v5.0.3
  github.com/godbus/dbus/v5
  # github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e

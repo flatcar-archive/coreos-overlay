@@ -102,7 +102,7 @@ index 2b045ead..22b0da0f 100644
 --- a/internal/distro/distro.go
 +++ b/internal/distro/distro.go
 @@ -23,13 +23,17 @@ import (
- // -X github.com/flatcar-linux/ignition/v2/internal/distro.mdadmCmd=/opt/bin/mdadm
+ // -X github.com/flatcar/ignition/v2/internal/distro.mdadmCmd=/opt/bin/mdadm
  var (
  	// Device node directories and paths
 -	diskByLabelDir = "/dev/disk/by-label"
@@ -152,11 +152,11 @@ index e0ba4045..3e089276 100644
  	"cloud.google.com/go/compute/metadata"
  	"cloud.google.com/go/storage"
 +
- 	configErrors "github.com/flatcar-linux/ignition/v2/config/shared/errors"
-+	"github.com/flatcar-linux/ignition/v2/internal/distro"
- 	"github.com/flatcar-linux/ignition/v2/internal/log"
-+	"github.com/flatcar-linux/ignition/v2/internal/systemd"
- 	"github.com/flatcar-linux/ignition/v2/internal/util"
+ 	configErrors "github.com/flatcar/ignition/v2/config/shared/errors"
++	"github.com/flatcar/ignition/v2/internal/distro"
+ 	"github.com/flatcar/ignition/v2/internal/log"
++	"github.com/flatcar/ignition/v2/internal/systemd"
+ 	"github.com/flatcar/ignition/v2/internal/util"
 +
  	"golang.org/x/oauth2/google"
  	"google.golang.org/api/option"

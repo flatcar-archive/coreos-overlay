@@ -29,9 +29,9 @@ index c9930112..5ddc18d0 100644
  import (
 +	"net/url"
 +
- 	"github.com/flatcar-linux/ignition/v2/config/v3_4_experimental/types"
- 	"github.com/flatcar-linux/ignition/v2/internal/providers"
- 	"github.com/flatcar-linux/ignition/v2/internal/providers/util"
+ 	"github.com/flatcar/ignition/v2/config/v3_4_experimental/types"
+ 	"github.com/flatcar/ignition/v2/internal/providers"
+ 	"github.com/flatcar/ignition/v2/internal/providers/util"
 @@ -36,26 +38,83 @@ func FetchConfig(f *resource.Fetcher) (types.Config, report.Report, error) {
  		return types.Config{}, report.Report{}, providers.ErrNoProvider
  	}
