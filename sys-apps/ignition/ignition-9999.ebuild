@@ -60,6 +60,7 @@ PATCHES=(
 	"${FILESDIR}/0016-update-ign-converter-to-fix-link-translation.patch"
 	"${FILESDIR}/0017-mod-update-ign-converter.patch"
 	"${FILESDIR}/0018-mod-bump-ign-converter-to-pull-networkd-fix.patch"
+	"${FILESDIR}/0019-config-add-ignition-translation.patch"
 )
 
 src_compile() {
