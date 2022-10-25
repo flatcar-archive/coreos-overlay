@@ -1,0 +1,97 @@
+From 8c79a5b8fafdabc73eb1b3336564be37e8380190 Mon Sep 17 00:00:00 2001
+Message-Id: <8c79a5b8fafdabc73eb1b3336564be37e8380190.1666356703.git.jbenc@redhat.com>
+From: Jiri Benc <jbenc@redhat.com>
+Date: Fri, 21 Oct 2022 11:21:11 +0200
+Subject: [PATCH net] net: gso: fix panic on frag_list with mixed head alloc
+ types
+
+Since commit 3dcbdb134f32 ("net: gso: Fix skb_segment splat when
+splitting gso_size mangled skb having linear-headed frag_list"), it is
+allowed to change gso_size of a GRO packet. However, that commit assumes
+that "checking the first list_skb member suffices; i.e if either of the
+list_skb members have non head_frag head, then the first one has too".
+
+It turns out this assumption does not hold. We've seen BUG_ON being hit
+in skb_segment when skbs on the frag_list had differing head_frag. That
+particular case was with vmxnet3; looking at the driver, it indeed uses
+different skb allocation strategies based on the packet size. The last
+packet in frag_list can thus be kmalloced if it is sufficiently small.
+And there's nothing preventing drivers from mixing things even more
+freely.
+
+There are three different locations where this can be fixed:
+
+(1) We could check head_frag in GRO and not allow GROing skbs with
+    different head_frag. However, that would lead to performance
+    regression (at least on vmxnet3) on normal forward paths with
+    unmodified gso_size, where mixed head_frag is not a problem.
+
+(2) Set a flag in bpf_skb_net_grow and bpf_skb_net_shrink indicating
+    that NETIF_F_SG is undesirable. That would need to eat a bit in
+    sk_buff. Furthermore, that flag can be unset when all skbs on the
+    frag_list are page backed. To retain good performance,
+    bpf_skb_net_grow/shrink would have to walk the frag_list.
+
+(3) Walk the frag_list in skb_segment when determining whether
+    NETIF_F_SG should be cleared. This of course slows things down.
+
+This patch implements (3). To limit the performance impact in
+skb_segment, the list is walked only for skbs with SKB_GSO_DODGY set
+that have gso_size changed. Normal paths thus will not hit it.
+
+Fixes: 3dcbdb134f32 ("net: gso: Fix skb_segment splat when splitting gso_size mangled skb having linear-headed frag_list")
+Signed-off-by: Jiri Benc <jbenc@redhat.com>
+---
+ net/core/skbuff.c | 36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
+
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 1d9719e72f9d..bbf3acff44c6 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4134,23 +4134,25 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 	int i = 0;
+ 	int pos;
+ 
+-	if (list_skb && !list_skb->head_frag && skb_headlen(list_skb) &&
+-	    (skb_shinfo(head_skb)->gso_type & SKB_GSO_DODGY)) {
+-		/* gso_size is untrusted, and we have a frag_list with a linear
+-		 * non head_frag head.
+-		 *
+-		 * (we assume checking the first list_skb member suffices;
+-		 * i.e if either of the list_skb members have non head_frag
+-		 * head, then the first one has too).
+-		 *
+-		 * If head_skb's headlen does not fit requested gso_size, it
+-		 * means that the frag_list members do NOT terminate on exact
+-		 * gso_size boundaries. Hence we cannot perform skb_frag_t page
+-		 * sharing. Therefore we must fallback to copying the frag_list
+-		 * skbs; we do so by disabling SG.
+-		 */
+-		if (mss != GSO_BY_FRAGS && mss != skb_headlen(head_skb))
+-			features &= ~NETIF_F_SG;
++	if ((skb_shinfo(head_skb)->gso_type & SKB_GSO_DODGY) &&
++	    mss != GSO_BY_FRAGS && mss != skb_headlen(head_skb)) {
++		struct sk_buff *check_skb;
++
++		for (check_skb = list_skb; check_skb; check_skb = check_skb->next) {
++			if (skb_headlen(check_skb) && !check_skb->head_frag) {
++				/* gso_size is untrusted, and we have a frag_list with
++				 * a linear non head_frag item.
++				 *
++				 * If head_skb's headlen does not fit requested gso_size,
++				 * it means that the frag_list members do NOT terminate
++				 * on exact gso_size boundaries. Hence we cannot perform
++				 * skb_frag_t page sharing. Therefore we must fallback to
++				 * copying the frag_list skbs; we do so by disabling SG.
++				 */
++				features &= ~NETIF_F_SG;
++				break;
++			}
++		}
+ 	}
+ 
+ 	__skb_push(head_skb, doffset);
+-- 
+2.37.3
+
