@@ -35,5 +35,4 @@ RDEPEND="
 	coreos-base/coreos-dev
 	coreos-base/flatcar-eks
 	dev-lang/python-oem
-	x11-drivers/nvidia-drivers
 	"
