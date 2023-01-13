@@ -659,7 +659,7 @@ migrate_locale() {
 pkg_preinst() {
 	if ! use split-usr; then
 		local dir
-		for dir in bin sbin lib usr/sbin; do
+		for dir in bin sbin lib; do
 			if [[ ! -L ${EROOT}/${dir} ]]; then
 				eerror "'${EROOT}/${dir}' is not a symbolic link."
 				FAIL=1
