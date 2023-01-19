@@ -126,3 +126,8 @@ RDEPEND="${RDEPEND}
 RDEPEND="${RDEPEND}
 	!coreos-base/google-breakpad
 	"
+
+# required for squashFS relabelling
+RDEPEND="${RDEPEND}
+	sys-fs/squashfs-tools-ng
+	"

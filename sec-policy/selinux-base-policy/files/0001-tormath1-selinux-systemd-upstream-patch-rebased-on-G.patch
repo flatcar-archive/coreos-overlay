@@ -1,0 +1,116 @@
+From 20950a4d2d6236c5aa430a9044da197cb51db714 Mon Sep 17 00:00:00 2001
+From: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+Date: Mon, 18 Jul 2022 11:01:13 +0200
+Subject: [PATCH] tormath1/selinux+systemd: upstream patch rebased on Gentoo
+ patches
+
+Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+---
+ policy/modules/kernel/files.if       | 36 ++++++++++++++++++++++++++++
+ policy/modules/services/container.fc |  4 ++++
+ policy/modules/services/container.te |  2 ++
+ policy/modules/system/systemd.te     | 11 ++++++++-
+ 4 files changed, 52 insertions(+), 1 deletion(-)
+
+diff --git a/policy/modules/kernel/files.if b/policy/modules/kernel/files.if
+index baedb52e9..e0942bf50 100644
+--- refpolicy/policy/modules/kernel/files.if
++++ refpolicy/policy/modules/kernel/files.if
+@@ -8151,3 +8151,39 @@ interface(`files_relabel_all_pidfiles',`
+ 	relabel_files_pattern($1, pidfile, pidfile)
+ 	relabel_lnk_files_pattern($1, pidfile, pidfile)
+ ')
++
++########################################
++## <summary>
++##	Relabel all files on the filesystem, except
++##	policy_config_t and exceptions.
++## </summary>
++## <param name="domain">
++##	<summary>
++##	Domain allowed access.
++##	</summary>
++## </param>
++## <param name="exception_types" optional="true">
++##	<summary>
++##	The types to be excluded.  Each type or attribute
++##	must be negated by the caller.
++##	</summary>
++## </param>
++## <rolecap/>
++#
++interface(`files_relabel_all_non_policy_files',`
++	gen_require(`
++		attribute file_type;
++		type policy_config_t;
++	')
++
++	allow $1 { file_type -policy_config_t $2 }:dir list_dir_perms;
++	relabel_dirs_pattern($1, { file_type -policy_config_t $2 }, { file_type -policy_config_t $2 })
++	relabel_files_pattern($1, { file_type -policy_config_t $2 }, { file_type -policy_config_t $2 })
++	relabel_lnk_files_pattern($1, { file_type -policy_config_t $2 }, { file_type -policy_config_t $2 })
++	relabel_fifo_files_pattern($1, { file_type -policy_config_t $2 }, { file_type -policy_config_t $2 })
++	relabel_sock_files_pattern($1, { file_type -policy_config_t $2 }, { file_type -policy_config_t $2 })
++	# this is only relabelfrom since there should be no
++	# device nodes with file types.
++	relabelfrom_blk_files_pattern($1, { file_type -policy_config_t $2 }, { file_type -policy_config_t $2 })
++	relabelfrom_chr_files_pattern($1, { file_type -policy_config_t $2 }, { file_type -policy_config_t $2 })
++')
+diff --git a/policy/modules/services/container.fc b/policy/modules/services/container.fc
+index 63f1537df..420043652 100644
+--- refpolicy/policy/modules/services/container.fc
++++ refpolicy/policy/modules/services/container.fc
+@@ -79,3 +79,7 @@ HOME_DIR/\.local/share/docker/volumes(/.*)?		gen_context(system_u:object_r:conta
+ 
+ /var/log/containers(/.*)?		gen_context(system_u:object_r:container_log_t,s0)
+ /var/log/pods(/.*)?		gen_context(system_u:object_r:container_log_t,s0)
++
++/run/torcx/bin(/.*)? gen_context(system_u:object_r:container_engine_exec_t,s0)
++/run/torcx/unpack/docker/bin(/.*)? gen_context(system_u:object_r:container_engine_exec_t,s0)
++/run/torcx/unpack/docker/usr/share/containerd(/.*)? gen_context(system_u:object_r:container_config_t,s0)
+diff --git a/policy/modules/services/container.te b/policy/modules/services/container.te
+index a243eb4a5..c92b53471 100644
+--- refpolicy/policy/modules/services/container.te
++++ refpolicy/policy/modules/services/container.te
+@@ -762,3 +762,5 @@ optional_policy(`
+        unconfined_domain_noaudit(spc_user_t)
+        domain_ptrace_all_domains(spc_user_t)
+ ')
++
++filetrans_pattern(unconfined_exec_t, tmpfs_t, dir, container_engine_exec_t, "bin")
+diff --git a/policy/modules/system/systemd.te b/policy/modules/system/systemd.te
+index 171cb5e5b..cde61d78f 100644
+--- refpolicy/policy/modules/system/systemd.te
++++ refpolicy/policy/modules/system/systemd.te
+@@ -10,7 +10,7 @@ policy_module(systemd)
+ ## Enable support for systemd-tmpfiles to manage all non-security files.
+ ## </p>
+ ## </desc>
+-gen_tunable(systemd_tmpfiles_manage_all, false)
++gen_tunable(systemd_tmpfiles_manage_all, true)
+ 
+ ## <desc>
+ ## <p>
+@@ -1682,6 +1682,7 @@ tunable_policy(`systemd_tmpfiles_manage_all',`
+ 	files_manage_non_security_files(systemd_tmpfiles_t)
+ 	files_relabel_non_security_dirs(systemd_tmpfiles_t)
+ 	files_relabel_non_security_files(systemd_tmpfiles_t)
++	files_relabel_all_non_policy_files(systemd_tmpfiles_t)
+ ')
+ 
+ optional_policy(`
+@@ -1899,3 +1900,11 @@ userdom_relabelto_user_runtime_dirs(systemd_user_runtime_dir_t)
+ optional_policy(`
+ 	dbus_system_bus_client(systemd_user_runtime_dir_t)
+ ')
++
++selinux_getattr_fs(systemd_modules_load_t)
++files_read_etc_runtime_files(systemd_networkd_t)
++kernel_getattr_proc(systemd_modules_load_t)
++allow systemd_modules_load_t self:capability net_admin;
++seutil_read_config(systemd_modules_load_t)
++seutil_read_config(systemd_userdbd_t)
++auth_relabelto_shadow(systemd_tmpfiles_t)
+-- 
+2.35.1
+

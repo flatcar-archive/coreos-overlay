@@ -1,0 +1,26 @@
+diff --git a/policy/modules/services/container.fc b/policy/modules/services/container.fc
+index 63f1537df..25cb56ffe 100644
+--- a/services/container.fc
++++ b/services/container.fc
+@@ -79,3 +79,4 @@ HOME_DIR/\.local/share/docker/volumes(/.*)?		gen_context(system_u:object_r:conta
+ 
+ /var/log/containers(/.*)?		gen_context(system_u:object_r:container_log_t,s0)
+ /var/log/pods(/.*)?		gen_context(system_u:object_r:container_log_t,s0)
++/usr/share/containerd(/.*)?		gen_context(system_u:object_r:container_config_t,s0)
+diff --git a/policy/modules/services/container.te b/policy/modules/services/container.te
+index a243eb4a5..eb405abac 100644
+--- a/services/container.te
++++ b/services/container.te
+@@ -762,3 +762,9 @@ optional_policy(`
+        unconfined_domain_noaudit(spc_user_t)
+        domain_ptrace_all_domains(spc_user_t)
+ ')
++
++allow container_domain self:socket_class_set { accept ioctl read getattr lock write append getopt setopt };
++allow container_domain init_t:unix_stream_socket { accept ioctl read getattr lock write append getopt shutdown };
++
++# required for sharing /run for the etcd-wrapper
++files_mounton_runtime_dirs(container_engine_domain)
+-- 
+2.35.1
+

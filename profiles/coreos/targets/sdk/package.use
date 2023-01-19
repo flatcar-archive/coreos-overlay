@@ -28,3 +28,6 @@ x11-libs/pixman static-libs
 
 # Enable gssapi for SDK
 net-dns/bind-tools           gssapi
+
+# Enable SELinux for relabelling with gensquashfs
+sys-fs/squashfs-tools-ng selinux
