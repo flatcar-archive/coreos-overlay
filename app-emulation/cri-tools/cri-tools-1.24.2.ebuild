@@ -6,7 +6,7 @@ EAPI=7
 # Flatcar: remove bash-completion, inherit coreos-go
 inherit go-module coreos-go
 
-COREOS_GO_VERSION="go1.19"
+COREOS_GO_VERSION="go1.18"
 COREOS_GO_PACKAGE="github.com/kubernetes-sigs/cri-tools"
 COREOS_GO_MOD="vendor"
 
