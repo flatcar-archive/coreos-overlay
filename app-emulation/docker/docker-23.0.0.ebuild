@@ -3,7 +3,7 @@
 
 EAPI=7
 EGO_PN=github.com/docker/docker
-GIT_COMMIT=112bdf3343
+GIT_COMMIT=eba970c712
 COREOS_GO_VERSION="go1.18"
 COREOS_GO_GO111MODULE="off"
 
