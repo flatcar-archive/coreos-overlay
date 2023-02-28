@@ -17,7 +17,6 @@ S="${WORKDIR}"
 
 RDEPEND="
   ~app-emulation/wa-linux-agent-${PV}
-  x11-drivers/nvidia-drivers
 "
 
 src_prepare() {
