@@ -42,8 +42,6 @@ PATCHES=(
 	# to fail if SELinux is enforced in early boot.
 	# It can be removed once we drop torcx support.
 	"${FILESDIR}/unlabeled.patch"
-	# This is to allow pings from some IP address.
-	"${FILESDIR}/ping.patch"
 )
 
 # Code entirely copied from selinux-eclass (cannot inherit due to dependency on
