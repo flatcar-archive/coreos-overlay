@@ -45,7 +45,6 @@ BDEPEND="sys-devel/m4
 PATCHES=(
 	"${FILESDIR}"/0001-policy-modules-kernel-all-more-actions-for-kernel.patch
 	"${FILESDIR}"/0001-policy-ms-MCS-restricts-relabelfrom.patch
-	"${FILESDIR}"/icmp-bind.patch
 )
 
 S=${WORKDIR}/
