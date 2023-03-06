@@ -35,7 +35,6 @@ S="${WORKDIR}/"
 # flatcar changes: apply a couple of
 # patches on the current policies
 PATCHES=(
-	"${FILESDIR}/sshd.patch"
 	"${FILESDIR}/init.patch"
 	"${FILESDIR}/locallogin.patch"
 	"${FILESDIR}/logging.patch"
