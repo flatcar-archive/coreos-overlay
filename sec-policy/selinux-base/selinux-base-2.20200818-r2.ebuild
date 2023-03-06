@@ -101,6 +101,7 @@ src_configure() {
 		# flatcar changes: it's required to run polkit without segfault
 		# we need to pass this argument now before the compilation of the policy
 		sed -i "s/allow_execmem = false/allow_execmem = true/" "${S}/${i}/policy/booleans.conf" || die
+		sed -i "s/user_ping = false/user_ping = true/" "${S}/${i}/policy/booleans.conf" || die
 
 		sed -i -e '/^QUIET/s/n/y/' -e "/^NAME/s/refpolicy/$i/" \
 			"${S}/${i}/build.conf" || die "build.conf setup failed."
