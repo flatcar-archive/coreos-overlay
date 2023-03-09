@@ -1,0 +1,39 @@
+From a42cbac065da3c3ce449d178e437f5f016ae0199 Mon Sep 17 00:00:00 2001
+From: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+Date: Thu, 9 Mar 2023 10:28:41 +0100
+Subject: [PATCH] files/unit: relabel after creating/modifying preset
+
+Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
+---
+ internal/exec/stages/files/units.go | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/internal/exec/stages/files/units.go b/internal/exec/stages/files/units.go
+index e304d611..16d84031 100644
+--- a/internal/exec/stages/files/units.go
++++ b/internal/exec/stages/files/units.go
+@@ -148,9 +148,6 @@ func parseInstanceUnit(unit types.Unit) (string, string, error) {
+ // createSystemdPresetFile creates the presetfile for enabled/disabled
+ // systemd units.
+ func (s *stage) createSystemdPresetFile(presets map[string]*Preset) error {
+-	if err := s.relabelPath(filepath.Join(s.DestDir, util.PresetPath)); err != nil {
+-		return err
+-	}
+ 	hasInstanceUnit := false
+ 
+ 	// sort the units before writing to the systemd presets file to ensure
+@@ -195,6 +192,11 @@ func (s *stage) createSystemdPresetFile(presets map[string]*Preset) error {
+ 			return err
+ 		}
+ 	}
++
++	if err := s.relabelPath(filepath.Join(s.DestDir, util.PresetPath)); err != nil {
++		return err
++	}
++
+ 	return nil
+ }
+ 
+-- 
+2.35.1
+

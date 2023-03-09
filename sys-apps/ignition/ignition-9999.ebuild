@@ -60,6 +60,7 @@ PATCHES=(
 	"${FILESDIR}/0016-internal-exec-stages-disks-prevent-races-with-udev.patch"
 	"${FILESDIR}/0017-translation-support-OEM-and-oem.patch"
 	"${FILESDIR}/0018-revert-internal-oem-drop-noop-OEMs.patch"
+	"${FILESDIR}/0019-files-unit-relabel-after-creating-modifying-preset.patch"
 )
 
 src_compile() {
