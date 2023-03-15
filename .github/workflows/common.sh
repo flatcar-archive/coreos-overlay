@@ -157,3 +157,40 @@ function apply_patches() {
   git am "${SDK_OUTER_SRCDIR}"/third_party/coreos-overlay/0*.patch
   rm -f "${SDK_OUTER_SRCDIR}"/third_party/coreos-overlay/0*.patch
 }
+
+# Return 0 (i.e. true) if VER1 >= VER2
+function semver_is_bigger() {
+  local VER1="${1}"
+  local VER2="${2}"
+
+  if [[ "${VER1}" = "$(echo -e "${VER1}\n${VER2}" | sort -V | tail -n1)" ]]; then
+    return 0
+  fi
+
+  return 1
+}
+
+# Determine if the given version is a correct version for the next Kernel for the Stable channel.
+# Returns 0 (i.e. true) if Stable kernel version <= the given version <= Beta kernel version.
+function is_next_stable_kernel() {
+  local INPUT_VERSION="${1}"
+  local URL_STABLE_PACKAGES="https://stable.release.flatcar-linux.net/amd64-usr/current/flatcar_production_image_packages.txt"
+  local URL_BETA_PACKAGES="https://beta.release.flatcar-linux.net/amd64-usr/current/flatcar_production_image_packages.txt"
+
+  curl -fsSL -o /tmp/stable-packages.txt ${URL_STABLE_PACKAGES}
+  curl -fsSL -o /tmp/beta-packages.txt ${URL_BETA_PACKAGES}
+
+  # parse a line like sys-kernel/coreos-kernel-5.15.98::coreos
+  local STABLE_KV=$(sed -n "s/^sys-kernel\/coreos-kernel-\([0-9]*\.[0-9]*\.[0-9]*\)::.*/\1/p" /tmp/stable-packages.txt)
+  local BETA_KV=$(sed -n "s/^sys-kernel\/coreos-kernel-\([0-9]*\.[0-9]*\.[0-9]*\)::.*/\1/p" /tmp/beta-packages.txt)
+
+  if semver_is_bigger "${INPUT_VERSION}" "${STABLE_KV}"; then
+    if semver_is_bigger "${BETA_KV}" "${INPUT_VERSION}"; then
+      return 0
+    fi
+  fi
+
+  rm -f /tmp/stable-packages.txt /tmp/beta-packages.txt
+
+  return 1
+}

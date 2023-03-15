@@ -75,6 +75,12 @@ generate_patches sys-kernel coreos-sources Kernel
 
 apply_patches
 
+AUTOMERGEABLE=1
+if [[ "${CHANNEL}" = "stable" ]] && ! is_next_stable_kernel ${VERSION_NEW}; then
+  AUTOMERGEABLE=0
+fi
+
 echo "VERSION_OLD=${VERSION_OLD}" >>"${GITHUB_OUTPUT}"
 echo "UPDATE_NEEDED=1" >>"${GITHUB_OUTPUT}"
+echo "AUTOMERGEABLE=${AUTOMERGEABLE}" >>"${GITHUB_OUTPUT}"
 echo "BRANCH_NAME=${BRANCH_NAME}" >>"${GITHUB_OUTPUT}"
