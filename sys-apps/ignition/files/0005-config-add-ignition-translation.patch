@@ -1,4 +1,4 @@
-From 54fa31c31ed431678adc89b6dfa450022d2f96fa Mon Sep 17 00:00:00 2001
+From 9596af9b8a3d1f999a8252a8a1a17f0bf6040f14 Mon Sep 17 00:00:00 2001
 From: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
 Date: Mon, 26 Sep 2022 12:12:04 +0200
 Subject: [PATCH 05/18] config: add ignition translation
@@ -7,20 +7,20 @@ it's a merge from flatcar/ign-converter
 
 Signed-off-by: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
 ---
- config/util/translate.go         |  166 +++
+ config/util/translate.go         |  162 +++
  config/v24tov31/v24tov31.go      |  729 +++++++++++++
  config/v24tov31/v24tov31_test.go | 1692 ++++++++++++++++++++++++++++++
- 3 files changed, 2587 insertions(+)
+ 3 files changed, 2583 insertions(+)
  create mode 100644 config/util/translate.go
  create mode 100644 config/v24tov31/v24tov31.go
  create mode 100644 config/v24tov31/v24tov31_test.go
 
 diff --git a/config/util/translate.go b/config/util/translate.go
 new file mode 100644
-index 00000000..347d148c
+index 00000000..8987df53
 --- /dev/null
 +++ b/config/util/translate.go
-@@ -0,0 +1,166 @@
+@@ -0,0 +1,162 @@
 +// Copyright 2020 Red Hat, Inc.
 +//
 +// Licensed under the Apache License, Version 2.0 (the "License");
@@ -176,12 +176,8 @@ index 00000000..347d148c
 +
 +	if _, ok := fsMap[name]; !ok {
 +		addedSuffixCounter += 1
-+		if name == "oem" {
-+			fsMap[name] = "/usr/share/oem"
-+		} else {
-+			// generate a new path
-+			fsMap[name] = "/tmp/" + name + "-ign" + strconv.FormatUint(addedSuffixCounter, 10)
-+		}
++		// generate a new path
++		fsMap[name] = "/tmp/" + name + "-ign" + strconv.FormatUint(addedSuffixCounter, 10)
 +	}
 +
 +	counterMutex.Unlock()

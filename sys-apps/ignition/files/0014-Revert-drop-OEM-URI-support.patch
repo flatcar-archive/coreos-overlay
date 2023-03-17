@@ -1,4 +1,4 @@
-From ccaf67b639741cd3716c556aad70e5bf32272979 Mon Sep 17 00:00:00 2001
+From 8ea10deef15aa841430bfcb76b47c7809a00febe Mon Sep 17 00:00:00 2001
 From: Mathieu Tortuyaux <mtortuyaux@microsoft.com>
 Date: Wed, 25 May 2022 10:38:16 +0200
 Subject: [PATCH 14/18] Revert "*: drop OEM URI support"
