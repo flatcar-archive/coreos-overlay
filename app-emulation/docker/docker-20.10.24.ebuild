@@ -19,7 +19,8 @@ LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="amd64 ~arm arm64 ppc64 ~x86"
 # Flatcar: default enable required USE flags
-IUSE="apparmor aufs +btrfs +cli +container-init +device-mapper +hardened +overlay +seccomp +journald"
+IUSE="apparmor aufs +btrfs +cli +container-init +device-mapper +hardened
++overlay +seccomp +journald selinux"
 
 DEPEND="
 	acct-group/docker
@@ -55,6 +56,7 @@ RDEPEND="
 	~app-emulation/docker-proxy-0.8.0_p20210525
 	cli? ( app-emulation/docker-cli )
 	container-init? ( >=sys-process/tini-0.19.0 )
+	selinux? ( sec-policy/selinux-docker )
 "
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#build-dependencies
@@ -87,7 +89,6 @@ CONFIG_CHECK="
 	~USER_NS
 	~SECCOMP
 	~CGROUP_PIDS
-	~MEMCG_SWAP
 
 	~BLK_CGROUP ~BLK_DEV_THROTTLING
 	~CGROUP_PERF
@@ -149,6 +150,12 @@ pkg_setup() {
 	if kernel_is lt 5 8; then
 		CONFIG_CHECK+="
 			~MEMCG_SWAP_ENABLED
+		"
+	fi
+
+	if kernel_is lt 6 1; then
+		CONFIG_CHECK+="
+			~MEMCG_SWAP
 		"
 	fi
 
@@ -303,4 +310,8 @@ pkg_postinst() {
 		ewarn "# emerge --noreplace docker-cli"
 		ewarn
 	fi
+}
+
+pkg_postrm() {
+	udev_reload
 }
