@@ -12,9 +12,9 @@
 =dev-lang/rust-1.68.0 ~amd64 ~arm64
 =virtual/rust-1.68.0 ~amd64 ~arm64
 
+# Keep versions on both arches in sync.
 =dev-libs/libbsd-0.11.7-r2 ~arm64
-
-=dev-libs/libgcrypt-1.9.4 ~amd64 ~arm64
+=dev-libs/libgcrypt-1.10.1 ~arm64
 
 # upstream stabilizes arm64 for dev-lang/cython
 # stabilize dev-python/cython for amd64 to keep the version same for both arch
