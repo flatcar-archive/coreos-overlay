@@ -12,6 +12,8 @@
 =dev-lang/rust-1.68.0 ~amd64 ~arm64
 =virtual/rust-1.68.0 ~amd64 ~arm64
 
+=dev-libs/libbsd-0.11.7-r2 ~arm64
+
 =dev-libs/libgcrypt-1.9.4 ~amd64 ~arm64
 
 # upstream stabilizes arm64 for dev-lang/cython
