@@ -35,7 +35,7 @@ src_compile() {
 
     package="coreos-base/oem-${oemid}"
     ebuild=$(equery which "${package}")
-    version=${path##*"oem-${oemid}-"}
+    version=${ebuild##*"oem-${oemid}-"}
     version=${version%%'.ebuild'}
     if [[ -z "${version}" ]]; then
         die "Could not deduce a version from ebuild ${ebuild##*/} (${ebuild})"
