@@ -41,7 +41,11 @@ src_compile() {
     if [[ -z "${name}" ]]; then
         die "Missing OEM_NAME variable in ${ebuild##*/}"
     fi
-    homepage=$(source <(grep -F 'HOMEPAGE=' "${ebuild}"); echo "${HOMEPAGE}")
+    # We need to prefix the HOMEPAGE variable with SYSEXT_, because
+    # portage marks HOMEPAGE as readonly and this gets propagated to
+    # subshells, so sourcing a snippet with HOMEPAGE=foo won't
+    # overwrite the readonly variable.
+    homepage=$(source <(grep -F 'HOMEPAGE=' "${ebuild}" | sed -e 's/^/SYSEXT_/'); echo "${SYSEXT_HOMEPAGE}")
     lines=(
         "ID=${oemid}"
         "VERSION_ID=${version}"
