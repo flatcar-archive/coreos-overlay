@@ -37,6 +37,9 @@ src_compile() {
     ebuild=$(equery which "${package}")
     version=${path##*"oem-${oemid}-"}
     version=${version%%'.ebuild'}
+    if [[ -z "${version}" ]]; then
+        die "Could not deduce a version from ebuild ${ebuild##*/} (${ebuild})"
+    fi
     name=$(source <(grep -F 'OEM_NAME=' "${ebuild}"); echo "${OEM_NAME}")
     if [[ -z "${name}" ]]; then
         die "Missing OEM_NAME variable in ${ebuild##*/}"
@@ -50,7 +53,6 @@ src_compile() {
         "ID=${oemid}"
         "VERSION_ID=${version}"
         "NAME=\"${name}\""
-        'BUG_REPORT_URL="https://issues.flatcar.org"'
     )
     if [[ -n "${homepage}" ]]; then
         lines+=( "HOME_URL=\"${homepage}\"" )
