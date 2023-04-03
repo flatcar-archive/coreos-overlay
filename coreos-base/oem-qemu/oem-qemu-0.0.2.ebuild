@@ -12,4 +12,9 @@ SLOT="0"
 KEYWORDS="amd64 arm64"
 IUSE=""
 
+RDEPEND="
+  app-emulation/wa-linux-agent
+  x11-drivers/nvidia-drivers
+"
+
 OEM_NAME="QEMU"
