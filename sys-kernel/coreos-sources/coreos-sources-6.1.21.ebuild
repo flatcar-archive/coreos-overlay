@@ -36,4 +36,5 @@ IUSE=""
 # local patches overlap with the upstream patch.
 UNIPATCH_LIST="
 	${PATCH_DIR}/z0001-kbuild-derive-relative-path-for-srctree-from-CURDIR.patch \
+	${PATCH_DIR}/z0002-kbuild-Add-skip_encoding_btf_enum64-option-to-pahole.patch \
 "
