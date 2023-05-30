@@ -1,3 +1,7 @@
+# This repository moved
+
+This repository moved to https://github.com/flatcar/scripts/tree/main/sdk_container/src/third_party which is the `sdk_container/src/third_party` folder of the Flatcar [scripts](https://github.com/flatcar/scripts) repository.
+
 # Overview
 
 This overlay contains Container Linux specific packages and Gentoo packages
