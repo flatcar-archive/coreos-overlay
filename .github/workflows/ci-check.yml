@@ -1,0 +1,15 @@
+name: ci-check
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  ci-check:
+    name: ci-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: ci-check
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: /bin/true
