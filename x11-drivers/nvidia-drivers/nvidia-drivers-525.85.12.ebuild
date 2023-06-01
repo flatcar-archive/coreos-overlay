@@ -16,13 +16,12 @@ IUSE=""
 S="${WORKDIR}"
 
 RDEPEND="
-	=x11-drivers/nvidia-metadata-${PV}
+  =x11-drivers/nvidia-metadata-${PV}
 "
 
 src_install() {
-  insinto "/usr/share/oem"
-  doins -r "${FILESDIR}/units"
-  exeinto "/usr/share/oem/bin"
+  systemd_dounit "${FILESDIR}/units/nvidia.service"
+  exeinto "/usr/lib/nvidia/bin"
   doexe "${FILESDIR}/bin/install-nvidia"
   doexe "${FILESDIR}/bin/setup-nvidia"
 }
